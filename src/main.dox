@@ -1,0 +1,4 @@
+/** @mainpage
+ * \li The build system is lightweight and portable.
+ * \li Each feature is tested, sometimes with different tools.
+ */

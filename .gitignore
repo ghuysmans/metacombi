@@ -1,0 +1,15 @@
+*.swp
+#binaries
+/metacombi
+/UAll
+#CMake
+Makefile
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+config.h
+CTestTestfile.cmake
+Testing/
+#Doxygen
+Doxyfile
+doc
