@@ -1,0 +1,7 @@
+Ligne 1 : #arcs #sommets #nombre d’équipes
+Ligne 2 : Vecteur HEAD
+Ligne 3 : Coordonnées X des sommets
+Ligne 4 : Coordonnées Y des sommets
+Ligne 5 : Vecteur SUCC
+Ligne 6 : Distances des arcs
+Ligne 7 : Nombres de publicités à distribuer pour chaque arc.
