@@ -4,6 +4,7 @@
  */
 #include <iostream>
 #include <string>
+#include "Graph.cpp"
 
 /**
  * Some doc for a simple class.
