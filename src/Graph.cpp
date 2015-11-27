@@ -5,6 +5,12 @@
  */ 
 class Graph{
 	private:
+		/** Total number of links */
+		int Nlinks;
+		/** Total number of nodes */
+		int Nnodes;
+		/** number of teams */
+		int Nteams;
 		/** The name of the file that contain data of the problem */
 		std::string filename;
 		/** head[i] is the index of the first successor of i. So the list of links */
