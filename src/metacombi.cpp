@@ -4,7 +4,7 @@
  */
 #include <iostream>
 #include <string>
-#include "Graph.cpp"
+#include "Solution.cpp"//TODO pour tester la compilation. cette ligne devra etre suprimee
 
 /**
  * Some doc for a simple class.

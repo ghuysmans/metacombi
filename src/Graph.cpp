@@ -1,11 +1,9 @@
+#include <vector>
+#include <string>
 /**
- * @file
  * The graph. Initial data of the problem
- */
- #include <vector>
- #include <string>
- 
-class Graph {
+ */ 
+class Graph{
 	private:
 		/** The name of the file that contain data of the problem **/
 		std::string filename;
