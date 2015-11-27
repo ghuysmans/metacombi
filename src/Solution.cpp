@@ -10,7 +10,7 @@ class Solution{
 		/** The graph of all the problem */
 		Graph graph = Graph("hophip.txt");//FIXME pourquoi ca compile pas si on initialise pas?
 		/** The score of this solution */
-		Score score = Score(0,0,0);//FIXME pourquoi ca compile pas si on initialise pas?
+		Score score = Score(std::vector<Score::teamScore>());//FIXME pourquoi ca compile pas si on initialise pas?
 		/**
 		 * Update the score of this solution.
 		 */
