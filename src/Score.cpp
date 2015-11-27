@@ -3,11 +3,11 @@
  */
 class Score{
 	private:
-		/** The total distance **/
+		/** The total distance */
 		int dist;
-		/** The total amount of delivered flyers **/
+		/** The total amount of delivered flyers */
 		int Nflyers;
-		/** The compacity of the path **/
+		/** The compacity of the path */
 		int comp;
 	public:
 		/**

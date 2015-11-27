@@ -5,17 +5,17 @@
  */ 
 class Graph{
 	private:
-		/** The name of the file that contain data of the problem **/
+		/** The name of the file that contain data of the problem */
 		std::string filename;
-		/** head[i] is the index of the first successor of i. So the list of links **/
+		/** head[i] is the index of the first successor of i. So the list of links */
 		int head[];
-		/** Contain successors of nodes (**/
+		/** Contain successors of nodes (links) */
 		int successors[];
-		/** Nflyers[i] is the amount of flyers in the link i **/
+		/** Nflyers[i] is the amount of flyers in the link i */
 		int Nflyers[];
-		/** The x coordinate of nodes **/
+		/** The x coordinate of nodes */
 		int x[];
-		/** The y coordinate of nodes **/
+		/** The y coordinate of nodes */
 		int y[];
 	public:
 		/**
