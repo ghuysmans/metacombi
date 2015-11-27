@@ -1,8 +1,5 @@
 #include "Score.cpp"
-#ifndef Graph
 #include "Graph.cpp"
-#endif
-#include <vector>
 /**
  * A solution
  */
