@@ -5,6 +5,7 @@
 #include <iostream>
 #include <string>
 #include "Solution.cpp"//TODO pour tester la compilation. cette ligne devra etre suprimee
+#include "metaheuristics/RandomStrategy.cpp"
 
 /**
  * Some doc for a simple class.

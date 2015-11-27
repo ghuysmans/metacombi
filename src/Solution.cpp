@@ -1,5 +1,7 @@
 #include "Score.cpp"
+#ifndef Graph
 #include "Graph.cpp"
+#endif
 #include <vector>
 /**
  * A solution
@@ -9,9 +11,9 @@ class Solution{
 		/** The vector of the solution. vect[i] is the number of the group on the link i */
 		std::vector<int> vect;
 		/** The graph of all the problem */
-		Graph graph = Graph("hophip.txt");
+		Graph graph = Graph("hophip.txt");//FIXME pourquoi ca compile pas si on initialise pas?
 		/** The score of this solution */
-		Score score = Score(0,0,0);
+		Score score = Score(0,0,0);//FIXME pourquoi ca compile pas si on initialise pas?
 		/**
 		 * Update the score of this solution.
 		 */
