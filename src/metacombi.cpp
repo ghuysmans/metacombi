@@ -4,8 +4,8 @@
  */
 #include <iostream>
 #include <string>
-#include "metaheuristics/Metaheuristic.cpp"
-#include "metaheuristics/RandomStrategy.cpp"
+#include "metaheuristics/Metaheuristic.h"
+#include "metaheuristics/RandomStrategy.h"
 
 /**
  * Some doc for a simple class.

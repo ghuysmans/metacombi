@@ -28,3 +28,4 @@ endif(DOXYGEN_FOUND)
 include(tests/tests.cmake)
 
 add_executable(metacombi src/metacombi.cpp)
+set_target_properties(metacombi PROPERTIES LINKER_LANGUAGE CXX)
