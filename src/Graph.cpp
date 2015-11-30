@@ -125,4 +125,8 @@ class Graph{
 				v.push_back(succ.at(counter));
 			return v;
 		}
+		
+// --- GETTERS
+		int Graph::getNteams(){ return Nteams; }
+		std::vector<int> Graph::getWeights(){ return weights; }
 };

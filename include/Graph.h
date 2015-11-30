@@ -55,6 +55,16 @@ class Graph{
 		 * @return All successors of 'node'
 		 */
 		std::vector<int> getSuccessors(int node);
+		
+//-- GETTERS
+		/**
+		 * @return the number of teams
+		 */
+		int getNteams();
+		/**
+		 * @return Weights of each edges
+		 */
+		std::vector<int> getWeights();
 };
 
 #endif //_GRAPH_H

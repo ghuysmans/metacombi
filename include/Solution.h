@@ -9,7 +9,7 @@
  */
 class Solution{
 	private:
-		/** The vector of the solution. vect[i] is the number of the group on the link i */
+		/** The vector of the solution. vect[i] is the number of the group on the edge i */
 		std::vector<int> vect;
 		/** The graph of all the problem */
 		Graph graph;
@@ -34,6 +34,10 @@ class Solution{
 		 */
 		Solution move();
 		//TODO peut-être devra t on envisage une fonction qui retourne tous ou une partie des mouvement possible?
+		/**
+		 * @return The total distance to travel for each team
+		 */
+		std::vector<int> getDistances();
 };
 
 #endif //_SOLUTION_H
