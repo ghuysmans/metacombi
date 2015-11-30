@@ -19,25 +19,25 @@ class Graph{
 		int Nteams;
 		
 		/** The name of the file that contain data of the problem */
-		string filename;
+		std::string filename;
 		
 		/** ith element of head is the reference to the first successor of ith node */
-		vector<int> head;
+		std::vector<int> head;
 		
 		/** Contain successors of nodes (edges) */
-		vector<int> succ;
+		std::vector<int> succ;
 		
 		/** ith element of flyers is the amount of flyers in the edge i */
-		vector<int> flyers;
+		std::vector<int> flyers;
 		
 		/** ith element of weights is the weight of ith edge */
-		vector<int> weights;
+		std::vector<int> weights;
 		
 		/** The x coordinate of nodes */
-		vector<int> x;
+		std::vector<int> x;
 
 		/** The y coordinate of nodes */
-		vector<int> y;
+		std::vector<int> y;
 	public:
 		/**
 		 * @param the name of the file that contain all data
