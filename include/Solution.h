@@ -12,9 +12,9 @@ class Solution{
 		/** The vector of the solution. vect[i] is the number of the group on the link i */
 		std::vector<int> vect;
 		/** The graph of all the problem */
-		Graph graph = Graph("hophip.txt");//FIXME pourquoi ca compile pas si on initialise pas?
+		Graph graph;
 		/** The score of this solution */
-		Score score = Score(std::vector<Score::teamScore>());//FIXME pourquoi ca compile pas si on initialise pas?
+		Score score;
 		/**
 		 * Update the score of this solution.
 		 */

@@ -8,7 +8,7 @@
  */
 class RandomStrategy: public Metaheuristic{
 	private:
-		Graph graph = Graph("lol.txt");//FIXME
+		Graph graph;
 	public:
 		/**
 		 * @param problemGraph The initial graph of the problem
