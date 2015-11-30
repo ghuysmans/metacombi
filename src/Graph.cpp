@@ -2,7 +2,7 @@
 #include <string>
 #include<sstream>
 #include<fstream>
-#include<iostream>
+#include "Graph.h"
 
 using namespace std;
 
@@ -60,8 +60,7 @@ class Graph{
 					istringstream iss(line);
 					if(linenumber == 1)
 					{
-						iss>>Nedges>>Nnodes>>Nteams;
-						cout << Nedges << " "<<Nnodes<<" "<<Nteams<<endl;		
+						iss>>Nedges>>Nnodes>>Nteams;		
 						head.reserve(Nnodes);
 						x.reserve(Nnodes);
 						y.reserve(Nnodes);
