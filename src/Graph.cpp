@@ -11,37 +11,6 @@ using namespace std;
  */ 
 class Graph{
 	
-	private:
-		/** Total number of edges */
-		int Nedges;
-		
-		/** Total number of nodes */
-		int Nnodes;
-		
-		/** number of teams */
-		int Nteams;
-		
-		/** The name of the file that contain data of the problem */
-		string filename;
-		
-		/** ith element of head is the reference to the first successor of ith node */
-		vector<int> head;
-		
-		/** Contain successors of nodes (edges) */
-		vector<int> succ;
-		
-		/** ith element of flyers is the amount of flyers in the edge i */
-		vector<int> flyers;
-		
-		/** ith element of weights is the weight of ith edge */
-		vector<int> weights;
-		
-		/** The x coordinate of nodes */
-		vector<int> x;
-
-		/** The y coordinate of nodes */
-		vector<int> y;
-	
 	public:
 		/**
 		 * @param the name of the file that contain all data
