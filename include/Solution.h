@@ -19,6 +19,14 @@ class Solution{
 		 * Update the score of this solution.
 		 */
 		void computeScore();
+		/**
+		 * @return The total distance to travel for each team
+		 */
+		std::vector<int> getDistances();
+		/**
+		 * @return The total number of flyers delivered for each team
+		 */
+		std::vector<int> getDelivered();
 	public:
 		/**
 		 * @param vectorSolution the vector of the solution.
@@ -34,10 +42,6 @@ class Solution{
 		 */
 		Solution move();
 		//TODO peut-être devra t on envisage une fonction qui retourne tous ou une partie des mouvement possible?
-		/**
-		 * @return The total distance to travel for each team
-		 */
-		std::vector<int> getDistances();
 };
 
 #endif //_SOLUTION_H
