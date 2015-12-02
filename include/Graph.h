@@ -51,11 +51,23 @@ class Graph{
 		/**
 		 * @return the number of successor of 'node'
 		 */
-		int getCount(int node); //utile pour getSuccessors
+		int getCount(int node);
 		/**
 		 * @return All successors of 'node'
 		 */
 		std::vector<int> getSuccessors(int node);
+		/**
+		 * @return Distance between 'edge1' and 'edge2'
+		 */
+		int getDistanceEdges(int edge1, int edge2);
+		/**
+		 * @return Distance between 'node1' and 'node2' using Dijkstra's algorithm. Heap version
+		 */
+		int getDistanceNodes(int node1, int node2);
+		/**
+		 * @return the predecessor and the successor corresponding the edge 'edge'
+		 */
+		std::vector<int> edgeToNodes(int edge);
 		
 //-- GETTERS
 		/**
