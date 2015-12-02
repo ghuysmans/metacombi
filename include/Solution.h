@@ -35,7 +35,7 @@ class Solution{
 		/**
 		 * @return The score of this solution
 		 */
-		Score getScore();
+		Score getScore(ScoreCalculator& sc);
 		/**
 		 * Move something in the vector
 		 */

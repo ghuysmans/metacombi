@@ -2,12 +2,6 @@
 #include "Graph.h"
 #include "Solution.h"
 
-void Solution::computeScore(){
-	std::vector<int> distances = getDistances();
-	std::vector<int> amountFlyers = getDelivered();
-	//TODO
-}
-
 const std::vector<int> Solution::getDistances(){
 	std::vector<int> tab = std::vector<int>(graph.getNteams());
 	for(int i=0 ; i<vect.size() ; i++){
@@ -27,8 +21,8 @@ const std::vector<int> Solution::getDelivered(){
 Solution::Solution(std::vector<int> vectorSolution, Graph& problemGraph): vect(vectorSolution), graph(problemGraph) {
 }
 
-Score Solution::getScore(){
-	return score;
+Score Solution::getScore(ScoreCalculator& sc){
+	return sc(getDistances(), getDelivered(), graph);
 }
 
 Solution Solution::move(){

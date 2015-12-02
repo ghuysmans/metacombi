@@ -36,4 +36,12 @@ class Score{
 		std::vector<Score::teamScore>& tsList;
 };
 
+/**
+ * Simple functor
+ */
+class ScoreCalculator{
+	public:
+		virtual Score& operator()(std::vector<int> dist, std::vector<int> delivered, Graph& g) = 0;
+};
+
 #endif //_SCORE_H
