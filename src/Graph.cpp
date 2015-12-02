@@ -87,20 +87,20 @@ using namespace std;
 			infile.close();
 		}
 		
-		Graph::int getFirst(int node)
+		int Graph::getFirst(int node)
 		{
 			int s = head.at(node);
 			return succ.at(s - 1);
 		}
 		
-		Graph::int getCount(int node)//utile pour getSuccessors
+		int Graph::getCount(int node)//utile pour getSuccessors
 		{
 			if(node == Nnodes - 1)
 				return succ.size() - head.at(node) + 1;
 			return head.at(node) - head.at(node + 1);
 		}
 		
-		Graph::vector<int> getSuccessors(int node)
+		vector<int> Graph::getSuccessors(int node)
 		{
 			vector<int> v;
 			int counter, bound = head.at(node) + getCount(node) - 1;
