@@ -28,6 +28,11 @@ class Solution{
 		 * @return The total number of flyers delivered for each team
 		 */
 		std::vector<int> getDelivered();
+		/**
+		 * @param The list of path for each team
+		 * @return The compacity of the path for each team
+		 */
+		 std::vector<int> getCompacities(std::vector<Graph> paths);
 	public:
 		/**
 		 * @param vectorSolution the vector of the solution.
