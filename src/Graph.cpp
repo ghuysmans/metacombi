@@ -1,21 +1,13 @@
-#include <vector>
-#include <string>
 #include<sstream>
 #include<fstream>
 #include "Graph.h"
 
 using namespace std;
 
-/**
- * The graph. Initial data of the problem
- */ 
-class Graph{
-	
-	public:
 		/**
 		 * @param the name of the file that contain all data
 		 */
-		Graph(string name)
+		Graph::Graph(string name)
 		{
 			filename = name;
 			ifstream infile;
@@ -95,33 +87,24 @@ class Graph{
 			infile.close();
 		}
 		
-		/**
-		 * @return the first successor of 'node'
-		 */
-		int getFirst(int node)
+		Graph::int getFirst(int node)
 		{
-			int s = head.at(node - 1);
+			int s = head.at(node);
 			return succ.at(s - 1);
 		}
 		
-		/**
-		 * @return the number of successor of 'node'
-		 */
-		int getCount(int node)//utile pour getSuccessors
+		Graph::int getCount(int node)//utile pour getSuccessors
 		{
-			if(node == Nnodes)
-				return succ.size() - head.at(node - 1) + 1;
-			return head.at(node) - head.at(node - 1);
+			if(node == Nnodes - 1)
+				return succ.size() - head.at(node) + 1;
+			return head.at(node) - head.at(node + 1);
 		}
 		
-		/**
-		 * @return All successors of 'node'
-		 */
-		vector<int> getSuccessors(int node)
+		Graph::vector<int> getSuccessors(int node)
 		{
 			vector<int> v;
-			int counter, bound = head.at(node - 1) + getCount(node);
-			for(counter = head.at(node - 1) - 1; counter < bound - 1; counter++)
+			int counter, bound = head.at(node) + getCount(node) - 1;
+			for(counter = head.at(node) - 1; counter < bound - 1; counter++)
 				v.push_back(succ.at(counter));
 			return v;
 		}
@@ -162,6 +145,7 @@ class Graph{
 		
 // --- GETTERS
 		int Graph::getNteams(){ return Nteams; }
+		int Graph::getNedges(){ return Nedges; }
+		int Graph::getNnodes(){ return Nnodes; }
 		std::vector<int> Graph::getWeights(){ return weights; }
 		std::vector<int> Graph::getFlyers(){ return flyers; }
-};
