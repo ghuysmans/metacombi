@@ -4,6 +4,13 @@
 #include <vector>
 #include <string>
 
+class GraphException: public std::exception {
+	public:
+		GraphException(const char* r): reason(r) {}
+		const char* what() {return reason;}
+		const char* reason;
+};
+
 /**
  * The graph. Initial data of the problem
  */
@@ -43,7 +50,6 @@ class Graph{
 		 * @param the name of the file that contain all data
 		 */
 		Graph(std::string name);
-		Graph();
 		/**
 		 * @return the first successor of 'node'
 		 */
