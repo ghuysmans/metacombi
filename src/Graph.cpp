@@ -1,21 +1,13 @@
-#include <vector>
-#include <string>
 #include<sstream>
 #include<fstream>
 #include "Graph.h"
 
 using namespace std;
 
-/**
- * The graph. Initial data of the problem
- */ 
-class Graph{
-	
-	public:
 		/**
 		 * @param the name of the file that contain all data
 		 */
-		Graph(string name)
+		Graph::Graph(string name)
 		{
 			filename = name;
 			ifstream infile;
@@ -95,35 +87,60 @@ class Graph{
 			infile.close();
 		}
 		
-		/**
-		 * @return the first successor of 'node'
-		 */
-		int getFirst(int node)
+		Graph::int getFirst(int node)
 		{
-			int s = head.at(node - 1);
+			int s = head.at(node);
 			return succ.at(s - 1);
 		}
 		
-		/**
-		 * @return the number of successor of 'node'
-		 */
-		int getCount(int node)//utile pour getSuccessors
+		Graph::int getCount(int node)//utile pour getSuccessors
 		{
-			if(node == Nnodes)
-				return succ.size() - head.at(node - 1) + 1;
-			return head.at(node) - head.at(node - 1);
+			if(node == Nnodes - 1)
+				return succ.size() - head.at(node) + 1;
+			return head.at(node) - head.at(node + 1);
 		}
 		
-		/**
-		 * @return All successors of 'node'
-		 */
-		vector<int> getSuccessors(int node)
+		Graph::vector<int> getSuccessors(int node)
 		{
 			vector<int> v;
-			int counter, bound = head.at(node - 1) + getCount(node);
-			for(counter = head.at(node - 1) - 1; counter < bound - 1; counter++)
+			int counter, bound = head.at(node) + getCount(node) - 1;
+			for(counter = head.at(node) - 1; counter < bound - 1; counter++)
 				v.push_back(succ.at(counter));
 			return v;
+		}
+		
+		std::vector<int> Graph::edgeToNodes(int edge){
+			std::vector<int> result = std::vector<int>(2, -1);
+			//the successor
+			result[1] = succ[edge];
+			//the predecessor
+			edge++;
+			result[0] = -1;
+			int browsed = 0;//num of browsed edges
+			for(int i=0 ; i<Nnodes ; i++){
+				browsed += getCount(i);
+				if(browsed <= edge){
+					result[0] = i;
+					break;
+				}
+			}
+			return result;
+		}
+		int Graph::getDistanceNodes(int node1, int node2){
+			//TODO jason
+		}
+		int Graph::getDistanceEdges(int edge1, int edge2){
+			int e1[2] = edgeToNodes(edge1);
+			int e2[2] = edgeToNodes(edge2);
+			int dist = -1;
+			int minimum = getDistanceNodes(e1[0], e2[0]);
+			dist = getDistanceNodes(e1[1], e2[0]);
+			if( dist < minimum ) minimum = dist;
+			dist = getDistanceNodes(e1[0], e2[1]);
+			if( dist < minimum ) minimum = dist;
+			dist = getDistanceNodes(e1[1], e2[1]);
+			if( dist < minimum ) minimum = dist;
+			return dist;
 		}
 		
 // --- GETTERS
@@ -132,4 +149,3 @@ class Graph{
 		int Graph::getNnodes(){ return Nnodes; }
 		std::vector<int> Graph::getWeights(){ return weights; }
 		std::vector<int> Graph::getFlyers(){ return flyers; }
-};
