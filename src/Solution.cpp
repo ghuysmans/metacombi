@@ -27,11 +27,11 @@ std::vector<int> Solution::getDelivered(){
 }
 
 std::vector<int> Solution::getCompacities(std::vector<Graph> paths){
-	std::vector<int> tab : std::vector<int>(graph.getNteams(), 0);
+	std::vector<int> tab = std::vector<int>(graph.getNteams(), 0);
 	for(int i=0 ; i<paths.size() ; i++){
 		int maximum = 0;//will be the maximum of distances between edges
-		for(int j=0 ; j<path.size() ; j++){//for each edges of graph i
-			for(int k=0 ; k<path.size() ; k++){//for each edges of graph i
+		for(int j=0 ; j<paths.size() ; j++){//for each edges of graph i
+			for(int k=0 ; k<paths.size() ; k++){//for each edges of graph i
 			int minimum = paths[i].getDistanceEdges(j,k);//the distance between those edges
 			if(minimum > maximum){
 				maximum = minimum;
