@@ -1,6 +1,7 @@
 #ifndef _SOLUTION_H
 #define _SOLUTION_H
 
+#include <memory>
 #include "Score.h"
 #include "Graph.h"
 
@@ -41,7 +42,12 @@ class Solution{
 		 * Move something in the vector
 		 */
 		Solution move();
+		/**
+ 		 * @return true if the solution is admissible
+ 		 */
+		bool isAdmissible();
 		//TODO peut-être devra t on envisage une fonction qui retourne tous ou une partie des mouvement possible?
+		
 };
 
 #endif //_SOLUTION_H

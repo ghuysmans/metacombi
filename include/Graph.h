@@ -43,6 +43,7 @@ class Graph{
 		 * @param the name of the file that contain all data
 		 */
 		Graph(std::string name);
+		Graph();
 		/**
 		 * @return the first successor of 'node'
 		 */
@@ -61,6 +62,14 @@ class Graph{
 		 * @return the number of teams
 		 */
 		int getNteams();
+		/**
+		 * @return the number of edges
+		 */
+		int getNedges();
+		/**
+		 * @return the number of nodes
+		 */
+		int getNnodes();
 		/**
 		 * @return Weights of each edges
 		 */

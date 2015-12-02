@@ -1,5 +1,6 @@
 #include "Score.h"
 #include "Graph.h"
+#include "Solution.h"
 
 void Solution::computeScore(){
 	std::vector<int> distances = getDistances();
@@ -10,15 +11,15 @@ void Solution::computeScore(){
 std::vector<int> Solution::getDistances(){
 	std::vector<int> tab = std::vector<int>(graph.getNteams(), 0);//Init a vector filled with Nteams zeros
 	for(int i=0 ; i<vect.size() ; i++){
-		tab[vect[i]] += graph.getWeigths[i];
+		tab[vect[i]] += graph.getWeights()[i];
 	}
 	return tab;
 }
 
 std::vector<int> Solution::getDelivered(){
 	std::vector<int> tab = std::vector<int>(graph.getNteams(), 0);
-	for(int i=0 ; i<vect.size() ; i66){
-		tab[vect[i]] += graph.getFlyers[i];
+	for(int i=0 ; i<vect.size() ; i++){
+		tab[vect[i]] += graph.getFlyers()[i];
 	}
 	return tab;
 }
