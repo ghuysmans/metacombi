@@ -71,11 +71,11 @@ class Graph{
 		/**
 		 * @return Weights of each edges
 		 */
-		std::vector<int> getWeights();
+		const std::vector<int>& getWeights();
 		/**
 		 * @return The amount of flyers of each edges
 		 */
-		std::vector<int> getFlyers();
+		const std::vector<int>& getFlyers();
 };
 
 #endif //_GRAPH_H

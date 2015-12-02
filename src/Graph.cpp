@@ -69,5 +69,5 @@ vector<int> Graph::getSuccessors(int node) {
 
 // --- GETTERS
 int Graph::getNteams(){ return Nteams; }
-std::vector<int> Graph::getWeights(){ return weights; }
-std::vector<int> Graph::getFlyers(){ return flyers; }
+const std::vector<int>& Graph::getWeights(){ return weights; }
+const std::vector<int>& Graph::getFlyers(){ return flyers; }
