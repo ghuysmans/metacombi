@@ -63,6 +63,14 @@ class Graph{
 		 */
 		int getNteams();
 		/**
+		 * @return the number of edges
+		 */
+		int getNedges();
+		/**
+		 * @return the number of nodes
+		 */
+		int getNnodes();
+		/**
 		 * @return Weights of each edges
 		 */
 		std::vector<int> getWeights();

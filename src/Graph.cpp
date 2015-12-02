@@ -128,6 +128,8 @@ class Graph{
 		
 // --- GETTERS
 		int Graph::getNteams(){ return Nteams; }
+		int Graph::getNedges(){ return Nedges; }
+		int Graph::getNnodes(){ return Nnodes; }
 		std::vector<int> Graph::getWeights(){ return weights; }
 		std::vector<int> Graph::getFlyers(){ return flyers; }
 };
