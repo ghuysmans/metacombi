@@ -43,6 +43,7 @@ class Graph{
 		 * @param the name of the file that contain all data
 		 */
 		Graph(std::string name);
+		Graph();
 		/**
 		 * @return the first successor of 'node'
 		 */

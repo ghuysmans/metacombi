@@ -25,6 +25,7 @@ class Score{
 		 * @param compacity The compacity of the pass
 		 */
 		Score(std::vector<struct teamScore> teamScoreList);
+		Score();
 		/**
 		 * Overloading the operator <
 		 * @return true if left is < than right
