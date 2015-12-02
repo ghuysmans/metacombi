@@ -27,5 +27,6 @@ endif(DOXYGEN_FOUND)
 #unit tests
 include(tests/tests.cmake)
 
-add_executable(metacombi src/metacombi.cpp)
+file(GLOB Source src/*.cpp src/metaheuristics/*.cpp)
+add_executable(metacombi ${Source})
 set_target_properties(metacombi PROPERTIES LINKER_LANGUAGE CXX)
