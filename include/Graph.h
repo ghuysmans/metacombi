@@ -59,9 +59,9 @@ class Graph{
 		 */
 		int getCount(int node);
 		/**
-		 * @return All successors of 'node'
+		 * @return All successors
 		 */
-		std::vector<int> getSuccessors(int node);
+		std::vector<int> getSuccessors();
 		/**
 		 * @return Distance between 'edge1' and 'edge2'
 		 */
