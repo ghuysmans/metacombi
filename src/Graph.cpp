@@ -56,12 +56,8 @@ int Graph::getCount(int node) {
 	return head.at(node) - head.at(node - 1);
 }
 
-vector<int> Graph::getSuccessors(int node) {
-	vector<int> v;
-	int counter, bound = head.at(node - 1) + getCount(node);
-	for(counter = head.at(node - 1) - 1; counter < bound - 1; counter++)
-		v.push_back(succ.at(counter));
-	return v;
+vector<int> Graph::getSuccessors() {
+	return succ;
 }
 
 std::vector<int> Graph::edgeToNodes(int edge){
