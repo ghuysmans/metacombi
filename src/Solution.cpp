@@ -123,16 +123,3 @@ bool Solution::isAdmissible(){
 	}
 	return true;
 }
-
-int main(){
-	Graph graph = Graph("TPOC-45.txt");
-	static const int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
-	std::vector<int> vectorSolution(sizeof(arr) / sizeof(arr[0]), 0);
-	Solution sol = Solution(vectorSolution,graph);
-	if(sol.isAdmissible())
-		std::cout << "GOOD" <<std::endl;
-	else
-		std::cout << "FAILED" <<std::endl;
-		
-	return 1;
-}
