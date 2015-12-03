@@ -11,11 +11,9 @@
 class Solution{
 	private:
 		/** The vector of the solution. vect[i] is the number of the group on the edge i */
-		std::vector<int> vect;
+		std::vector<int>& vect;
 		/** The graph of all the problem */
-		Graph graph;
-		/** The score of this solution */
-		Score score;
+		Graph& graph;
 		/**
 		 * Update the score of this solution.
 		 */
@@ -23,26 +21,26 @@ class Solution{
 		/**
 		 * @return The total distance to travel for each team
 		 */
-		std::vector<int> getDistances();
+		const std::vector<int> getDistances();
 		/**
 		 * @return The total number of flyers delivered for each team
 		 */
-		std::vector<int> getDelivered();
+		const std::vector<int> getDelivered();
 		/**
 		 * @param The list of path for each team
 		 * @return The compacity of the path for each team
 		 */
-		 std::vector<int> getCompacities(std::vector<Graph> paths);
+		std::vector<int> getCompacities(std::vector<Graph> paths);
 	public:
 		/**
 		 * @param vectorSolution the vector of the solution.
 		 * @param problemGraph The graph of the problem (its to compute the score)
 		 */
-		Solution(std::vector<int> vectorSolution, Graph problemGraph);
+		Solution(std::vector<int> vectorSolution, Graph& problemGraph);
 		/**
 		 * @return The score of this solution
 		 */
-		Score getScore();
+		Score getScore(ScoreCalculator& sc);
 		/**
 		 * Move something in the vector
 		 */

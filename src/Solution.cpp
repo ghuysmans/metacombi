@@ -4,22 +4,16 @@
 #include <map>
 #include <stack>
 
-void Solution::computeScore(){
-	std::vector<int> distances = getDistances();
-	std::vector<int> amountFlyers = getDelivered();
-	//TODO
-}
-
-std::vector<int> Solution::getDistances(){
-	std::vector<int> tab = std::vector<int>(graph.getNteams(), 0);//Init a vector filled with Nteams zeros
+const std::vector<int> Solution::getDistances(){
+	std::vector<int> tab = std::vector<int>(graph.getNteams());
 	for(int i=0 ; i<vect.size() ; i++){
 		tab[vect[i]] += graph.getWeights()[i];
 	}
 	return tab;
 }
 
-std::vector<int> Solution::getDelivered(){
-	std::vector<int> tab = std::vector<int>(graph.getNteams(), 0);
+const std::vector<int> Solution::getDelivered(){
+	std::vector<int> tab = std::vector<int>(graph.getNteams());
 	for(int i=0 ; i<vect.size() ; i++){
 		tab[vect[i]] += graph.getFlyers()[i];
 	}
@@ -31,10 +25,11 @@ std::vector<int> Solution::getCompacities(std::vector<Graph> paths){
 	for(int i=0 ; i<paths.size() ; i++){
 		int maximum = 0;//will be the maximum of distances between edges
 		for(int j=0 ; j<paths.size() ; j++){//for each edges of graph i
+			//TODO test this actually works...
 			for(int k=0 ; k<paths.size() ; k++){//for each edges of graph i
-			int minimum = paths[i].getDistanceEdges(j,k);//the distance between those edges
-			if(minimum > maximum){
-				maximum = minimum;
+				int minimum = paths[i].getDistanceEdges(j,k);//the distance between those edges
+				if(minimum > maximum)
+					maximum = minimum;
 			}
 		}
 		tab[i] = maximum;
@@ -42,14 +37,11 @@ std::vector<int> Solution::getCompacities(std::vector<Graph> paths){
 	return tab;
 }
 
-Solution::Solution(std::vector<int> vectorSolution, Graph problemGraph){
-	vect = vectorSolution;
-	graph = problemGraph;
-	computeScore();
+Solution::Solution(std::vector<int> vectorSolution, Graph& problemGraph): vect(vectorSolution), graph(problemGraph) {
 }
 
-Score Solution::getScore(){
-	return score;
+Score Solution::getScore(ScoreCalculator& sc){
+	return sc(getDistances(), getDelivered(), graph);
 }
 
 Solution Solution::move(){
@@ -117,12 +109,11 @@ bool Solution::isAdmissible(){
 						lifo.pop();
 				}
 		}
-		
 		//Si un sommet n'a pas été marqué après le parcours
-		for(auto const& element : mark){
-			if(element.second == false)
+		for(it=mark.begin(); it!=mark.end(); ++it) {
+			if(it->second == false)
 				return false;
-		}	
+		}
 	}
 	return true;
 }
