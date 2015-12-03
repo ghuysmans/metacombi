@@ -1,8 +1,9 @@
+#include <map>
+#include <stack>
+#include <iostream>
 #include "Score.h"
 #include "Graph.h"
 #include "Solution.h"
-#include <map>
-#include <stack>
 
 const std::vector<int> Solution::getDistances(){
 	std::vector<int> tab = std::vector<int>(graph.getNteams());
@@ -51,23 +52,24 @@ Solution Solution::move(){
 bool Solution::isAdmissible(){
 	std::stack<int> lifo;
 	std::map<int,bool> mark;
-	std::vector<int> successors;
+	std::vector<int> successors = graph.getSuccessors();
 	std::map<int, bool>::iterator it;
 	int firstNode;
 	int indexInSolution = 0;
+	int nbrOfSucc;
 	for(int team = 1;team <= graph.getNteams();team++){
 		mark.clear();
 		firstNode = 0;
 		indexInSolution = 0;
 		//On initialise map avec des false pour chaque sommets du sous-graphe
-		for(int i = 0;i < graph.getNnodes();i++){
-			successors = graph.getSuccessors(i);
-			for(int j = 0;j < successors.size();j++){
+		for(int i = 1;i <= graph.getNnodes();i++){
+			nbrOfSucc = graph.getCount(i);
+			for(int j = 0;j < nbrOfSucc;j++){
 				if(vect.at(indexInSolution) == team){
 					if(firstNode  == 0)
 						firstNode = i;
 					else{
-						//Pour ne pas avoir de doublons(puisque c'est un graphe non-orienté
+						//Pour ne pas avoir de doublons(puisque c'est un graphe non-orienté)
 						if(mark.count(successors.at(j)) != 0)
 							mark.insert ( std::pair<int,bool>(successors.at(j),false));
 					}
@@ -81,17 +83,21 @@ bool Solution::isAdmissible(){
 		if(it != mark.end())
 			it->second = true;
 		lifo.push(firstNode);
-		int workingNode, succ;
+		int workingNode, firstSuccIndex , succ;
 		bool pushed;
 		while(!lifo.empty()){
 				workingNode = lifo.top();
-				successors = graph.getSuccessors(workingNode);
-				if(successors.empty())
+				nbrOfSucc = graph.getCount(workingNode);
+				if(nbrOfSucc == 0)
 					lifo.pop();
 				else{
 					pushed = false;
-					//On va push le premier successeur non-marqué dans la pile
-					for(int i=0;i<successors.size();i++){
+					firstSuccIndex = 0;
+					for(int i = 1;i<workingNode;i++){
+						firstSuccIndex += graph.getCount(i);
+					}
+					//On va push le premier successeur non-marqué(et se trouvant dans map) dans la pile
+					for(int i=firstSuccIndex;i< (firstSuccIndex + nbrOfSucc);i++){
 						it = mark.find(successors.at(i));
 						if(it != mark.end()){
 							if(!(it->second)){
@@ -116,4 +122,17 @@ bool Solution::isAdmissible(){
 		}
 	}
 	return true;
+}
+
+int main(){
+	Graph graph = Graph("TPOC-45.txt");
+	static const int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
+	std::vector<int> vectorSolution(sizeof(arr) / sizeof(arr[0]), 0);
+	Solution sol = Solution(vectorSolution,graph);
+	if(sol.isAdmissible())
+		std::cout << "GOOD" <<std::endl;
+	else
+		std::cout << "FAILED" <<std::endl;
+		
+	return 1;
 }
