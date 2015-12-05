@@ -32,7 +32,7 @@ class Solution{
 		 * @param vectorSolution the vector of the solution.
 		 * @param problemGraph The graph of the problem (its to compute the score)
 		 */
-		Solution(std::vector<int> vectorSolution, Graph& problemGraph);
+		Solution(std::vector<int>& vectorSolution, Graph& problemGraph);
 		/**
 		 * @return The score of this solution
 		 */
@@ -45,6 +45,10 @@ class Solution{
  		 * @return true if the solution is admissible
  		 */
 		bool isAdmissible();
+		/**
+		 * @return The solution vector
+		 */
+		std::vector<int>& getVector();
 		//TODO peut-être devra t on envisage une fonction qui retourne tous ou une partie des mouvement possible?
 		
 };

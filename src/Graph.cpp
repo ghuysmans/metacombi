@@ -1,12 +1,14 @@
 #include<sstream>
 #include<fstream>
 #include "Graph.h"
+#include<iostream>
 
 using namespace std;
 
 Graph::Graph(std::string name) {
 	filename = name;
 	ifstream infile;
+	cout << filename << ",,," << filename.c_str() << endl;
 	infile.open(filename.c_str());
 	if (infile.is_open()) {
 		int counter, tmp, linenumber = 1;
@@ -37,12 +39,16 @@ Graph::Graph(std::string name) {
 			linenumber++;
 		}
 		infile.close();
-		if (linenumber != 8)
+		if (linenumber != 8){
 			//TODO maybe use a custom class...
+			cout << "Graph: linenumber!=8" << endl;
 			throw GraphException("invalid input graph");
+		}
 	}
-	else
+	else{
+		cout << "Graph: couldn't open file" << endl;
 		throw GraphException("couldn't open the input graph");
+	}
 }
 
 int Graph::getFirst(int node) {

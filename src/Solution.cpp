@@ -38,7 +38,7 @@ std::vector<int> Solution::getCompacities(std::vector<Graph> paths){
 	return tab;
 }
 
-Solution::Solution(std::vector<int> vectorSolution, Graph& problemGraph): vect(vectorSolution), graph(problemGraph) {
+Solution::Solution(std::vector<int>& vectorSolution, Graph& problemGraph): vect(vectorSolution), graph(problemGraph) {
 }
 
 Score Solution::getScore(ScoreCalculator& sc){
@@ -130,3 +130,5 @@ bool Solution::isAdmissible(){
 	}
 	return true;
 }
+
+std::vector<int>& Solution::getVector(){ return vect; }
