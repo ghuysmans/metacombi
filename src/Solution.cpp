@@ -61,7 +61,7 @@ bool Solution::isAdmissible(){
 		mark.clear();
 		firstNode = 0;
 		indexInSolution = 0;
-		//On initialise map avec des false pour chaque sommets du sous-graphe
+		//On initialise map avec des false pour chaque arcs(aller-retour) du sous-graphe
 		for(int i = 1;i <= graph.getNnodes();i++){
 			nbrOfSucc = graph.getCount(i);
 			for(int j = 0;j < nbrOfSucc;j++){
