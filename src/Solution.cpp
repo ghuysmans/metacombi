@@ -50,6 +50,9 @@ Solution Solution::move(){
 }
 
 bool Solution::isAdmissible(){ 
+	//int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
+	//std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
+	//vect = vectorSolution;
 	std::stack<int> lifo;
 	std::map<int,bool> mark;
 	std::vector<int> successors = graph.getSuccessors();

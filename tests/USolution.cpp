@@ -4,13 +4,14 @@
 #include <iostream>
 
 void TestIsAdmissible(CuTest *tc) {
-    /*std::cout << "before opening" << std::endl;
-	Graph graph = Graph("TPOC-45.txt");
-	static const int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
-	std::vector<int> vectorSolution(sizeof(arr) / sizeof(arr[0]), 0);
-    std::cout << "before constructor" << std::endl;
+	Graph graph = Graph("testing-Graph.txt");
+	int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
+	std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
 	Solution sol = Solution(vectorSolution,graph);
-    std::cout << "still alive" << std::endl;
 	CuAssertTrue(tc, sol.isAdmissible());
-    std::cout << "nope" << std::endl;*/
+	//arc 9 vers 13 appartient à l'équipe 2 
+	int arr2[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,2,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
+	std::vector<int> vectorSolution2(&arr2[0], &arr2[0]+48);
+	Solution sol2 = Solution(vectorSolution2,graph);
+	CuAssertTrue(tc, !sol2.isAdmissible());
 }
