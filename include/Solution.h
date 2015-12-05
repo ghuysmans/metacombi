@@ -15,10 +15,6 @@ class Solution{
 		/** The graph of all the problem */
 		Graph& graph;
 		/**
-		 * Update the score of this solution.
-		 */
-		void computeScore();
-		/**
 		 * @return The total distance to travel for each team
 		 */
 		const std::vector<int> getDistances();
