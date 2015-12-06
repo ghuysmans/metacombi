@@ -58,8 +58,8 @@ int Graph::getFirst(int node) {
 
 int Graph::getCount(int node) {
 	if(node == Nnodes)
-		return succ.size() - head.at(node - 1) + 1;
-	return head.at(node) - head.at(node - 1);
+		return succ.size() - head.at(node) + 1;
+	return head.at(node) - head.at(node + 1);
 }
 
 vector<int> Graph::getSuccessors() {
