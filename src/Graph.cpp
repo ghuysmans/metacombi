@@ -9,7 +9,6 @@ using namespace std;
 Graph::Graph(std::string name) {
 	filename = name;
 	ifstream infile;
-	cout << filename << ",,," << filename.c_str() << endl;
 	infile.open(filename.c_str());
 	if (infile.is_open()) {
 		int counter, tmp, linenumber = 1;
