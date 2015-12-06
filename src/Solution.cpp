@@ -38,7 +38,7 @@ std::vector<int> Solution::getCompacities(std::vector<Graph> paths){
 	return tab;
 }
 
-Solution::Solution(std::vector<int> vectorSolution, Graph& problemGraph): vect(vectorSolution), graph(problemGraph) {
+Solution::Solution(std::vector<int>& vectorSolution, Graph& problemGraph): vect(vectorSolution), graph(problemGraph) {
 }
 
 Score Solution::getScore(ScoreCalculator& sc){
@@ -49,41 +49,37 @@ Solution Solution::move(){
 	//TODO
 }
 
-bool Solution::isAdmissible(){
+bool Solution::isAdmissible(){ 
+	//int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
+	//std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
+	//vect = vectorSolution;
 	std::stack<int> lifo;
 	std::map<int,bool> mark;
 	std::vector<int> successors = graph.getSuccessors();
 	std::map<int, bool>::iterator it;
-	int firstNode;
+	int firstNode,firstSuccIndex,workingNode;
 	int indexInSolution = 0;
 	int nbrOfSucc;
 	for(int team = 1;team <= graph.getNteams();team++){
 		mark.clear();
 		firstNode = 0;
 		indexInSolution = 0;
-		//On initialise map avec des false pour chaque sommets du sous-graphe
+		//On initialise map avec des false pour chaque arcs(aller-retour) du sous-graphe
 		for(int i = 1;i <= graph.getNnodes();i++){
 			nbrOfSucc = graph.getCount(i);
 			for(int j = 0;j < nbrOfSucc;j++){
 				if(vect.at(indexInSolution) == team){
 					if(firstNode  == 0)
 						firstNode = i;
-					else{
-						//Pour ne pas avoir de doublons(puisque c'est un graphe non-orienté)
-						if(mark.count(successors.at(j)) != 0)
-							mark.insert ( std::pair<int,bool>(successors.at(j),false));
-					}
+					mark.insert ( std::pair<int,bool>(indexInSolution,false));
 				}
 				indexInSolution++;
 			}
 		}
 		
 		//Parcours en profondeur
-		it = mark.find(firstNode);
-		if(it != mark.end())
-			it->second = true;
 		lifo.push(firstNode);
-		int workingNode, firstSuccIndex , succ;
+		int succ;
 		bool pushed;
 		while(!lifo.empty()){
 				workingNode = lifo.top();
@@ -98,12 +94,23 @@ bool Solution::isAdmissible(){
 					}
 					//On va push le premier successeur non-marqué(et se trouvant dans map) dans la pile
 					for(int i=firstSuccIndex;i< (firstSuccIndex + nbrOfSucc);i++){
-						it = mark.find(successors.at(i));
+						it = mark.find(i);
 						if(it != mark.end()){
 							if(!(it->second)){
-								succ = it->first;
+								succ = successors.at(it->first);
 								//On le marque à vrai
 								it->second = true;
+								//On marque aussi l'arc dans l'autre sens pour ne pas faire demi-tour
+								int firstSuccOfSuccIndex= 0;
+								for(int i = 1;i<succ;i++){
+									firstSuccOfSuccIndex += graph.getCount(i);
+								}
+								for(int j=firstSuccOfSuccIndex;j< (firstSuccOfSuccIndex + graph.getCount(succ));j++){
+									if(successors.at(j) == succ){
+										it = mark.find(j);
+										it->second = true;
+									}
+								}
 								lifo.push(succ);
 								pushed = true;
 								break;
@@ -123,3 +130,5 @@ bool Solution::isAdmissible(){
 	}
 	return true;
 }
+
+std::vector<int>& Solution::getVector(){ return vect; }
