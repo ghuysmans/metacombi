@@ -78,16 +78,29 @@ class Font: public Debuggable {
 class Text: public Surface {
 	public:
 		Text(Font& font, std::string msg, SDL_Color color);
+	protected:
+		void render(Font& font, std::string& msg, SDL_Color& fg);
 };
 
 /**
- * Basic string input helper.
+ * Basic text input object.
  * @bug no UTF-8 support
- * @bug no arrow support
+ * @bug no cursor support (only backspace is supported)
  * @bug no selection support
- * TODO turn this into a class handling events
+ * TODO use templates to display the string
  */
-void stringInput(std::string& dest, SDL_Event& event);
+class TextInput: public Text {
+	public:
+		TextInput(Font& font, std::string& text, SDL_Color& fg);
+		void event(SDL_Event& event);
+		/**
+		 * @note use this when any of the attributes gets modified.
+		 */
+		void render();
+		std::string text;
+		Font& font;
+		SDL_Color fg;
+};
 
 class Direction {
 	public:
@@ -95,15 +108,17 @@ class Direction {
 		void event(SDL_Event& e);
 		/**
 		 * @return X component sign
-		 * @return 0 when both direction keys are pressed
+		 * @return 0 when opposite direction keys are pressed
 		 */
 		int x() const;
 		int y() const; /**< @see x */
 		int z() const; /**< @see x */
 		union {
 			/**
-			 * Because of two's complement, values we read are negative!
-			 * We don't want to use unsigned so we have to swap terms...
+			 * Beware: because of two's complement,
+			 * values we read are negative!
+			 * We don't want to use unsigned, though,
+			 * since we'll substract them in x(), y(), z().
 			 */
 			struct {
 				int up:1;

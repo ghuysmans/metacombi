@@ -81,21 +81,31 @@ TTF_Font* Font::pointer() {
 }
 
 Text::Text(Font& font, std::string msg, SDL_Color color): Surface("T"+msg) {
+	render(font, msg, color);
+}
+void Text::render(Font& font, std::string& msg, SDL_Color& color) {
 	surface = TTF_RenderText_Solid(font.pointer(), msg.c_str(), color);
 	if (!surface)
 		throw Exception("TTF_RenderText_Solid failed");
 }
 
-//TODO turn this into a class handling events
-void stringInput(std::string& dest, SDL_Event& event) {
+TextInput::TextInput(Font& font, std::string& text, SDL_Color& fg): Text(font, text, fg), text(text), font(font), fg(fg) {}
+void TextInput::render() {
+	SDL_FreeSurface(surface);
+	Text::render(font, text, fg);
+}
+void TextInput::event(SDL_Event& event) {
 	if (event.type != SDL_KEYDOWN)
 		return;
 	else {
 		char c = event.key.keysym.unicode;
 		if (isalpha(c))
-			dest += c;
+			text += c;
 		else if (c == '\b')
-			dest.erase(dest.size()-1, 1);
+			text.erase(text.size()-1, 1);
+		else
+			return;
+		render();
 	}
 }
 
