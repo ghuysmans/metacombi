@@ -63,17 +63,26 @@ class Graph{
 		 */
 		std::vector<int> getSuccessors();
 		/**
+		 * @return All successors of 'node'
+		 */
+		std::vector<int> getSuccessors(int node);
+		/**
 		 * @return Distance between 'edge1' and 'edge2'
 		 */
 		int getDistanceEdges(int edge1, int edge2);
 		/**
-		 * @return Distance between 'node1' and 'node2' using Dijkstra's algorithm. Heap version
+		 * Get the distance between 2 nodes. In our case, we always want the distance between a node and two other node.
+		 * @return Distance between 'start' and 'end1' en distance between 'start' and 'end2' using Dijkstra's algorithm.
 		 */
-		int getDistanceNodes(int node1, int node2);
+		std::vector<int> getDistanceNodes(int start, int end1, int end2);
 		/**
 		 * @return the predecessor and the successor corresponding the edge 'edge'
 		 */
 		std::vector<int> edgeToNodes(int edge);
+		/**
+		 * @return the weight of the edge that link 'node' to 'successor'
+		 */
+		int getWeight(int node, int successor);
 		
 //-- GETTERS
 		/**
