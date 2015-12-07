@@ -6,11 +6,13 @@
 
 using namespace std;
 
-Graph::Graph(std::string name) {
+Graph::Graph(std::string name)
+{
 	filename = name;
 	ifstream infile;
 	infile.open(filename.c_str());
-	if (infile.is_open()) {
+	if (infile.is_open())
+	{
 		int counter, tmp, linenumber = 1;
 		std::vector<int>* dest[] = {&head, &x, &y, &succ, &weights, &flyers};
 		string line;
@@ -25,11 +27,16 @@ Graph::Graph(std::string name) {
 				weights.reserve(Nedges);
 				flyers.reserve(Nedges);
 			}
-			else {
+			else
+			{
 				int i=linenumber-2, N=linenumber>=5?Nedges:Nnodes;
-				if (i < sizeof(dest)) {
-					for(counter=0; counter<N; counter++) {
+				if (i < sizeof(dest))
+				{
+					for(counter=0; counter<N; counter++)
+					{
 						iss >> tmp;
+						if(linenumber == 2 || linenumber == 5)//Pour que les indices dans head 
+							tmp--;			      //et succ commençons par 0
 						dest[i]->push_back(tmp);
 					}
 				}
@@ -51,15 +58,15 @@ Graph::Graph(std::string name) {
 	}
 }
 
-int Graph::getFirst(int node) {
-	int s = head.at(node - 1);
-	return succ.at(s - 1);
+int Graph::getFirst(int node) {//node entre 0 et Nnodes - 1
+	int s = head.at(node);
+	return succ.at(s);
 }
 
 int Graph::getCount(int node) {
-	if(node == Nnodes)
-		return succ.size() - head.at(node) + 1;
-	return head.at(node) - head.at(node + 1);
+	if(node == Nnodes - 1)
+		return succ.size() - head.at(node);
+	return head.at(node+1) - head.at(node);
 }
 
 vector<int> Graph::getSuccessors() {
