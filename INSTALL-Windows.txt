@@ -1,0 +1,9 @@
+install CMake
+use prompt.bat
+depending on your toolchain:
+	MinGW in the default directory & Code::Blocks:
+		cmake -G "CodeBlocks - MinGW Makefiles" .
+	MinGW in the default directory alone:
+		cmake -G "MinGW Makefiles" .
+	Visual Studio (see cmake --help for other versions):
+		cmake -G "Visual Studio 14 2015 [x64]" .
