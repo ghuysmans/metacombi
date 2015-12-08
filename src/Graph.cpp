@@ -76,7 +76,7 @@ vector<int> Graph::getSuccessors(int node){
 	int count = getCount(node);
 	vector<int> result = vector<int>(count , -1);
 	for(int i=0 ; i<count ; i++){
-		result[i] = succ.at( head.at(i) +i );
+		result[i] = succ.at( head.at(node) +i );
 	}
 	return result;
 }
@@ -95,20 +95,25 @@ int Graph::getWeight(int node, int successor){
 }
 
 std::vector<int> Graph::edgeToNodes(int edge){
+	if(edge > succ.size()-1){
+		cout << "Graph: edge " << edge << " doesn't exist because succ.size()=" << succ.size() << endl;
+		throw GraphException("edge doesn't exist");
+	}
+	cout << "edge = " << edge << endl;
 	std::vector<int> result = std::vector<int>(2, -1);
 	//the successor
 	result[1] = succ[edge];
 	//the predecessor
-	edge++;
 	result[0] = -1;
-	int browsed = 0;//num of browsed edges
+	/**/cout << result[0] << "," << result[1] << endl;
 	for(int i=0 ; i<Nnodes ; i++){
-		browsed += getCount(i);
-		if(browsed <= edge){
+		cout << "head[i] =" << head[i] << endl;
+		if(head.at(i) >= edge){
 			result[0] = i;
 			break;
 		}
 	}
+	cout << result[0] << "," << result[1] << endl;
 	return result;
 }
 
