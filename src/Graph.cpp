@@ -99,15 +99,12 @@ std::vector<int> Graph::edgeToNodes(int edge){
 		cout << "Graph: edge " << edge << " doesn't exist because succ.size()=" << succ.size() << endl;
 		throw GraphException("edge doesn't exist");
 	}
-	cout << "edge = " << edge << endl;
 	std::vector<int> result = std::vector<int>(2, -1);
 	//the successor
 	result[1] = succ[edge];
 	//the predecessor
 	result[0] = -1;
-	/**/cout << result[0] << "," << result[1] << endl;
 	for(int i=0 ; i<Nnodes ; i++){
-		cout << "head[i] =" << head[i] << endl;
 		if(head.at(i) >= edge){
 			result[0] = i;
 			break;
