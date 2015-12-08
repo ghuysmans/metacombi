@@ -80,6 +80,10 @@ class Graph{
 		 */
 		std::vector<int> edgeToNodes(int edge);
 		/**
+		 * @return the edge that correspond to <'node' , 'successor'>
+		 */
+		int nodesToEdge(int node, int successor);
+		/**
 		 * @return the weight of the edge that link 'node' to 'successor'
 		 */
 		int getWeight(int node, int successor);

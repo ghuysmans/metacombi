@@ -82,16 +82,7 @@ vector<int> Graph::getSuccessors(int node){
 }
 
 int Graph::getWeight(int node, int successor){
-	int numSuccessor = getCount( node );
-	int indexEdge;
-	for(int i=0 ; i<numSuccessor ; i++){
-		indexEdge = head.at(node) + i -1;
-		if( succ.at(indexEdge) == (successor +1)){
-			return weights.at( indexEdge );
-		}
-	}
-	cout << "Graph: edge <" << node << " , " << successor << "> doesn't exist" << endl;
-	throw GraphException("edge doesn't exist");
+	return weights.at( nodesToEdge(node , successor));
 }
 
 std::vector<int> Graph::edgeToNodes(int edge){
@@ -112,6 +103,19 @@ std::vector<int> Graph::edgeToNodes(int edge){
 	}
 	cout << result[0] << "," << result[1] << endl;
 	return result;
+}
+
+int Graph::nodesToEdge(int node, int successor){
+	int numSuccessor = getCount(node);
+	int indexEdge = 0;
+	for(int i=0 ; i<numSuccessor ; i++){
+		indexEdge = head.at(node) + i;
+		if( succ.at(indexEdge) == (successor)){
+			return indexEdge;
+		}
+	}
+	cout << "Graph: edge <" << node << " , " << successor << "> doesn't exist" << endl;
+	throw GraphException("edge doesn't exist");
 }
 
 std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
@@ -136,7 +140,7 @@ std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
 			done[tMinimal] = true;
 			std::vector<int> successors = getSuccessors(tMinimal);
 			for(int i=0 ; i<successors.size() ; i++){
-				int ticketPlusW = tickets[tMinimal] + getWeight(tMinimal,i);
+				int ticketPlusW = tickets[tMinimal] + getWeight(tMinimal,successors.at(i));
 				if(ticketPlusW < tickets[i]){
 					tickets[i] = ticketPlusW;
 					//bestPredecessor[i] = tMinimal; If you want the path
