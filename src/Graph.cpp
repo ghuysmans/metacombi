@@ -118,7 +118,6 @@ int Graph::nodesToEdge(int node, int successor){
 }
 
 std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
-	cout << "end1=" << end1 << " end2=" << end2 << endl;
 	const unsigned long int INFINITE = ULONG_MAX;
 	std::vector<unsigned long int> tickets = std::vector<unsigned long int>(Nnodes , INFINITE);
 	//std::vector<int> bestPredecessor = std::vector<int>(Nnodes , 0); If you want the path
@@ -128,9 +127,6 @@ std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
 	int tMinimal; //x in slides
 	unsigned long int valuetMinimal = INFINITE; //VMin in slides
 	do{
-		cout << "start=" << start << " end1=" << end1 << "end2= " << end2 << endl;
-		/*for(int i=0 ; i<tickets.size() ; i++) cout << ((tickets.at(i)<INFINITE) ? tickets.at(i):404) << "  ";
-		cout << endl;*/
 		valuetMinimal = INFINITE;
 		for (int i=0 ; i<tickets.size() ; i++){//search the no-fixed minimal ticket
     		if(tickets[i]<valuetMinimal && !done[i]){
@@ -140,14 +136,11 @@ std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
 		}
 
 		if(valuetMinimal < INFINITE){
-			cout << "reach 1" << endl;
 			done[tMinimal] = true;
 			int sup = head.at(tMinimal)+getCount(tMinimal);
 			for(int k = head.at(tMinimal) ; k<sup ; k++){
-				cout << "reach 2" << endl;
 				int ticketPlusW = tickets[tMinimal] + weights.at(k);
 				if(ticketPlusW < tickets[succ.at(k)]){
-					cout << "reach 3" << endl;
 					tickets[succ.at(k)] = ticketPlusW;
 					//bestPredecessor[succ.at(k)] = tMinimal; If you want the path
 				}
@@ -155,18 +148,8 @@ std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
 		}
 	}while(valuetMinimal < INFINITE);
 	std::vector<int> result = std::vector<int>(2,0);
-	cout << "start=" << start << " end1=" << end1 << "end2= " << end2 << endl;
-	cout << "sans cast en int: " << tickets[end1] << " " << tickets[end2] << endl;
-	if(tickets[end1] == INFINITE){
-		cout << "There isn't path between start=" << start << " and end1=" << end1 << endl;
-		throw GraphException("Impossible to reach end1");
-	}
-	if(tickets[end2] == INFINITE){
-		cout << "There isn't path between start=" << start << " and end2=" << end2 << endl;
-		throw GraphException("Impossible to reach end2");
-	}
-	result[0] = (int)(tickets[end1]);
-	result[1] = (int)(tickets[end2]);
+	result[0] = (tickets[end1]<INFINITE ? (int)(tickets[end1]) : -1);
+	result[1] = (tickets[end2]<INFINITE ? (int)(tickets[end2]) : -1);
 	return result;
 }
 

@@ -73,6 +73,7 @@ class Graph{
 		/**
 		 * Get the distance between 2 nodes. In our case, we always want the distance between a node and two other node.
 		 * @return Distance between 'start' and 'end1' en distance between 'start' and 'end2' using Dijkstra's algorithm.
+		 * @note If you get -1, it means +infinite
 		 */
 		std::vector<int> getDistanceNodes(int start, int end1, int end2);
 		/**
