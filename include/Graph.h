@@ -81,7 +81,8 @@ class Graph{
 		 */
 		std::vector<int> edgeToNodes(int edge);
 		/**
-		 * @return the edge that correspond to <'node' , 'successor'>
+		 * @return the edge binding 'node' and 'successor' (both are node numbers)
+		 * @example nodesToEdge(2, 19) returns the edge index (in succ) from 2 to 19
 		 */
 		int nodesToEdge(int node, int successor);
 		/**

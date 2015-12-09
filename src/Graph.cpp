@@ -105,9 +105,9 @@ std::vector<int> Graph::edgeToNodes(int edge){
 }
 
 int Graph::nodesToEdge(int node, int successor){
-	int numSuccessor = getCount(node);
-	int indexEdge = 0;
-	for(int i=0 ; i<numSuccessor ; i++){
+	int count = getCount(node);
+	int indexEdge;
+	for(int i=0 ; i<count; i++){
 		indexEdge = head.at(node) + i;
 		if( succ.at(indexEdge) == (successor)){
 			return indexEdge;
