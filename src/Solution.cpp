@@ -50,9 +50,6 @@ Solution Solution::move(){
 }
 
 bool Solution::isAdmissible(){ 
-	//int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
-	//std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
-	//vect = vectorSolution;
 	std::stack<int> lifo;
 	std::map<int,bool> mark;
 	std::vector<int> successors = graph.getSuccessors();
@@ -62,14 +59,14 @@ bool Solution::isAdmissible(){
 	int nbrOfSucc;
 	for(int team = 1;team <= graph.getNteams();team++){
 		mark.clear();
-		firstNode = 0;
+		firstNode = -1;
 		indexInSolution = 0;
 		//On initialise map avec des false pour chaque arcs(aller-retour) du sous-graphe
-		for(int i = 1;i <= graph.getNnodes();i++){
+		for(int i = 0;i < graph.getNnodes();i++){
 			nbrOfSucc = graph.getCount(i);
 			for(int j = 0;j < nbrOfSucc;j++){
 				if(vect.at(indexInSolution) == team){
-					if(firstNode  == 0)
+					if(firstNode  == -1)
 						firstNode = i;
 					mark.insert ( std::pair<int,bool>(indexInSolution,false));
 				}
@@ -89,7 +86,7 @@ bool Solution::isAdmissible(){
 				else{
 					pushed = false;
 					firstSuccIndex = 0;
-					for(int i = 1;i<workingNode;i++){
+					for(int i = 0;i<workingNode;i++){
 						firstSuccIndex += graph.getCount(i);
 					}
 					//On va push le premier successeur non-marqué(et se trouvant dans map) dans la pile
@@ -102,8 +99,8 @@ bool Solution::isAdmissible(){
 								it->second = true;
 								//On marque aussi l'arc dans l'autre sens pour ne pas faire demi-tour
 								int firstSuccOfSuccIndex= 0;
-								for(int i = 1;i<succ;i++){
-									firstSuccOfSuccIndex += graph.getCount(i);
+								for(int k = 0;k<succ;k++){
+									firstSuccOfSuccIndex += graph.getCount(k);
 								}
 								for(int j=firstSuccOfSuccIndex;j< (firstSuccOfSuccIndex + graph.getCount(succ));j++){
 									if(successors.at(j) == succ){

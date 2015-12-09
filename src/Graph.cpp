@@ -6,12 +6,13 @@
 
 using namespace std;
 
-Graph::Graph(std::string name) {
+Graph::Graph(std::string name)
+{
 	filename = name;
 	ifstream infile;
-	cout << filename << ",,," << filename.c_str() << endl;
 	infile.open(filename.c_str());
-	if (infile.is_open()) {
+	if (infile.is_open())
+	{
 		int counter, tmp, linenumber = 1;
 		std::vector<int>* dest[] = {&head, &x, &y, &succ, &weights, &flyers};
 		string line;
@@ -26,11 +27,16 @@ Graph::Graph(std::string name) {
 				weights.reserve(Nedges);
 				flyers.reserve(Nedges);
 			}
-			else {
+			else
+			{
 				int i=linenumber-2, N=linenumber>=5?Nedges:Nnodes;
-				if (i < sizeof(dest)) {
-					for(counter=0; counter<N; counter++) {
+				if (i < sizeof(dest))
+				{
+					for(counter=0; counter<N; counter++)
+					{
 						iss >> tmp;
+						if(linenumber == 2 || linenumber == 5)//Pour que les indices dans head 
+							tmp--;			      //et succ commençons par 0
 						dest[i]->push_back(tmp);
 					}
 				}
@@ -52,15 +58,15 @@ Graph::Graph(std::string name) {
 	}
 }
 
-int Graph::getFirst(int node) {
-	int s = head.at(node - 1);
-	return succ.at(s - 1);
+int Graph::getFirst(int node) {//node entre 0 et Nnodes - 1
+	int s = head.at(node);
+	return succ.at(s);
 }
 
 int Graph::getCount(int node) {
-	if(node == Nnodes)
-		return succ.size() - head.at(node - 1) + 1;
-	return head.at(node) - head.at(node - 1);
+	if(node == Nnodes - 1)
+		return succ.size() - head.at(node);
+	return head.at(node+1) - head.at(node);
 }
 
 vector<int> Graph::getSuccessors() {
@@ -70,40 +76,45 @@ vector<int> Graph::getSuccessors(int node){
 	int count = getCount(node);
 	vector<int> result = vector<int>(count , -1);
 	for(int i=0 ; i<count ; i++){
-		result[i] = succ.at( head.at(i) +i );
+		result[i] = succ.at( head.at(node) +i );
 	}
 	return result;
 }
 
 int Graph::getWeight(int node, int successor){
-	int numSuccessor = getCount( node );
-	int indexEdge;
-	for(int i=0 ; i<numSuccessor ; i++){
-		indexEdge = head.at(node) + i -1;
-		if( succ.at(indexEdge) == (successor +1)){
-			return weights.at( indexEdge );
-		}
-	}
-	cout << "Graph: edge <" << node << " , " << successor << "> doesn't exist" << endl;
-	throw GraphException("edge doesn't exist");
+	return weights.at( nodesToEdge(node , successor));
 }
 
 std::vector<int> Graph::edgeToNodes(int edge){
+	if(edge > succ.size()-1){
+		cout << "Graph: edge " << edge << " doesn't exist because succ.size()=" << succ.size() << endl;
+		throw GraphException("edge doesn't exist");
+	}
 	std::vector<int> result = std::vector<int>(2, -1);
 	//the successor
 	result[1] = succ[edge];
 	//the predecessor
-	edge++;
 	result[0] = -1;
-	int browsed = 0;//num of browsed edges
 	for(int i=0 ; i<Nnodes ; i++){
-		browsed += getCount(i);
-		if(browsed <= edge){
+		if(head.at(i) >= edge){
 			result[0] = i;
 			break;
 		}
 	}
 	return result;
+}
+
+int Graph::nodesToEdge(int node, int successor){
+	int numSuccessor = getCount(node);
+	int indexEdge = 0;
+	for(int i=0 ; i<numSuccessor ; i++){
+		indexEdge = head.at(node) + i;
+		if( succ.at(indexEdge) == (successor)){
+			return indexEdge;
+		}
+	}
+	cout << "Graph: edge <" << node << " , " << successor << "> doesn't exist" << endl;
+	throw GraphException("edge doesn't exist");
 }
 
 std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
@@ -117,8 +128,8 @@ std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
 	unsigned long int valuetMinimal = INFINITE; //VMin in slides
 	do{
 		valuetMinimal = INFINITE;
-		for (int i=0 ; i<tickets.size() ; i++){//search the minimal ticket
-    		if( tickets[i]<valuetMinimal && tickets[i] != -1){
+		for (int i=0 ; i<tickets.size() ; i++){//search the no-fixed minimal ticket
+    		if(tickets[i]<valuetMinimal && !done[i]){
     			valuetMinimal = tickets[i];
     			tMinimal = i;
     		}
@@ -126,19 +137,19 @@ std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
 
 		if(valuetMinimal < INFINITE){
 			done[tMinimal] = true;
-			std::vector<int> successors = getSuccessors(tMinimal);
-			for(int i=0 ; i<successors.size() ; i++){
-				int ticketPlusW = tickets[tMinimal] + getWeight(tMinimal,i);
-				if(ticketPlusW < tickets[i]){
-					tickets[i] = ticketPlusW;
-					//bestPredecessor[i] = tMinimal; If you want the path
+			int sup = head.at(tMinimal)+getCount(tMinimal);
+			for(int k = head.at(tMinimal) ; k<sup ; k++){
+				int ticketPlusW = tickets[tMinimal] + weights.at(k);
+				if(ticketPlusW < tickets[succ.at(k)]){
+					tickets[succ.at(k)] = ticketPlusW;
+					//bestPredecessor[succ.at(k)] = tMinimal; If you want the path
 				}
 			}
 		}
-	}while(valuetMinimal == INFINITE);
+	}while(valuetMinimal < INFINITE);
 	std::vector<int> result = std::vector<int>(2,0);
-	result[0] = (int)(tickets[end1]);
-	result[1] = (int)(tickets[end2]);
+	result[0] = (tickets[end1]<INFINITE ? (int)(tickets[end1]) : -1);
+	result[1] = (tickets[end2]<INFINITE ? (int)(tickets[end2]) : -1);
 	return result;
 }
 
