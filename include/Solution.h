@@ -13,30 +13,30 @@ class Solution{
 		/** The vector of the solution. vect[i] is the number of the group on the edge i */
 		std::vector<int>& vect;
 		/** The graph of all the problem */
-		Graph& graph;
+		const Graph& graph;
 		/**
 		 * @return The total distance to travel for each team
 		 */
-		const std::vector<int> getDistances();
+		const std::vector<int> getDistances() const;
 		/**
 		 * @return The total number of flyers delivered for each team
 		 */
-		const std::vector<int> getDelivered();
+		const std::vector<int> getDelivered() const;
 		/**
 		 * @param The list of path for each team
 		 * @return The compacity of the path for each team
 		 */
-		std::vector<int> getCompacities(std::vector<Graph> paths);
+		std::vector<int> getCompacities(std::vector<Graph> paths) const;
 	public:
 		/**
 		 * @param vectorSolution the vector of the solution.
 		 * @param problemGraph The graph of the problem (its to compute the score)
 		 */
-		Solution(std::vector<int>& vectorSolution, Graph& problemGraph);
+		Solution(std::vector<int>& vectorSolution, const Graph& problemGraph);
 		/**
 		 * @return The score of this solution
 		 */
-		Score getScore(ScoreCalculator& sc);
+		Score getScore(ScoreCalculator& sc) const;
 		/**
 		 * Move something in the vector
 		 */
@@ -44,11 +44,11 @@ class Solution{
 		/**
  		 * @return true if the solution is admissible
  		 */
-		bool isAdmissible();
+		bool isAdmissible() const;
 		/**
 		 * @return The solution vector
 		 */
-		std::vector<int>& getVector();
+		std::vector<int>& getVector() const;
 		//TODO peut-être devra t on envisage une fonction qui retourne tous ou une partie des mouvement possible?
 		
 };

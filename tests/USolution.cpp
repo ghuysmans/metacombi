@@ -4,7 +4,7 @@
 #include <iostream>
 
 void TestIsAdmissible(CuTest *tc) {
-	Graph graph = Graph("testing-Graph.txt");
+	Graph graph = Graph::load("testing-Graph.txt");
 	int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
 	std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
 	Solution sol = Solution(vectorSolution,graph);
