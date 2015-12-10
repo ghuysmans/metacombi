@@ -12,27 +12,6 @@ inline std::string itos(int i) {
 	return ss.str();
 }
 
-void dump(const Graph& graph) {
-	//instead of using some basic trigonometry,
-	//let's just draw the edges first!
-	for (int a=0; a<graph.head.size(); a++) {
-		const int f = graph.head.at(a);
-		const int ct = graph.getCount(a);
-		std::cout << a << "(" << graph.x.at(a) << "," << graph.y.at(a) << ") -> ";
-		for (int edge=f; edge<f+ct; edge++) {
-			const int b = graph.succ.at(edge);
-			std::cout << b << "(" << graph.x.at(b) << "," << graph.y.at(b) << ") E" << edge << ", ";
-			//first, avoid duplicate labels (undirected graph).
-			//second, ignore loops which would look ugly.
-			if (a < b) {
-				int x1=graph.x.at(a), y1=graph.y.at(a);
-				int x2=graph.x.at(b), y2=graph.y.at(b);
-			}
-		}
-		std::cout << std::endl;
-	}
-}
-
 void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph) {
 	static SDL_Color red = {176, 14, 60};
 	static SDL_Color green = {45, 193, 80};

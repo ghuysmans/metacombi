@@ -44,6 +44,7 @@ class Graph{
 				const std::vector<int> x,
 				const std::vector<int> y);
 		static Graph load(const std::string& filename);
+		void dump() const;
 
 		/**
 		 * @return the first successor of 'node'

@@ -35,7 +35,24 @@ Graph::Graph(
 	x(x),
 	y(y)
 {
-	std::cout << "Loaded a graph with " << head.size() << " nodes and " << succ.size() << " edges." << std::endl;
+	std::cout << "loaded " << filename << " with " << head.size() << " nodes and " << succ.size() << " edges" << std::endl;
+}
+
+/**
+ * Display the Graph as text
+ * @todo ask for an output stream?
+ */
+void Graph::dump() const {
+	for (int a=0; a<head.size(); a++) {
+		const int f = head.at(a);
+		const int ct = getCount(a);
+		std::cout << a << "(" << x.at(a) << "," << y.at(a) << ") -> ";
+		for (int edge=f; edge<f+ct; edge++) {
+			const int b = succ.at(edge);
+			std::cout << b << "(" << x.at(b) << "," << y.at(b) << ") E" << edge << ", ";
+		}
+		std::cout << std::endl;
+	}
 }
 
 Graph Graph::load(const std::string& filename) {
