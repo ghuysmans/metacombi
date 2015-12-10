@@ -26,7 +26,7 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, 
 		{113, 201, 11} //green
 	};
 	static SDL_Color node = {45, 193, 80};
-	static SDL_Color text = {255, 255, 255};
+	static SDL_Color text = {0, 0, 0};
 	//instead of using some basic trigonometry,
 	//let's just draw the edges first!
 	for (int a=0; a<graph.head.size(); a++) {
@@ -77,7 +77,7 @@ void view(const Graph& graph, const Solution* const solution) {
 	while (!quit) {
 		limiter.start();
 		//rendering
-		screen.rect(NULL, 0); //clear
+		screen.rect(NULL, -1); //white
 		draw(screen, font, camera, graph, solution);
 		screen.flip();
 		//events processing
