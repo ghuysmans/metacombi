@@ -4,39 +4,75 @@
 #include<iostream>
 #include<climits>
 
-using namespace std;
-
-Graph::Graph(std::string name)
+Graph::Graph(const Graph& g):
+	teamsCount(1),
+	filename("xxx"),
+	head(std::vector<int>()),
+	succ(std::vector<int>()),
+	flyers(std::vector<int>()),
+	weights(std::vector<int>()),
+	x(std::vector<int>()),
+	y(std::vector<int>())
 {
-	filename = name;
-	ifstream infile;
+	throw GraphException("Copying this object is REALLY bad. Stop it now.");
+}
+
+Graph::Graph(
+		const int teamsCount,
+		const std::string filename,
+		const std::vector<int> head,
+		const std::vector<int> succ,
+		const std::vector<int> flyers,
+		const std::vector<int> weights,
+		const std::vector<int> x,
+		const std::vector<int> y):
+	teamsCount(teamsCount),
+	filename(filename),
+	head(head),
+	succ(succ),
+	flyers(flyers),
+	weights(weights),
+	x(x),
+	y(y)
+{
+	std::cout << "Loaded a graph with " << head.size() << " nodes and " << succ.size() << " edges." << std::endl;
+}
+
+Graph Graph::load(const std::string& filename) {
+	int n_teams, n_succ, n_nodes;
+	std::vector<int> head;
+	std::vector<int> succ;
+	std::vector<int> flyers;
+	std::vector<int> weights;
+	std::vector<int> x;
+	std::vector<int> y;
+	std::ifstream infile;
 	infile.open(filename.c_str());
-	if (infile.is_open())
-	{
-		int counter, tmp, linenumber = 1;
+	if (infile.is_open()) {
+		int counter, linenumber = 1;
 		std::vector<int>* dest[] = {&head, &x, &y, &succ, &weights, &flyers};
-		string line;
+		std::string line;
 		while (getline(infile, line)) {
-			istringstream iss(line);
+			std::istringstream iss(line);
 			if (linenumber == 1) {
-				iss>>Nedges>>Nnodes>>Nteams;
-				head.reserve(Nnodes);
-				x.reserve(Nnodes);
-				y.reserve(Nnodes);
-				succ.reserve(Nedges);
-				weights.reserve(Nedges);
-				flyers.reserve(Nedges);
+				iss>>n_succ>>n_nodes>>n_teams;
+				head.reserve(n_nodes);
+				x.reserve(n_nodes);
+				y.reserve(n_nodes);
+				succ.reserve(n_succ);
+				weights.reserve(n_succ);
+				flyers.reserve(n_succ);
 			}
-			else
-			{
-				int i=linenumber-2, N=linenumber>=5?Nedges:Nnodes;
-				if (i < sizeof(dest))
-				{
-					for(counter=0; counter<N; counter++)
-					{
+			else {
+				int i=linenumber-2;
+				int N=linenumber>=5?n_succ:n_nodes;
+				if (i < sizeof(dest)) {
+					for(counter=0; counter<N; counter++) {
+						int tmp;
 						iss >> tmp;
-						if(linenumber == 2 || linenumber == 5)//Pour que les indices dans head 
-							tmp--;			      //et succ commençons par 0
+						//decrement indexes in head and succ
+						if(linenumber == 2 || linenumber == 5)
+							tmp--;
 						dest[i]->push_back(tmp);
 					}
 				}
@@ -48,46 +84,18 @@ Graph::Graph(std::string name)
 		infile.close();
 		if (linenumber != 8){
 			//TODO maybe use a custom class...
-			cout << "Graph: linenumber!=8" << endl;
 			throw GraphException("invalid input graph");
 		}
+		else
+			return Graph(n_teams, filename, head, succ, flyers, weights, x, y);
 	}
-	else{
-		cout << "Graph: couldn't open file" << endl;
+	else
 		throw GraphException("couldn't open the input graph");
-	}
 }
 
-int Graph::getFirst(int node) {//node entre 0 et Nnodes - 1
-	int s = head.at(node);
-	return succ.at(s);
-}
-
-int Graph::getCount(int node) {
-	if(node == Nnodes - 1)
-		return succ.size() - head.at(node);
-	return head.at(node+1) - head.at(node);
-}
-
-vector<int> Graph::getSuccessors() {
-	return succ;
-}
-vector<int> Graph::getSuccessors(int node){
-	int count = getCount(node);
-	vector<int> result = vector<int>(count , -1);
-	for(int i=0 ; i<count ; i++){
-		result[i] = succ.at( head.at(node) +i );
-	}
-	return result;
-}
-
-int Graph::getWeight(int node, int successor){
-	return weights.at( nodesToEdge(node , successor));
-}
-
-std::vector<int> Graph::edgeToNodes(int edge){
+std::vector<int> Graph::edgeToNodes(int edge) const {
 	if(edge > succ.size()-1){
-		cout << "Graph: edge " << edge << " doesn't exist because succ.size()=" << succ.size() << endl;
+		std::cout << "Graph: edge " << edge << " doesn't exist because succ.size()=" << succ.size() << std::endl;
 		throw GraphException("edge doesn't exist");
 	}
 	std::vector<int> result = std::vector<int>(2, -1);
@@ -95,7 +103,7 @@ std::vector<int> Graph::edgeToNodes(int edge){
 	result[1] = succ[edge];
 	//the predecessor
 	result[0] = -1;
-	for(int i=0 ; i<Nnodes ; i++){
+	for(int i=0 ; i<head.size() ; i++){
 		if(head.at(i) >= edge){
 			result[0] = i;
 			break;
@@ -104,7 +112,7 @@ std::vector<int> Graph::edgeToNodes(int edge){
 	return result;
 }
 
-int Graph::nodesToEdge(int node, int successor){
+int Graph::nodesToEdge(int node, int successor) const {
 	int count = getCount(node);
 	int indexEdge;
 	for(int i=0 ; i<count; i++){
@@ -113,15 +121,15 @@ int Graph::nodesToEdge(int node, int successor){
 			return indexEdge;
 		}
 	}
-	cout << "Graph: edge <" << node << " , " << successor << "> doesn't exist" << endl;
+	std::cout << "Graph: edge <" << node << " , " << successor << "> doesn't exist" << std::endl;
 	throw GraphException("edge doesn't exist");
 }
 
-std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
+std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2) const {
 	const unsigned long int INFINITE = ULONG_MAX;
-	std::vector<unsigned long int> tickets = std::vector<unsigned long int>(Nnodes , INFINITE);
-	//std::vector<int> bestPredecessor = std::vector<int>(Nnodes , 0); If you want the path
-	std::vector<bool> done = std::vector<bool>(Nnodes , false);
+	std::vector<unsigned long int> tickets = std::vector<unsigned long int>(head.size() , INFINITE);
+	//std::vector<int> bestPredecessor = std::vector<int>(head.size() , 0); If you want the path
+	std::vector<bool> done = std::vector<bool>(head.size() , false);
 	tickets[start] = 0;
 	//bestPredecessor[start] = start; If you want the path
 	int tMinimal; //x in slides
@@ -153,7 +161,7 @@ std::vector<int> Graph::getDistanceNodes(int start, int end1, int end2){
 	return result;
 }
 
-int Graph::getDistanceEdges(int edge1, int edge2){
+int Graph::getDistanceEdges(int edge1, int edge2) const {
 	std::vector<int> e1 = edgeToNodes(edge1);
 	std::vector<int> e2 = edgeToNodes(edge2);
 	int dist = -1;
@@ -165,10 +173,3 @@ int Graph::getDistanceEdges(int edge1, int edge2){
 	if( dists[1] < minimum ) minimum = dists[1];
 	return minimum;
 }
-
-// --- GETTERS
-int Graph::getNteams(){ return Nteams; }
-int Graph::getNedges(){ return Nedges; }
-int Graph::getNnodes(){ return Nnodes; }
-const std::vector<int>& Graph::getWeights(){ return weights; }
-const std::vector<int>& Graph::getFlyers(){ return flyers; }

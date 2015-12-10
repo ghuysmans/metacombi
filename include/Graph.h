@@ -15,102 +15,86 @@ class GraphException: public std::exception {
  * The graph. Initial data of the problem
  */
 class Graph{
-	private:
-		/** Total number of edges */
-		int Nedges;
-		
-		/** Total number of nodes */
-		int Nnodes;
-		
-		/** number of teams */
-		int Nteams;
-		
-		/** The name of the file that contain data of the problem */
-		std::string filename;
-		
-		/** ith element of head is the reference to the first successor of ith node */
-		std::vector<int> head;
-		
-		/** Contain successors of nodes (edges) */
-		std::vector<int> succ;
-		
-		/** ith element of flyers is the amount of flyers in the edge i */
-		std::vector<int> flyers;
-		
-		/** ith element of weights is the weight of ith edge */
-		std::vector<int> weights;
-		
-		/** The x coordinate of nodes */
-		std::vector<int> x;
-
-		/** The y coordinate of nodes */
-		std::vector<int> y;
 	public:
-		/**
-		 * @param the name of the file that contain all data
-		 */
-		Graph(std::string name);
+		/** number of teams */
+		const int teamsCount;
+		/** The name of the file that contain data of the problem */
+		const std::string filename;
+		/** ith element of head is the first successor's index */
+		const std::vector<int> head;
+		/** successors (one for each edges) */
+		const std::vector<int> succ;
+		/** amount of flyers for each edge */
+		const std::vector<int> flyers;
+		/** weight of each edge */
+		const std::vector<int> weights;
+		/** x coordinate of node */
+		const std::vector<int> x;
+		/** y coordinate of node */
+		const std::vector<int> y;
+
+		Graph(const Graph& g);
+		Graph(
+				const int teamsCount,
+				const std::string filename,
+				const std::vector<int> head,
+				const std::vector<int> succ,
+				const std::vector<int> flyers,
+				const std::vector<int> weights,
+				const std::vector<int> x,
+				const std::vector<int> y);
+		static Graph load(const std::string& filename);
+
 		/**
 		 * @return the first successor of 'node'
 		 */
-		int getFirst(int node);
+		inline int getFirst(int node) const {
+			int s = head.at(node);
+			return succ.at(s);
+		}
 		/**
 		 * @return the number of successor of 'node'
 		 */
-		int getCount(int node);
-		/**
-		 * @return All successors
-		 */
-		std::vector<int> getSuccessors();
+		inline int getCount(int node) const {
+			if(node == head.size() - 1)
+				return succ.size() - head.at(node);
+			return head.at(node+1) - head.at(node);
+		}
 		/**
 		 * @return All successors of 'node'
 		 */
-		std::vector<int> getSuccessors(int node);
+		std::vector<int> getSuccessors(int node) const {
+			int count = getCount(node);
+			std::vector<int> result = std::vector<int>(count , -1);
+			for(int i=0 ; i<count ; i++){
+				result[i] = succ.at( head.at(node) +i );
+			}
+			return result;
+		}
 		/**
 		 * @return Distance between 'edge1' and 'edge2'
 		 */
-		int getDistanceEdges(int edge1, int edge2);
+		int getDistanceEdges(int edge1, int edge2) const;
 		/**
 		 * Get the distance between 2 nodes. In our case, we always want the distance between a node and two other node.
 		 * @return Distance between 'start' and 'end1' en distance between 'start' and 'end2' using Dijkstra's algorithm.
 		 * @note If you get -1, it means +infinite
 		 */
-		std::vector<int> getDistanceNodes(int start, int end1, int end2);
+		std::vector<int> getDistanceNodes(int start, int end1, int end2) const;
 		/**
-		 * @return the predecessor and the successor corresponding the edge 'edge'
+		 * @return both ends of the given edge
 		 */
-		std::vector<int> edgeToNodes(int edge);
+		std::vector<int> edgeToNodes(int edge) const;
 		/**
-		 * @return the edge binding 'node' and 'successor' (both are node numbers)
-		 * @example nodesToEdge(2, 19) returns the edge index (in succ) from 2 to 19
+		 * @note reciprocal of #edgeToNodes
 		 */
-		int nodesToEdge(int node, int successor);
+		int nodesToEdge(int node, int successor) const;
 		/**
-		 * @return the weight of the edge that link 'node' to 'successor'
+		 * @return the weight of the edge between #node and #successor
 		 */
-		int getWeight(int node, int successor);
-		
-//-- GETTERS
-		/**
-		 * @return the number of teams
-		 */
-		int getNteams();
-		/**
-		 * @return the number of edges
-		 */
-		int getNedges();
-		/**
-		 * @return the number of nodes
-		 */
-		int getNnodes();
-		/**
-		 * @return Weights of each edges
-		 */
-		const std::vector<int>& getWeights();
-		/**
-		 * @return The amount of flyers of each edges
-		 */
-		const std::vector<int>& getFlyers();
+		inline int getWeight(int node, int successor) const {
+			return weights.at( nodesToEdge(node , successor));
+		}
 };
 
 #endif //_GRAPH_H
