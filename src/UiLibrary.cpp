@@ -169,8 +169,8 @@ Camera::Camera(float x, float y, float z, float sX, float sY, float sZ): x(x), y
 void Camera::update() {
 	Uint32 ticks = SDL_GetTicks();
 	int dt = ticks-prevTicks;
-	x += speedX/1000*dt*moveDirection.x();
-	y += speedY/1000*dt*moveDirection.y();
+	x += z*speedX/1000*dt*moveDirection.x();
+	y += z*speedY/1000*dt*moveDirection.y();
 	z += speedZ/1000*dt*moveDirection.z();
 	prevTicks = ticks;
 }
