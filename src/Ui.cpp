@@ -5,6 +5,7 @@
 #include <vector>
 #include "Ui.h"
 #include "UiLibrary.h"
+#include "Solution.h"
 
 inline std::string itos(int i) {
 	std::stringstream ss;
@@ -12,10 +13,20 @@ inline std::string itos(int i) {
 	return ss.str();
 }
 
-void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph) {
-	static SDL_Color red = {176, 14, 60};
-	static SDL_Color green = {45, 193, 80};
-	static SDL_Color white = {255, 255, 255};
+void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, const Solution* const solution) {
+	static SDL_Color palette[] = {
+		{255, 0, 0}, //red
+		{255, 231, 0}, //yellow
+		{34, 255, 0}, //light green
+		{0, 255, 210}, //light blue
+		{251, 124, 18}, //orange
+		{171, 11, 35}, //dark red
+		{4, 120, 147}, //blue
+		{79, 11, 84}, //purple
+		{113, 201, 11} //green
+	};
+	static SDL_Color node = {45, 193, 80};
+	static SDL_Color text = {255, 255, 255};
 	//instead of using some basic trigonometry,
 	//let's just draw the edges first!
 	for (int a=0; a<graph.head.size(); a++) {
@@ -30,11 +41,12 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph) 
 				int x1=graph.x.at(a), y1=graph.y.at(a);
 				int x2=graph.x.at(b), y2=graph.y.at(b);
 				int xc=x1+(x2-x1)/2, yc=y1+(y2-y1)/2;
+				int s = solution ? solution->getVector().at(edge) : 0;
 				camera.transform(x1, y1);
 				camera.transform(x2, y2);
-				screen.thickLine(x1, y1, x2, y2, 3, red);
+				screen.thickLine(x1, y1, x2, y2, 3, palette[s]);
 				//caption
-				Text capa(font, itos(graph.weights.at(edge)), white);
+				Text capa(font, itos(graph.weights.at(edge)), text);
 				camera.transform(xc, yc);
 				SDL_Rect pos = {xc-capa.width()/2, yc-capa.height()/2, 0, 0};
 				capa.blit(NULL, screen, &pos);
@@ -44,8 +56,8 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph) 
 	for (int a=0; a<graph.head.size(); a++) {
 		int x=graph.x.at(a), y=graph.y.at(a);
 		camera.transform(x, y);
-		screen.filledCircle(x, y, 20, green);
-		Text num(font, itos(a), white);
+		screen.filledCircle(x, y, 20, node);
+		Text num(font, itos(a), text);
 		SDL_Rect pos = {x-num.width()/2, y-num.height()/2, 0, 0};
 		num.blit(NULL, screen, &pos);
 	}
@@ -55,8 +67,8 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph) 
  * TODO implement the same thing as c but with the graph's center
  * (arithmetic mean between min and max)
  */
-void view(const Graph& graph) {
-	Screen screen(640, 480);
+void view(const Graph& graph, const Solution* const solution) {
+	Screen screen(1280, 960);
 	Camera camera(0, 0, 2, 200, 200, 1.2);
 	Font font("DejaVuSansMono.ttf", 16);
 	FpsLimiter limiter;
@@ -66,7 +78,7 @@ void view(const Graph& graph) {
 		limiter.start();
 		//rendering
 		screen.rect(NULL, 0); //clear
-		draw(screen, font, camera, graph);
+		draw(screen, font, camera, graph, solution);
 		screen.flip();
 		//events processing
 		while (SDL_PollEvent(&event)) {
@@ -109,7 +121,11 @@ void ui_main(const Graph& graph) {
 	SDL_WM_SetCaption(graph.filename.c_str(), NULL);
 	TTF_Init();
 	try {
-		view(graph);
+		std::vector<int> s(graph.succ.size());
+		for (int i=0; i<s.size(); i++)
+			s.at(i) = i%4;
+		Solution sol(s, graph);
+		view(graph, &sol);
 	}
 	catch (Exception& e) {
 		std::cout << e << std::endl;
