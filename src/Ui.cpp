@@ -51,6 +51,10 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph) 
 	}
 }
 
+/*
+ * TODO implement the same thing as c but with the graph's center
+ * (arithmetic mean between min and max)
+ */
 void view(const Graph& graph) {
 	Screen screen(640, 480);
 	Camera camera(0, 0, 2, 200, 200, 1.2);
@@ -75,11 +79,10 @@ void view(const Graph& graph) {
 					std::cout << "z=" << camera.z << std::endl;
 				}
 				else if (event.key.keysym.unicode == 'c') {
-					/*
-					const Node *a = &nodes.at(0);
-					camera.x = camera.z*a->x-screen.width()/2;
-					camera.y = camera.z*a->y-screen.height()/2;
-					*/
+					int x = graph.x.at(0);
+					int y = graph.y.at(0);
+					camera.x = camera.z*x-screen.width()/2;
+					camera.y = camera.z*y-screen.height()/2;
 				}
 				else if (event.key.keysym.unicode=='?') {
 					std::cout << "zoom (i)n/(o)ut" << std::endl;
