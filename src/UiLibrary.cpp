@@ -52,7 +52,7 @@ int Surface::width() const {
 }
 
 Screen::Screen(int w, int h): Surface("Screen") {
-	surface = SDL_SetVideoMode(w, h, 32, SDL_SWSURFACE);
+	surface = SDL_SetVideoMode(w, h, 32, SDL_SWSURFACE | SDL_RESIZABLE);
 	if (!surface)
 		throw Exception("SDL_SetVideoMode failed");
 }
