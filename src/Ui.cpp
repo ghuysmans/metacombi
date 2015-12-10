@@ -53,8 +53,7 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph) 
 
 void view(const Graph& graph) {
 	Screen screen(640, 480);
-	//Camera camera(0, 0, 2, 40, 40, 1.2);
-	Camera camera(0, 0, 1, 40, 40, 1.2);
+	Camera camera(0, 0, 2, 200, 200, 1.2);
 	Font font("DejaVuSansMono.ttf", 16);
 	FpsLimiter limiter;
 	bool quit = false;
