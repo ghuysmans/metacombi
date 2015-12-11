@@ -2,6 +2,7 @@
 #include "Solution.h"
 #include "CuTest.h"
 #include <iostream>
+#include <vector>
 
 void TestIsAdmissible(CuTest *tc) {
 	Graph graph = Graph::load("testing-Graph.txt");
@@ -24,4 +25,10 @@ void TestInitSolution(CuTest *tc) {
 	CuAssertTrue(tc, sol.isAdmissible());
 }
 
-
+void TestCompacitySimple(CuTest *tc){
+	std::vector<int> v = std::vector<int>(14, 0);
+	Graph g = Graph::load("compaGraph2.txt");
+	Solution s = Solution(v, g);
+	int result = s.getCompacity( g );
+	CuAssertIntEquals(tc, 1350, result);
+}

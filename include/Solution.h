@@ -22,17 +22,24 @@ class Solution{
 		 * @return The total number of flyers delivered for each team
 		 */
 		const std::vector<int> getDelivered() const;
-		/**
-		 * @param The list of path for each team
-		 * @return The compacity of the path for each team
-		 */
-		std::vector<int> getCompacities(std::vector<Graph> paths) const;
 	public:
 		/**
 		 * @param vectorSolution the vector of the solution.
 		 * @param problemGraph The graph of the problem (its to compute the score)
 		 */
 		Solution(std::vector<int>& vectorSolution, const Graph& problemGraph);
+		/**
+		 * @param The list of subgraph for each team
+		 * @return The compacity of the path for each team
+		 * @note This function should be private but it need to be tested
+		 */
+		std::vector<int> getCompacities(std::vector<Graph>& paths) const;
+		/**
+		 * @param the subgraph
+		 * @return The compacity of 'subgraph'
+		 * @note This function should be private but it need to be tested
+		 */
+		int getCompacity(Graph& subgraph) const;
 		/**
 		 * @return The score of this solution
 		 */

@@ -2,6 +2,7 @@
 #include "Solution.h"
 #include "CuTest.h"
 #include <iostream>
+#include <vector>
 
 void TestGraphConstructor(CuTest *tc)
 {
@@ -38,4 +39,39 @@ void TestgetFirst(CuTest *tc)
 	CuAssertIntEquals(tc, 1, g.getFirst(0));
 	CuAssertIntEquals(tc, 5, g.getFirst(1));
 	CuAssertIntEquals(tc, 6, g.getFirst(2));
+}
+
+void TestedgeToNodes1(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	std::vector<int> tuple = g.edgeToNodes(4);//should return <2 , 3>
+	CuAssertTrue(tc, (tuple.at(0)==2 && tuple.at(1)==3) );
+}
+
+void TestedgeToNodes2(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	std::vector<int> tuple = g.edgeToNodes(8);//should return <4 , 5>
+	CuAssertTrue(tc, (tuple.at(0)==4 && tuple.at(1)==5) );
+}
+
+void TestgetDistanceNodes(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	std::vector<int> tuple = g.getDistanceNodes(3,6,7);//should return 850 from 3 to 6
+	CuAssertIntEquals(tc, 850, tuple.at(0) );
+}
+
+void TestgetDistanceEdges1(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	int result = g.getDistanceEdges(4 , 13);//should return 850
+	CuAssertIntEquals(tc, 850, result );
+}
+
+void TestgetDistanceEdge2(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	int result = g.getDistanceEdges(1,12);//1350
+	CuAssertIntEquals(tc, 1350, result );
 }
