@@ -14,6 +14,7 @@ Graph::Graph(const Graph& g):
 	x(std::vector<int>()),
 	y(std::vector<int>())
 {
+	std::cout << "copying" << std::endl;
 	throw GraphException("Copying this object is REALLY bad. Stop it now.");
 }
 
@@ -125,11 +126,12 @@ std::vector<int> Graph::edgeToNodes(int edge) const {
 		return result;
 	}
 	for(int i=1 ; i<head.size() ; i++){
-		if(head.at(i) >= edge){
+		if(head.at(i) > edge){
 			result[0] = i-1;
-			break;
+			return result;
 		}
 	}
+	result[0] = head.size()-1;
 	return result;
 }
 
@@ -187,9 +189,11 @@ int Graph::getDistanceEdges(int edge1, int edge2) const {
 	std::vector<int> e2 = edgeToNodes(edge2);
 	int dist = -1;
 	std::vector<int> dists = getDistanceNodes(e1[0], e2[0], e2[1]);
+	//std::cout<<"d("<<e1[0]<<","<<e2[0]<<")="<<dists[0]<<"et d("<<e1[0]<<","<<e2[1]<<")="<<dists[1]<<std::endl;
 	int minimum = dists[0];
 	if( dists[1] < minimum ) minimum = dists[1];
 	dists = getDistanceNodes(e1[1], e2[0], e2[1]);
+	//std::cout<<"d("<<e1[1]<<","<<e2[0]<<")="<<dists[0]<<"et d("<<e1[1]<<","<<e2[1]<<")="<<dists[1]<<std::endl;
 	if( dists[0] < minimum ) minimum = dists[0];
 	if( dists[1] < minimum ) minimum = dists[1];
 	return minimum;

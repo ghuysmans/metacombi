@@ -62,9 +62,16 @@ void TestgetDistanceNodes(CuTest *tc)
 	CuAssertIntEquals(tc, 850, tuple.at(0) );
 }
 
-void TestgetDistanceEdges(CuTest *tc)
+void TestgetDistanceEdges1(CuTest *tc)
 {
 	Graph g = Graph::load("compaGraph2.txt");
 	int result = g.getDistanceEdges(4 , 13);//should return 850
 	CuAssertIntEquals(tc, 850, result );
+}
+
+void TestgetDistanceEdge2(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	int result = g.getDistanceEdges(1,12);//1350
+	CuAssertIntEquals(tc, 1350, result );
 }

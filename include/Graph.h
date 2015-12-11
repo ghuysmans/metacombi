@@ -62,6 +62,12 @@ class Graph{
 			return head.at(node+1) - head.at(node);
 		}
 		/**
+		 * @return the vector of successors
+		 */
+		std::vector<int> getSucc() const {
+			return succ;
+		}
+		/**
 		 * @return All successors of 'node'
 		 */
 		std::vector<int> getSuccessors(int node) const {
