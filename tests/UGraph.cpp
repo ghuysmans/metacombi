@@ -2,6 +2,7 @@
 #include "Solution.h"
 #include "CuTest.h"
 #include <iostream>
+#include <vector>
 
 void TestGraphConstructor(CuTest *tc)
 {
@@ -38,4 +39,18 @@ void TestgetFirst(CuTest *tc)
 	CuAssertIntEquals(tc, 1, g.getFirst(0));
 	CuAssertIntEquals(tc, 5, g.getFirst(1));
 	CuAssertIntEquals(tc, 6, g.getFirst(2));
+}
+
+void TestedgeToNodes1(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	std::vector<int> tuple = g.edgeToNodes(4);//should return <2 , 3>
+	CuAssertTrue(tc, (tuple.at(0)==2 && tuple.at(1)==3) );
+}
+
+void TestedgeToNodes2(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	std::vector<int> tuple = g.edgeToNodes(8);//should return <4 , 5>
+	CuAssertTrue(tc, (tuple.at(0)==4 && tuple.at(1)==5) );
 }

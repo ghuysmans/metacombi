@@ -120,9 +120,13 @@ std::vector<int> Graph::edgeToNodes(int edge) const {
 	result[1] = succ[edge];
 	//the predecessor
 	result[0] = -1;
-	for(int i=0 ; i<head.size() ; i++){
+	if(head.size() < 2){
+		result[0] = 0;
+		return result;
+	}
+	for(int i=1 ; i<head.size() ; i++){
 		if(head.at(i) >= edge){
-			result[0] = i;
+			result[0] = i-1;
 			break;
 		}
 	}
