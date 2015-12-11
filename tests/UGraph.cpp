@@ -54,3 +54,17 @@ void TestedgeToNodes2(CuTest *tc)
 	std::vector<int> tuple = g.edgeToNodes(8);//should return <4 , 5>
 	CuAssertTrue(tc, (tuple.at(0)==4 && tuple.at(1)==5) );
 }
+
+void TestgetDistanceNodes(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	std::vector<int> tuple = g.getDistanceNodes(3,6,7);//should return 850 from 3 to 6
+	CuAssertIntEquals(tc, 850, tuple.at(0) );
+}
+
+void TestgetDistanceEdges(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	int result = g.getDistanceEdges(4 , 13);//should return 850
+	CuAssertIntEquals(tc, 850, result );
+}
