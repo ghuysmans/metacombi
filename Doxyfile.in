@@ -107,7 +107,7 @@ WARN_LOGFILE           =
 # configuration options related to the input files
 #---------------------------------------------------------------------------
 
-INPUT                  = "@CMAKE_CURRENT_SOURCE_DIR@/src"
+INPUT                  = "@CMAKE_CURRENT_SOURCE_DIR@"
 RECURSIVE              = YES
 EXAMPLE_PATH           = "@CMAKE_CURRENT_SOURCE_DIR@/examples"
 EXAMPLE_RECURSIVE      = NO
@@ -266,7 +266,7 @@ PERLMOD_MAKEVAR_PREFIX =
 # Configuration options related to the preprocessor
 #---------------------------------------------------------------------------
 
-ENABLE_PREPROCESSING   = YES
+ENABLE_PREPROCESSING   = NO
 MACRO_EXPANSION        = NO
 EXPAND_ONLY_PREDEF     = NO
 SEARCH_INCLUDES        = YES

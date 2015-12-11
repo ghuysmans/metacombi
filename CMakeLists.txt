@@ -1,8 +1,19 @@
 cmake_minimum_required(VERSION 2.6)
+set(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${CMAKE_CURRENT_SOURCE_DIR}/modules")
 
 project(metacombi)
 set(VERSION_MAJOR 0)
 set(VERSION_MINOR 1)
+
+find_package(SDL)
+find_package(SDL_ttf)
+find_package(SDL_gfx)
+find_package(SDL_image)
+if(SDL_FOUND AND SDLTTF_FOUND AND SDLGFX_FOUND AND SDLIMAGE_FOUND)
+	link_libraries(${LIBS} ${SDL_LIBRARY} ${SDLTTF_LIBRARY} ${SDLGFX_LIBRARY} ${SDLIMAGE_LIBRARY})
+	set(USE_SDL 1) #we have to use a separate variable to ensure all deps are met
+endif(SDL_FOUND AND SDLTTF_FOUND AND SDLGFX_FOUND AND SDLIMAGE_FOUND)
+
 include_directories("${CMAKE_CURRENT_SOURCE_DIR}/include")
 
 #config header

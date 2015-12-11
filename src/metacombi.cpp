@@ -6,33 +6,32 @@
 #include <string>
 #include "metaheuristics/Metaheuristic.h"
 #include "metaheuristics/RandomStrategy.h"
-
-/**
- * Some doc for a simple class.
- */
-class MyClass {
-	public:
-		/**
-		 * @param message What you want to display
-		 */
-		MyClass(std::string message) {
-			std::cout << message << std::endl;
-		}
-		/**
-		 * @return sum of operands
-		 */
-		int op(int a, int b) {
-			return a+b;
-		}
-};
+#include "Graph.h"
+#include "../config.h"
+#include "Ui.h"
 
 /**
  * Main function
- * @note This doc is completely useless.
  */
 int main(int argc, char *argv[])
 {
-	MyClass m("hello");
-	std::cout << m.op(1, 2) << std::endl;
-	return 0;
+	if (argc == 2) {
+		try {
+			Graph g = Graph::load(argv[1]);
+#ifdef USE_SDL
+			ui_main(g);
+#else
+			g.dump();
+#endif //USE_SDL
+			return 0;
+		}
+		catch (GraphException& e) {
+			std::cerr << "error: " << e.what() << std::endl;
+			return 2;
+		}
+	}
+	else {
+		std::cerr << "usage: " << argv[0] << " filename" << std::endl;
+		return 1;
+	}
 }
