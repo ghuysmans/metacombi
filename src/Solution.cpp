@@ -132,12 +132,12 @@ void Solution::initSolution(){
 	std::vector<bool> markEdges(graph.succ.size(),false);
 	std::vector<bool> markNodes(graph.head.size(),false);
 	int edgesPerTeam = graph.succ.size() / graph.head.size();
-	int workingNode,succ,nbrOfSucc,firstSuccIndex,succIndex,counter = 0,teamNumber = 1;
+	int workingNode,succ,nbrOfSucc,firstSuccIndex,succIndex,neighbourTeam,counter = 0,teamNumber = 1;
 	
 	//Parcours en profondeur
 	markNodes[0] = true;
 	lifo.push(0);
-	bool pushed;
+	bool pushed,neighbourFound;
 	while(!lifo.empty()){
 		workingNode = lifo.top();
 		nbrOfSucc = graph.getCount(workingNode);
@@ -152,6 +152,23 @@ void Solution::initSolution(){
 			//On va push le premier successeur non-marqué dans la pile et assigné un numéro de team aux arcs
 			for(int i=firstSuccIndex;i< (firstSuccIndex + nbrOfSucc);i++){
 				if(!markEdges.at(i)){
+					//Si il n'y a pas d'arc voisin assigné à la même équipe et que le conteur est différent de zéro,on passe à l'équipe suivante.
+					neighbourFound = false;
+					for(int j=firstSuccIndex;j< (firstSuccIndex + nbrOfSucc);j++){
+						if(vect.at(j) == teamNumber)
+							neighbourFound = true;
+						if(vect.at(j) > 0)
+							neighbourTeam = vect.at(j);
+					}
+					if(!neighbourFound && counter != 0){
+						counter = 0;
+						if(teamNumber == graph.teamsCount)
+							teamNumber = neighbourTeam;
+						else
+							teamNumber++;
+					}
+
+					//on marque l'arc du noeud vers le successeur 
 					markEdges.at(i) = true;
 					vect.at(i) = teamNumber;
 					//On marque aussi l'arc dans l'autre sens pour ne pas faire demi-tour
