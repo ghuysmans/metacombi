@@ -49,6 +49,10 @@ class Solution{
 		 * @return The solution vector
 		 */
 		std::vector<int>& getVector();
+		/**
+		 *Initialize an admissible solution
+		*/
+		void initSolution();
 		//TODO peut-être devra t on envisage une fonction qui retourne tous ou une partie des mouvement possible?
 		
 };

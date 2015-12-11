@@ -1,5 +1,6 @@
 #include <map>
 #include <stack>
+#include <queue>
 #include <iostream>
 #include "Score.h"
 #include "Graph.h"
@@ -129,3 +130,63 @@ bool Solution::isAdmissible(){
 }
 
 std::vector<int>& Solution::getVector(){ return vect; }
+
+void Solution::initSolution(){
+	std::stack<int> lifo;
+	//On marque chaque sommet et arcs(aller/retour) à false
+	std::vector<bool> markEdges(graph.getNedges(),false);
+	std::vector<bool> markNodes(graph.getNnodes(),false);
+	int edgesPerTeam = graph.getNedges() / graph.getNteams();
+	int workingNode,succ,nbrOfSucc,firstSuccIndex,firstSuccOfSuccIndex,counter = 0,teamNumber = 1;
+	
+	//Parcours en profondeur
+	markNodes[0] = true;
+	lifo.push(0);
+	bool pushed;
+	while(!lifo.empty()){
+		workingNode = lifo.top();
+		nbrOfSucc = graph.getCount(workingNode);
+		if(nbrOfSucc == 0)
+			lifo.pop();
+		else{
+			pushed = false;
+			firstSuccIndex = 0;
+			for(int i = 0;i<workingNode;i++){
+				firstSuccIndex += graph.getCount(i);
+			}
+			//On va push le premier successeur non-marqué dans la pile et assigné un numéro de team aux arcs
+			for(int i=firstSuccIndex;i< (firstSuccIndex + nbrOfSucc);i++){
+				if(!markEdges.at(i)){
+					markEdges.at(i) = true;
+					vect.at(i) = teamNumber;
+					//On marque aussi l'arc dans l'autre sens pour ne pas faire demi-tour
+					firstSuccOfSuccIndex= 0;
+					for(int k = 0;k<succ;k++){
+						firstSuccOfSuccIndex += graph.getCount(k);
+					}
+					for(int j=firstSuccOfSuccIndex;j< (firstSuccOfSuccIndex + graph.getCount(succ));j++){
+						if(graph.getSuccessors().at(j) == succ){
+							markEdges.at(j) = true;
+							vect.at(j) = teamNumber;
+						}
+					}
+					//+2 car arc aller-retour marqué
+					counter+=2;
+					if(counter > edgesPerTeam && teamNumber < graph.getNteams()){
+						counter = 0;
+						teamNumber++;
+					}
+					if(!markNodes.at(graph.getSuccessors().at(i))){
+						markNodes.at(graph.getSuccessors().at(i)) = true;
+						lifo.push(graph.getSuccessors().at(i));
+						pushed = true;
+						break;
+					}
+				}
+			}
+			//Cas où tous les successeurs ont déjà été marqué 
+			if(!(pushed))
+				lifo.pop();
+		}
+	}
+}
