@@ -15,3 +15,13 @@ void TestIsAdmissible(CuTest *tc) {
 	Solution sol2 = Solution(vectorSolution2,graph);
 	CuAssertTrue(tc, !sol2.isAdmissible());
 }
+
+void TestInitSolution(CuTest *tc) {
+	Graph graph = Graph::load("testing-Graph.txt");
+	std::vector<int> vectorSolution(48,0);
+	Solution sol = Solution(vectorSolution,graph);
+	sol.initSolution();
+	CuAssertTrue(tc, sol.isAdmissible());
+}
+
+

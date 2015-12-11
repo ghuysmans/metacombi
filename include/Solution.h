@@ -46,6 +46,10 @@ class Solution{
  		 */
 		bool isAdmissible() const;
 		/**
+		 *Initialize an admissible solution
+		*/
+		void initSolution();
+		/**
 		 * @return The solution vector
 		 */
 		std::vector<int>& getVector() const;
