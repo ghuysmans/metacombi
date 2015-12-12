@@ -13,7 +13,7 @@ inline std::string itos(int i) {
 	return ss.str();
 }
 
-void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, const Solution* const solution) {
+void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, const Solution* const solution, const bool captions) {
 	static SDL_Color palette[] = {
 		{255, 0, 0}, //red
 		{255, 231, 0}, //yellow
@@ -45,21 +45,24 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, 
 				camera.transform(x1, y1);
 				camera.transform(x2, y2);
 				screen.thickLine(x1, y1, x2, y2, 3, palette[s]);
-				//caption
-				Text capa(font, itos(graph.weights.at(edge)), text);
-				camera.transform(xc, yc);
-				SDL_Rect pos = {xc-capa.width()/2, yc-capa.height()/2, 0, 0};
-				capa.blit(NULL, screen, &pos);
+				if (captions) {
+					Text capa(font, itos(graph.weights.at(edge)), text);
+					camera.transform(xc, yc);
+					SDL_Rect pos = {xc-capa.width()/2, yc-capa.height()/2, 0, 0};
+					capa.blit(NULL, screen, &pos);
+				}
 			}
 		}
 	}
 	for (int a=0; a<graph.head.size(); a++) {
 		int x=graph.x.at(a), y=graph.y.at(a);
 		camera.transform(x, y);
-		screen.filledCircle(x, y, 20, node);
-		Text num(font, itos(a), text);
-		SDL_Rect pos = {x-num.width()/2, y-num.height()/2, 0, 0};
-		num.blit(NULL, screen, &pos);
+		screen.filledCircle(x, y, 20*camera.z, node);
+		if (captions) {
+			Text num(font, itos(a), text);
+			SDL_Rect pos = {x-num.width()/2, y-num.height()/2, 0, 0};
+			num.blit(NULL, screen, &pos);
+		}
 	}
 }
 
@@ -73,12 +76,13 @@ void view(const Graph& graph, const Solution* const solution) {
 	Font font("DejaVuSansMono.ttf", 16);
 	FpsLimiter limiter;
 	bool quit = false;
+	bool captions = true;
 	SDL_Event event;
 	while (!quit) {
 		limiter.start();
 		//rendering
 		screen.rect(NULL, -1); //white
-		draw(screen, font, camera, graph, solution);
+		draw(screen, font, camera, graph, solution, captions);
 		screen.flip();
 		//events processing
 		while (SDL_PollEvent(&event)) {
@@ -90,6 +94,8 @@ void view(const Graph& graph, const Solution* const solution) {
 					std::cout << "y=" << camera.y << std::endl;
 					std::cout << "z=" << camera.z << std::endl;
 				}
+				else if (event.key.keysym.unicode == 't')
+					captions ^= true;
 				else if (event.key.keysym.unicode == 'c') {
 					int x = graph.x.at(0);
 					int y = graph.y.at(0);
@@ -100,6 +106,7 @@ void view(const Graph& graph, const Solution* const solution) {
 					std::cout << "zoom (i)n/(o)ut" << std::endl;
 					std::cout << "swap directions (x)" << std::endl;
 					std::cout << "(c)enter camera" << std::endl;
+					std::cout << "(t)oggle captions" << std::endl;
 					std::cout << "(d)ebug" << std::endl;
 				}
 				else if (event.key.keysym.unicode=='q')
