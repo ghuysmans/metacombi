@@ -47,7 +47,7 @@ class Solution{
 		/**
 		 * Move something in the vector
 		 */
-		Solution move();
+		std::vector<int> move();
 		/**
  		 * @return true if the solution is admissible
  		 */
