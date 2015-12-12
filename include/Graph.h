@@ -96,6 +96,11 @@ class Graph{
 		inline int getWeight(int node, int successor) const {
 			return weights.at( nodesToEdge(node , successor));
 		}
+
+		/**
+		 * @return a subgraph for each team
+		 */
+		std::vector<Graph*> subGraphs(std::vector<int> assignments) const;
 };
 
 #endif //_GRAPH_H
