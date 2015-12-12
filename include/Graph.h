@@ -32,6 +32,10 @@ class Graph{
 		const std::vector<int> x;
 		/** y coordinate of node */
 		const std::vector<int> y;
+		/** The average distance for each teams */
+		const int averageDist;
+		/** The average flyers to deliver for each teams */
+		const int averageFlyers;
 
 		Graph(const Graph& g);
 		Graph(
@@ -42,7 +46,9 @@ class Graph{
 				const std::vector<int> flyers,
 				const std::vector<int> weights,
 				const std::vector<int> x,
-				const std::vector<int> y);
+				const std::vector<int> y,
+				const int averageDist=0,
+				const int averageFlyers=0);
 		static Graph load(const std::string& filename);
 		void dump() const;
 
@@ -102,6 +108,14 @@ class Graph{
 		inline int getWeight(int node, int successor) const {
 			return weights.at( nodesToEdge(node , successor));
 		}
+		/**
+		 * @return the average distance to travel for each team
+		 */
+		int getAverageDistance();
+		/**
+		 * @return the average amount of flyers to deliver for each team
+		 */
+		int getAverageFlyers();
 };
 
 #endif //_GRAPH_H

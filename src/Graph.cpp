@@ -12,7 +12,9 @@ Graph::Graph(const Graph& g):
 	flyers(std::vector<int>()),
 	weights(std::vector<int>()),
 	x(std::vector<int>()),
-	y(std::vector<int>())
+	y(std::vector<int>()),
+	averageDist(0),
+	averageFlyers(0)
 {
 	std::cout << "copying" << std::endl;
 	throw GraphException("Copying this object is REALLY bad. Stop it now.");
@@ -26,7 +28,9 @@ Graph::Graph(
 		const std::vector<int> flyers,
 		const std::vector<int> weights,
 		const std::vector<int> x,
-		const std::vector<int> y):
+		const std::vector<int> y,
+		const int averageDist,
+		const int averageFlyers):
 	teamsCount(teamsCount),
 	filename(filename),
 	head(head),
@@ -34,7 +38,9 @@ Graph::Graph(
 	flyers(flyers),
 	weights(weights),
 	x(x),
-	y(y)
+	y(y),
+	averageDist(averageDist),
+	averageFlyers(averageFlyers)
 {
 	std::cout << "loaded " << filename << " with " << head.size() << " nodes and " << succ.size() << " edges" << std::endl;
 }
@@ -104,8 +110,19 @@ Graph Graph::load(const std::string& filename) {
 			//TODO maybe use a custom class...
 			throw GraphException("invalid input graph");
 		}
-		else
-			return Graph(n_teams, filename, head, succ, flyers, weights, x, y);
+		else{//So loading is complete
+			int aDist = 0;
+			for(int i=0 ; i<weights.size() ; i++){
+				aDist += weights.at(i);
+			}
+			aDist = aDist/(2*n_teams);//total distance has to be /2 because every edges are browsed 2 times because no-oriented
+			int aFlyers = 0;
+			for(int i=0 ; i<flyers.size() ; i++){
+				aFlyers += flyers.at(i);
+			}
+			aFlyers = aFlyers/(2*n_teams);
+			return Graph(n_teams, filename, head, succ, flyers, weights, x, y, aDist, aFlyers);
+		}
 	}
 	else
 		throw GraphException("couldn't open the input graph");
@@ -198,3 +215,6 @@ int Graph::getDistanceEdges(int edge1, int edge2) const {
 	if( dists[1] < minimum ) minimum = dists[1];
 	return minimum;
 }
+
+int Graph::getAverageDistance(){ return averageDist; }
+int Graph::getAverageFlyers(){ return averageFlyers; }
