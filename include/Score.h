@@ -20,20 +20,34 @@ class Score{
 
 		//FIXME so what?
 		/**
-		 * @param distance The length of the entire path.
-		 * @param totalFlyers The total amount of flyers that would be delivered.
-		 * @param compacity The compacity of the pass
+		 * @param teamScoreList the list of teamScore that represent the score for each teams
+		 * @param averageDistance The average distance to travel for each team
+		 * @param averageFlyers The average amount of flyers for each team
 		 */
-		Score(std::vector<struct teamScore> teamScoreList);
+		Score(std::vector<struct teamScore> teamScoreList, int averageDistance, int averageFlyers);
 
 		/**
 		 * Overloading the operator <
 		 * @return true if left is < than right
 		 */
-		bool operator <(const Score right);
+		bool operator <(const Score& right);
 
 	private:
 		std::vector<Score::teamScore>& tsList;
+		int averageDistance;
+		int averageFlyers;
+		
+		/**
+		 * @param distancePower the power of ErrLength
+		 * @param flyersPower the power of ErrFlyers
+		 * @param compacityPower the power of (1+Compacity)
+		 * @return a comparable integer value of this score
+		 */
+		int toInt(int distancePower, int flyersPower, int compacityPower) const;
+		/**
+		 * @return a comparable integer value of this score
+		 */
+		int toInt() const;
 };
 
 /**
