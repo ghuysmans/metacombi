@@ -75,3 +75,17 @@ void TestgetDistanceEdge2(CuTest *tc)
 	int result = g.getDistanceEdges(1,12);//1350
 	CuAssertIntEquals(tc, 1350, result );
 }
+
+void TestaverageDistance(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	int result = g.getAverageDistance();//1710
+	CuAssertIntEquals(tc, 1710, result );
+}
+
+void TestaverageFlyers(CuTest *tc)
+{
+	Graph g = Graph::load("compaGraph2.txt");
+	int result = g.getAverageFlyers();//2565
+	CuAssertIntEquals(tc, 2015, result );
+}
