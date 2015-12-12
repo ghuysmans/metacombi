@@ -12,7 +12,9 @@ Graph::Graph(const Graph& g):
 	flyers(flyers),
 	weights(weights),
 	x(x),
-	y(y)
+	y(y),
+	averageDist(averageDist),
+	averageFlyers(averageFlyers)
 {
 	std::cout << "copying " << g.filename << std::endl;
 }
@@ -25,7 +27,9 @@ Graph::Graph(
 		const std::vector<int> flyers,
 		const std::vector<int> weights,
 		const std::vector<int> x,
-		const std::vector<int> y):
+		const std::vector<int> y,
+		const int averageDist,
+		const int averageFlyers):
 	teamsCount(teamsCount),
 	filename(filename),
 	head(head),
@@ -33,7 +37,9 @@ Graph::Graph(
 	flyers(flyers),
 	weights(weights),
 	x(x),
-	y(y)
+	y(y),
+	averageDist(averageDist),
+	averageFlyers(averageFlyers)
 {
 	std::cout << "loaded " << filename << " with " << head.size() << " nodes and " << succ.size() << " edges" << std::endl;
 }
@@ -103,8 +109,19 @@ Graph Graph::load(const std::string& filename) {
 			//TODO maybe use a custom class...
 			throw GraphException("invalid input graph");
 		}
-		else
-			return Graph(n_teams, filename, head, succ, flyers, weights, x, y);
+		else{//So loading is complete
+			int aDist = 0;
+			for(int i=0 ; i<weights.size() ; i++){
+				aDist += weights.at(i);
+			}
+			aDist = aDist/(2*n_teams);//total distance has to be /2 because every edges are browsed 2 times because no-oriented
+			int aFlyers = 0;
+			for(int i=0 ; i<flyers.size() ; i++){
+				aFlyers += flyers.at(i);
+			}
+			aFlyers = aFlyers/(2*n_teams);
+			return Graph(n_teams, filename, head, succ, flyers, weights, x, y, aDist, aFlyers);
+		}
 	}
 	else
 		throw GraphException("couldn't open the input graph");
@@ -120,12 +137,17 @@ std::vector<int> Graph::edgeToNodes(int edge) const {
 	result[1] = succ[edge];
 	//the predecessor
 	result[0] = -1;
-	for(int i=0 ; i<head.size() ; i++){
-		if(head.at(i) >= edge){
-			result[0] = i;
-			break;
+	if(head.size() < 2){
+		result[0] = 0;
+		return result;
+	}
+	for(int i=1 ; i<head.size() ; i++){
+		if(head.at(i) > edge){
+			result[0] = i-1;
+			return result;
 		}
 	}
+	result[0] = head.size()-1;
 	return result;
 }
 
@@ -183,9 +205,11 @@ int Graph::getDistanceEdges(int edge1, int edge2) const {
 	std::vector<int> e2 = edgeToNodes(edge2);
 	int dist = -1;
 	std::vector<int> dists = getDistanceNodes(e1[0], e2[0], e2[1]);
+	//std::cout<<"d("<<e1[0]<<","<<e2[0]<<")="<<dists[0]<<"et d("<<e1[0]<<","<<e2[1]<<")="<<dists[1]<<std::endl;
 	int minimum = dists[0];
 	if( dists[1] < minimum ) minimum = dists[1];
 	dists = getDistanceNodes(e1[1], e2[0], e2[1]);
+	//std::cout<<"d("<<e1[1]<<","<<e2[0]<<")="<<dists[0]<<"et d("<<e1[1]<<","<<e2[1]<<")="<<dists[1]<<std::endl;
 	if( dists[0] < minimum ) minimum = dists[0];
 	if( dists[1] < minimum ) minimum = dists[1];
 	return minimum;
@@ -275,3 +299,6 @@ std::vector<Graph*> Graph::subGraphs(std::vector<int> assignments) const {
 	}
 	return res;
 }
+
+int Graph::getAverageDistance(){ return averageDist; }
+int Graph::getAverageFlyers(){ return averageFlyers; }

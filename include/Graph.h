@@ -32,6 +32,10 @@ class Graph{
 		const std::vector<int> x;
 		/** y coordinate of node */
 		const std::vector<int> y;
+		/** The average distance for each teams */
+		const int averageDist;
+		/** The average flyers to deliver for each teams */
+		const int averageFlyers;
 
 		Graph(const Graph& g);
 		Graph(
@@ -42,7 +46,9 @@ class Graph{
 				const std::vector<int> flyers,
 				const std::vector<int> weights,
 				const std::vector<int> x,
-				const std::vector<int> y);
+				const std::vector<int> y,
+				const int averageDist=0,
+				const int averageFlyers=0);
 		static Graph load(const std::string& filename);
 		void dump() const;
 
@@ -60,6 +66,12 @@ class Graph{
 			if(node == head.size() - 1)
 				return succ.size() - head.at(node);
 			return head.at(node+1) - head.at(node);
+		}
+		/**
+		 * @return the vector of successors
+		 */
+		std::vector<int> getSucc() const {
+			return succ;
 		}
 		/**
 		 * @return All successors of 'node'
@@ -101,6 +113,15 @@ class Graph{
 		 * @return a subgraph for each team
 		 */
 		std::vector<Graph*> subGraphs(std::vector<int> assignments) const;
+
+		/**
+		 * @return the average distance to travel for each team
+		 */
+		int getAverageDistance();
+		/**
+		 * @return the average amount of flyers to deliver for each team
+		 */
+		int getAverageFlyers();
 };
 
 #endif //_GRAPH_H
