@@ -50,6 +50,7 @@ class Graph{
 				const int averageDist=0,
 				const int averageFlyers=0);
 		static Graph load(const std::string& filename);
+		void dump(bool showCoords) const;
 		void dump() const;
 
 		/**

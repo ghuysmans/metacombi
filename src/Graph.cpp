@@ -44,18 +44,24 @@ Graph::Graph(
 	std::cout << "loaded " << filename << " with " << head.size() << " nodes and " << succ.size() << " edges" << std::endl;
 }
 
-/**
- * Display the Graph as text
- * @todo ask for an output stream?
- */
 void Graph::dump() const {
+	dump(false);
+}
+
+void Graph::dump(bool showCoords) const {
 	for (int a=0; a<head.size(); a++) {
 		const int f = head.at(a);
 		const int ct = getCount(a);
-		std::cout << a << "(" << x.at(a) << "," << y.at(a) << ") -> ";
+		std::cout << a;
+		if (showCoords && x.size())
+			std::cout << "(" << x.at(a) << "," << y.at(a) << ")";
+		std::cout << " -> ";
 		for (int edge=f; edge<f+ct; edge++) {
 			const int b = succ.at(edge);
-			std::cout << b << "(" << x.at(b) << "," << y.at(b) << ") E" << edge << ", ";
+			std::cout << b;
+			if (showCoords && x.size())
+				std::cout << "(" << x.at(b) << "," << y.at(b) << ")";
+			std::cout << ", ";
 		}
 		std::cout << std::endl;
 	}
