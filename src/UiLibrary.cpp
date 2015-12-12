@@ -171,7 +171,9 @@ void Camera::update() {
 	int dt = ticks-prevTicks;
 	x += z*speedX/1000*dt*moveDirection.x();
 	y += z*speedY/1000*dt*moveDirection.y();
-	z += speedZ/1000*dt*moveDirection.z();
+	float newZ = z + speedZ/1000*dt*moveDirection.z();
+	if (newZ > 0.25)
+		z = newZ;
 	prevTicks = ticks;
 }
 void Camera::transform(int& px, int& py) const {
