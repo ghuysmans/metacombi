@@ -2,6 +2,7 @@
 #include <stack>
 #include <queue>
 #include <iostream>
+#include <cstdlib>
 #include "Score.h"
 #include "Graph.h"
 #include "Solution.h"
@@ -51,8 +52,57 @@ Score Solution::getScore(ScoreCalculator& sc) const{
 	return sc(getDistances(), getDelivered(), graph);
 }
 
-Solution Solution::move(){
-	//TODO
+std::vector<int> Solution::move(){
+	srand (time(NULL));
+	std::vector<int> res, possib;
+	res.reserve(2);
+	possib.reserve(graph.head.size());//va contenir tous les noeuds où on peut faire un remplacement
+	int eCounter, iCounter, value;
+	for(eCounter = 0; eCounter < graph.head.size(); eCounter++)
+	{
+		value = -1;
+		for(iCounter = 0; iCounter < graph.getSuccessors(eCounter).size(); iCounter++)
+		{
+			if(value == -1)
+				value = vect.at(graph.head.at(eCounter));
+			else
+				{
+					if(value != vect.at(graph.head.at(eCounter) + iCounter))
+					{
+						possib.push_back(eCounter);
+						break;
+					}
+				}
+		}
+	}
+	
+	value = rand() % possib.size();
+	int e1 = -1, e2 = -1, v1, v2, v3 = graph.getSuccessors(possib.at(value)).size();
+	
+	while(e1 == e2)
+	{
+		v1 = rand() % v3;
+		v2 = rand() % v3;
+		e1 = vect.at(graph.head.at(possib.at(value)) + v1);
+		e2 = vect.at(graph.head.at(possib.at(value)) + v2);
+	}
+	
+	v3 = rand() % 2 + 1;  
+	
+	if(v3 == 1)//equipe 1 prend un arc en plus
+	{
+		vect.at(graph.head.at(possib.at(value)) + v2) = e1;
+		res.push_back(e2);
+		res.push_back(graph.head.at(possib.at(value)) + v2);
+	}
+	else//equipe 2 prend un arc en plus
+	{
+		vect.at(graph.head.at(possib.at(value)) + v1) = e2;
+		res.push_back(e1);
+		res.push_back(graph.head.at(possib.at(value)) + v1);
+	}
+
+	return res;//res.at(0) = equipe remplacé, res.at(1) = position remplacé
 }
 
 bool Solution::isAdmissible() const{

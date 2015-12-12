@@ -17,6 +17,22 @@ void TestIsAdmissible(CuTest *tc) {
 	CuAssertTrue(tc, !sol2.isAdmissible());
 }
 
+void TestMove(CuTest *tc) {
+	Graph graph = Graph::load("testing-Graph.txt");
+	int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
+	std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
+	int array[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
+	Solution sol = Solution(vectorSolution,graph); 
+	int i, res = 0;
+	std::vector<int> v = sol.move();
+	for(i = 0; i < sol.getVector().size(); i++)
+	{
+		if(sol.getVector().at(i) != array[i])
+			res++;
+	}
+	CuAssertIntEquals(tc, 1, res);
+}
+
 void TestInitSolution(CuTest *tc) {
 	Graph graph = Graph::load("testing-Graph.txt");
 	std::vector<int> vectorSolution(48,0);
