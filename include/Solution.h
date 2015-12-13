@@ -34,6 +34,11 @@ class Solution{
 		 */
 		Solution(std::vector<int>& vectorSolution, const Graph& problemGraph);
 		/**
+		 * @param input input stream
+		 * @param problemGraph the problem graph
+		 */
+		static Solution load(std::istream& input, const Graph& problemGraph);
+		/**
 		 * @param filename text file containing the solution
 		 * @param problemGraph the problem graph
 		 */

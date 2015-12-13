@@ -3,6 +3,7 @@
 #binaries
 /metacombi
 /UAll
+/monitor
 #CMake
 Makefile
 CMakeCache.txt
