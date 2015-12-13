@@ -180,6 +180,11 @@ std::vector<int> Solution::move()
 	return res;//res.at(0) = equipe remplacé, res.at(1) = position remplacé, res.at(2) = position remplacé
 }
 
+void Solution::undo(std::vector<int> move){
+	vect.at(move.at(1)) = move.at(0);
+	vect.at(move.at(2)) = move.at(0);
+}
+
 bool Solution::isAdmissible() const{
 	std::stack<int> lifo;
 	std::map<int,bool> mark;
