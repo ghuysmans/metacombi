@@ -42,7 +42,7 @@ class Recuit: public Metaheuristic{
 		 * @param epsilon the maximum temperature to reach
 		 * @note the smaller parameters are, the more intensive is the resolution 
 		 */
-		Recuit(Graph& graph, float alpha, int niter, float temperature, float epsilon);
+		//Recuit(Graph& graph, float alpha, int niter, float temperature, float epsilon);
 		/**
 		 * @param problemGraph The initial graph of the problem
 		 */

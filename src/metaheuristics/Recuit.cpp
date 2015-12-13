@@ -2,10 +2,11 @@
 #include "metaheuristics/Recuit.h"
 #include "Solution.h"
 #include <vector>
+#include <iostream>
 
 Recuit::Recuit(Solution& initSolution, float alpha, int niter, float temperature, float epsilon):
 	sol(initSolution),
-	bestSol(Solution(initSolution.getVector(), initSolution.graph)),
+	bestSol(Solution(*(new std::vector<int>(initSolution.getVector())), initSolution.graph)),
 	bestScore(Score(initSolution).toInt()),
 	a(alpha),
 	p(niter),
@@ -16,12 +17,12 @@ Recuit::Recuit(Solution& initSolution, float alpha, int niter, float temperature
 	}
 }
 
-Recuit::Recuit(Graph& graph, float alpha, int niter, float temperature, float epsilon){
+/*Recuit::Recuit(Graph& graph, float alpha, int niter, float temperature, float epsilon){
 	std::vector<int> vect(graph.succ.size() , 0);
 	Solution initSol = Solution(vect, graph);
 	iniSol.initSolution();
 	Recuit(iniSol, alpha, niter, temperature);
-}
+}*/
 	
 Solution Recuit::getSolution(){
 	std::vector<int> tuple;
@@ -38,10 +39,11 @@ Solution Recuit::getSolution(){
 				else sol.undo(tuple);
 			}
 			if(!ok){
-				std::cout << "Recuit.cpp: cannot find an admissible solution. Return the best found" << std:endl;
+				std::cout << "Recuit.cpp: cannot find an admissible solution. Return the best found" << std::endl;
 				return bestSol;
 			}
 			//now sol is s' and bestSol is s
+		}
 			
 	}while(t<e);
 	return bestSol;
