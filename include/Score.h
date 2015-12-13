@@ -34,7 +34,7 @@ class Score{
 		/**
 		 * Compare two score by their integer form
 		 */
-		bool isBetterThan(int score1, int score2);
+		static bool isBetterThan(int score1, int score2);
 		/**
 		 * @param distancePower the power of ErrLength
 		 * @param flyersPower the power of ErrFlyers

@@ -23,6 +23,8 @@ class Recuit: public Metaheuristic{
 		int p;
 		float t;
 		float e;
+		
+		bool accept(int sprime, int s);
 	public:
 		/**
 		 * @param initSolution the initial Solution to enhance
