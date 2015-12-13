@@ -67,10 +67,33 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, 
 	}
 }
 
+void centerCamera(const Screen& screen, Camera& camera, int x, int y) {
+	camera.x = camera.z*x-screen.width()/2;
+	camera.y = camera.z*y-screen.height()/2;
+}
+
 /*
- * TODO implement the same thing as c but with the graph's center
- * (arithmetic mean between min and max)
+ * Moves the camera on the graph's center,
+ * i.e. at the arithmetic mean of extreme coordinates.
  */
+void centerCamera(const Screen& screen, const Graph& graph, Camera& camera) {
+	int mx, Mx, my, My;
+	for (int i=0; i<graph.x.size(); i++) {
+		int x=graph.x.at(i), y=graph.y.at(i);
+		if (i == 0) {
+			mx = Mx = x;
+			my = My = y;
+		}
+		else {
+			mx = std::min(x, mx);
+			my = std::min(y, my);
+			Mx = std::max(x, Mx);
+			My = std::max(y, My);
+		}
+	}
+	centerCamera(screen, camera, mx+(Mx-mx)/2, my+(My-my)/2);
+}
+
 void view(const Graph& graph, const Solution* const solution) {
 	Screen screen(1280, 960);
 	Camera camera(0, 0, 2, 200, 200, 1.2);
@@ -97,12 +120,8 @@ void view(const Graph& graph, const Solution* const solution) {
 				}
 				else if (event.key.keysym.unicode == 't')
 					captions ^= true;
-				else if (event.key.keysym.unicode == 'c') {
-					int x = graph.x.at(0);
-					int y = graph.y.at(0);
-					camera.x = camera.z*x-screen.width()/2;
-					camera.y = camera.z*y-screen.height()/2;
-				}
+				else if (event.key.keysym.unicode == 'c')
+					centerCamera(screen, graph, camera);
 				else if (event.key.keysym.unicode=='?') {
 					std::cout << "zoom (i)n/(o)ut" << std::endl;
 					std::cout << "swap directions (x)" << std::endl;
