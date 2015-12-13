@@ -306,5 +306,5 @@ std::vector<Graph*> Graph::subGraphs(std::vector<int> assignments) const {
 	return res;
 }
 
-int Graph::getAverageDistance(){ return averageDist; }
-int Graph::getAverageFlyers(){ return averageFlyers; }
+int Graph::getAverageDistance() const{ return averageDist; }
+int Graph::getAverageFlyers() const{ return averageFlyers; }

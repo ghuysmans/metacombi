@@ -50,6 +50,15 @@ void TestCompacitySimple(CuTest *tc){
 	CuAssertIntEquals(tc, 1350, result);
 }
 
+void TestCompacityBig(CuTest *tc){
+	Graph graph = Graph::load("testing-Graph.txt");
+	int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
+	std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
+	Solution sol = Solution(vectorSolution,graph);
+	CuAssertTrue(tc, false);
+}
+	
+
 /* unknown error void Testscore1(CuTest *tc){
 	struct Score::teamScore ts1 = { .dist=250, .Nflyers=280, .comp=80};
 	struct Score::teamScore ts2 = { .dist=265, .Nflyers=280, .comp=80};

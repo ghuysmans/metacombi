@@ -25,10 +25,10 @@ const std::vector<int> Solution::getDelivered() const{
 	return tab;
 }
 
-std::vector<int> Solution::getCompacities(std::vector<Graph>& paths) const{
+std::vector<int> Solution::getCompacities(std::vector<Graph*> const& paths) const{
 	std::vector<int> tab = std::vector<int>(graph.teamsCount, 0);
 	for(int i=0 ; i<paths.size() ; i++){
-		tab[i] = getCompacity( paths.at(i) );
+		tab[i] = getCompacity( *(paths.at(i)) );
 	}
 	return tab;
 }
@@ -104,8 +104,8 @@ Solution Solution::load(const Graph& graph, int pattern) {
 	return Solution(s, graph);
 }
 
-Score Solution::getScore(ScoreCalculator& sc) const{
-	return sc(getDistances(), getDelivered(), graph);
+Score Solution::getScore() const{
+	return Score::compute( this );
 }
 
 std::vector<int> Solution::move()
