@@ -52,7 +52,8 @@ Score Solution::getScore(ScoreCalculator& sc) const{
 	return sc(getDistances(), getDelivered(), graph);
 }
 
-std::vector<int> Solution::move(){
+std::vector<int> Solution::move()
+{
 	srand (time(NULL));
 	std::vector<int> res, possib;
 	res.reserve(2);
@@ -88,21 +89,39 @@ std::vector<int> Solution::move(){
 	}
 	
 	v3 = rand() % 2 + 1;  
-	
-	if(v3 == 1)//equipe 1 prend un arc en plus
+	int i;
+	if(v3 == 1)//equipe 1 prend deux arcs en plus
 	{
-		vect.at(graph.head.at(possib.at(value)) + v2) = e1;
+		vect.at(graph.head.at(possib.at(value)) + v2) = e1;//On modifie l'arc de a vers b
+		for(i = 0; i < graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)).size(); i++)
+		{
+			if(possib.at(value) == graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)).at(i))
+			{
+				vect.at(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)) + i) = e1;//On modifie l'arc de b vers a
+				break;	
+			}
+		}
 		res.push_back(e2);
 		res.push_back(graph.head.at(possib.at(value)) + v2);
+		res.push_back(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2) + i));
 	}
-	else//equipe 2 prend un arc en plus
+	else//equipe 2 prend deux arcs en plus
 	{
-		vect.at(graph.head.at(possib.at(value)) + v1) = e2;
+		vect.at(graph.head.at(possib.at(value)) + v1) = e2;//On modifie l'arc de a vers b
+		for(i = 0; i < graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)).size(); i++)
+		{
+			if(possib.at(value) == graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)).at(i))
+			{
+				vect.at(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)) + i) = e2;//On modifie l'arc de b vers a
+				break;	
+			}
+		}
 		res.push_back(e1);
 		res.push_back(graph.head.at(possib.at(value)) + v1);
+		res.push_back(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1) + i));
 	}
 
-	return res;//res.at(0) = equipe remplacé, res.at(1) = position remplacé
+	return res;//res.at(0) = equipe remplacé, res.at(1) = position remplacé, res.at(2) = position remplacé
 }
 
 bool Solution::isAdmissible() const{

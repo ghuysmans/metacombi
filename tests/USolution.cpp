@@ -30,7 +30,7 @@ void TestMove(CuTest *tc) {
 		if(sol.getVector().at(i) != array[i])
 			res++;
 	}
-	CuAssertIntEquals(tc, 1, res);
+	CuAssertIntEquals(tc, 2, res);
 }
 
 void TestInitSolution(CuTest *tc) {
