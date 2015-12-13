@@ -104,13 +104,12 @@ Solution Solution::load(const Graph& graph, int pattern) {
 	return Solution(s, graph);
 }
 
-Score Solution::getScore() const{
-	return Score::compute( this );
+Solution::Rand::Rand() {
+	srand(time(NULL));
 }
 
 std::vector<int> Solution::move()
 {
-	srand (time(NULL));
 	std::vector<int> res, possib;
 	res.reserve(2);
 	possib.reserve(graph.head.size());//va contenir tous les noeuds où on peut faire un remplacement

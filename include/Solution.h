@@ -82,7 +82,12 @@ class Solution{
 		 */
 		const std::vector<int>& getVector() const;
 		//TODO peut-être devra t on envisage une fonction qui retourne tous ou une partie des mouvement possible?
-		
+
+	private:
+		class Rand {
+			private:
+				Rand();
+		};
 };
 
 #endif //_SOLUTION_H
