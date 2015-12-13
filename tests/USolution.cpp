@@ -53,16 +53,22 @@ void TestCompacitySimple(CuTest *tc){
 void TestCompacityBig(CuTest *tc){
 	Graph graph = Graph::load("testing-Graph.txt");
 	int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
-	std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
-	Solution sol = Solution(vectorSolution,graph);
-	CuAssertTrue(tc, true);//TODO complete please
+	std::vector<int> v(&arr[0], &arr[0]+48);
+	for(int i=0 ; i<v.size() ; i++){
+		v[i] = v.at(i)-1;
+	}
+	Solution sol = Solution(v,graph);
+	std::cout << "HIT before subgraph" << std::endl;
+	std::vector<Graph*> sgs = graph.subGraphs(v);
+	std::cout << "HIT after subgraph" << std::endl;
+	std::vector<int> comps = sol.getCompacities(sgs);
+	CuAssertIntEquals(tc, 1350, comps.at(0));
 }
 
 void TestSubGraph1(CuTest *tc){
 	std::vector<int> v = std::vector<int>(14, 0);
 	Graph g = Graph::load("scoreSimpleTest.txt");
 	std::vector<Graph*> sgs = g.subGraphs(v);
-	std::cout << "hit" << std::endl;
 	CuAssertTrue(tc ,true);
 }
 
