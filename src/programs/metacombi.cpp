@@ -14,6 +14,8 @@
 #include "Graph.h"
 #include "../config.h"
 #include "Ui.h"
+#include "metaheuristics/Recuit.h"
+#include <vector>
 
 /**
  * Convert a string to lowercase
@@ -44,10 +46,26 @@ void dummy_handler(int) {
 
 int main(int argc, char *argv[])
 {
+	/*
 	Graph graph = Graph::load("testing-Graph.txt");
 	LocalSearch search = LocalSearch(graph);
 	Solution sol = search.getSolution();
 	if(sol.isAdmissible())
+		std::cout << "GOOD" << std::endl;
+	*/
+	Graph graph = Graph::load("testing-Graph.txt");
+	std::vector<int> v(graph.succ.size() , 0);
+	Solution sol(v, graph);
+	sol.initSolution();
+	// HERE play with parameter for 'recuit'
+	float alpha = 0.9f;
+	float temperature = 1.0f;
+	float epsilon = 5.0f;
+	int niter = 3;
+	std::cout << "HIT before create recuit" << std::endl;
+	Recuit meta(sol, alpha, niter, temperature, epsilon);
+	std::cout << "HIT before starting recuit" << std::endl;
+	if(meta.getSolution().isAdmissible())
 		std::cout << "GOOD" << std::endl;
 	
 	//first argument, lowercase, if any
