@@ -25,7 +25,7 @@ void Surface::flip() {
 void Surface::thickLine(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Uint8 width, const SDL_Color& c) {
 	thickLineColor(surface, x1, y1, x2, y2, width, getRGBA(c));
 }
-void Surface::line(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, SDL_Color& c) {
+void Surface::line(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, const SDL_Color& c) {
 	aalineColor(surface, x1, y1, x2, y2, getRGBA(c));
 }
 void Surface::trigon(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 x3, Sint16 y3, const SDL_Color& c) {
