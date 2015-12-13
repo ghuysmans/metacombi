@@ -3,6 +3,9 @@
 
 #include <vector>
 #include "Graph.h"
+class Score;
+class Solution;
+#include "Solution.h"
 
 /**
  * The result of a solution (comparable)
@@ -18,13 +21,10 @@ class Score{
 			int comp;
 		};
 
-		//FIXME so what?
 		/**
-		 * @param teamScoreList the list of teamScore that represent the score for each teams
-		 * @param averageDistance The average distance to travel for each team
-		 * @param averageFlyers The average amount of flyers for each team
+		 * @param sol The solution where to compute the score
 		 */
-		Score(std::vector<struct teamScore> teamScoreList, int averageDistance, int averageFlyers);
+		Score(const Solution& sol);
 
 		/**
 		 * Overloading the operator <
@@ -33,7 +33,7 @@ class Score{
 		bool operator <(const Score& right);
 
 	private:
-		std::vector<Score::teamScore>& tsList;
+		std::vector<teamScore> tsList;
 		int averageDistance;
 		int averageFlyers;
 		

@@ -118,11 +118,11 @@ class Graph{
 		/**
 		 * @return the average distance to travel for each team
 		 */
-		int getAverageDistance();
+		int getAverageDistance() const;
 		/**
 		 * @return the average amount of flyers to deliver for each team
 		 */
-		int getAverageFlyers();
+		int getAverageFlyers() const;
 };
 
 #endif //_GRAPH_H

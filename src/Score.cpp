@@ -1,11 +1,19 @@
 #include <vector>
 #include "Score.h"
+#include "Solution.h"
 #include <math.h>/* pow */
 
-Score::Score(std::vector<struct teamScore> teamScoreList, int averageDistance, int averageFlyers):
-	tsList(teamScoreList),
-	averageDistance(averageDistance),
-	averageFlyers(averageFlyers){
+Score::Score(const Solution& sol) {
+	std::vector<int> comps = sol.getCompacities( sol.graph.subGraphs(sol.vect) );
+	std::vector<int> dists = sol.getDistances();
+	std::vector<int> dels = sol.getDelivered();
+	for(int i=0; i<tsList.size(); i++){
+		tsList.at(i).dist = dists.at(i);
+		tsList.at(i).Nflyers = dels.at(i);
+		tsList.at(i).comp = comps.at(i);
+	}
+	averageDistance = sol.graph.getAverageDistance();
+	averageDistance = sol.graph.getAverageFlyers();
 }
 
 int Score::toInt(int distancePower, int flyersPower, int compacityPower) const{
