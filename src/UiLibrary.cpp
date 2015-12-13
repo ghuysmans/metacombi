@@ -16,6 +16,9 @@ Debuggable::Debuggable(std::string name): name(name) {}
 Exception::Exception(std::string message): Debuggable(message) {};
 
 Surface::Surface(std::string name): Debuggable(name) {}
+Surface::~Surface() {
+	SDL_FreeSurface(surface);
+}
 void Surface::blit(SDL_Rect *from, Surface &dest, SDL_Rect *to) const {
 	SDL_BlitSurface(surface, from, dest.surface, to);
 }

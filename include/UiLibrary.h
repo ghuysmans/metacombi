@@ -37,6 +37,7 @@ class Exception: public Debuggable {
 class Surface: public Debuggable {
 	public:
 		Surface(std::string name);
+		~Surface();
 		void blit(SDL_Rect *from, Surface &dest, SDL_Rect *to) const;
 		void flip();
 		void thickLine(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Uint8 width, const SDL_Color& c);
