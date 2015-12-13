@@ -5,6 +5,13 @@
 #include "Score.h"
 #include "Graph.h"
 
+class SolutionException: public std::exception {
+	public:
+		SolutionException(const char* r): reason(r) {}
+		const char* what() {return reason;}
+		const char* reason;
+};
+
 /**
  * A solution
  */
@@ -28,6 +35,17 @@ class Solution{
 		 * @param problemGraph The graph of the problem (its to compute the score)
 		 */
 		Solution(std::vector<int>& vectorSolution, const Graph& problemGraph);
+		/**
+		 * @param filename text file containing the solution
+		 * @param problemGraph the problem graph
+		 */
+		static Solution load(const std::string& filename, const Graph& problemGraph);
+		/**
+		 * Generate a (probably invalid) trivial solution.
+		 * @param problemGraph the problem graph
+		 * @param pattern positive is the same team, -1 is equal parts, -2 is modulus
+		 */
+		static Solution load(const Graph& graph, int pattern);
 		/**
 		 * @param The list of subgraph for each team
 		 * @return The compacity of the path for each team
