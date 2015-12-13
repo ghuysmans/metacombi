@@ -14,7 +14,7 @@ inline std::string itos(int i) {
 }
 
 void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, const Solution* const solution, const bool captions) {
-	static SDL_Color palette[] = {
+	static const SDL_Color palette[] = {
 		{255, 0, 0}, //red
 		{255, 231, 0}, //yellow
 		{34, 255, 0}, //light green
@@ -25,8 +25,9 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, 
 		{79, 11, 84}, //purple
 		{113, 201, 11} //green
 	};
-	static SDL_Color node = {45, 193, 80};
-	static SDL_Color text = {0, 0, 0};
+	static const int palette_size = sizeof(palette)/sizeof(SDL_Color);
+	static const SDL_Color node = {45, 193, 80};
+	static const SDL_Color text = {0, 0, 0};
 	//instead of using some basic trigonometry,
 	//let's just draw the edges first!
 	for (int a=0; a<graph.head.size(); a++) {
@@ -41,7 +42,7 @@ void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, 
 				int x1=graph.x.at(a), y1=graph.y.at(a);
 				int x2=graph.x.at(b), y2=graph.y.at(b);
 				int xc=x1+(x2-x1)/2, yc=y1+(y2-y1)/2;
-				int s = solution ? solution->getVector().at(edge) : 0;
+				int s = solution ? solution->getVector().at(edge)%palette_size : 0;
 				camera.transform(x1, y1);
 				camera.transform(x2, y2);
 				screen.thickLine(x1, y1, x2, y2, 3, palette[s]);
@@ -121,18 +122,14 @@ void view(const Graph& graph, const Solution* const solution) {
 	std::cout << "leaving" << std::endl;
 }
 
-void ui_main(const Graph& graph) {
+void ui_main(const Graph& graph, const Solution* const solution) {
 	IMG_Init(IMG_INIT_JPG);
 	SDL_Init(SDL_INIT_EVERYTHING);
 	SDL_EnableUNICODE(SDL_ENABLE); //also interprets Caps Lock
 	SDL_WM_SetCaption(graph.filename.c_str(), NULL);
 	TTF_Init();
 	try {
-		std::vector<int> s(graph.succ.size());
-		for (int i=0; i<s.size(); i++)
-			s.at(i) = i%4;
-		Solution sol(s, graph);
-		view(graph, &sol);
+		view(graph, solution);
 	}
 	catch (Exception& e) {
 		std::cout << e << std::endl;
