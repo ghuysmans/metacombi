@@ -9,6 +9,8 @@
 #include <cerrno>
 #include <unistd.h>
 #include <sys/signal.h>
+#include <Graph.h>
+#include <Solution.h>
 #include "../config.h"
 #include "Ui.h"
 #include <sstream>
