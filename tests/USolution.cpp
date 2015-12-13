@@ -57,7 +57,14 @@ void TestCompacityBig(CuTest *tc){//TODO
 	Solution sol = Solution(vectorSolution,graph);
 	CuAssertTrue(tc, false);
 }
-	
+
+void TestSubGraph1(CuTest *tc){
+	std::vector<int> v = std::vector<int>(14, 0);
+	Graph g = Graph::load("scoreSimpleTest.txt");
+	std::vector<Graph*> sgs = g.subGraphs(v);
+	std::cout << "hit" << std::endl;
+	CuAssertTrue(tc ,true);
+}
 
 void Testscore1(CuTest *tc){
 	std::vector<int> v = std::vector<int>(14, 0);

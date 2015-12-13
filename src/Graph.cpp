@@ -250,8 +250,10 @@ std::vector<Graph*> Graph::subGraphs(std::vector<int> assignments) const {
 		for(int i=0; i<getCount(node); i++) {
 			int edge = head.at(node) + i;
 			int team = assignments.at(edge) - 1;
-			if (team < 0)
+			if (team < 0){
+				std::cout << "incomplete assignment vector" << std::endl;
 				throw GraphException("incomplete assignment vector");
+			}
 			fakeSucc.at(team).push_back(succ.at(edge));
 			res_w.at(team).push_back(weights.at(edge));
 			res_f.at(team).push_back(flyers.at(edge));
