@@ -36,7 +36,7 @@ void TestMove(CuTest *tc) {
 
 void TestInitSolution(CuTest *tc) {
 	Graph graph = Graph::load("testing-Graph.txt");
-	std::vector<int> vectorSolution(48,0);
+	std::vector<int> vectorSolution(48,-1);
 	Solution sol = Solution(vectorSolution,graph);
 	sol.initSolution();
 	CuAssertTrue(tc, sol.isAdmissible());
@@ -50,10 +50,29 @@ void TestCompacitySimple(CuTest *tc){
 	CuAssertIntEquals(tc, 1350, result);
 }
 
-void TestCompacityBig(CuTest *tc){//TODO
+/* hop void TestCompacityBig(CuTest *tc){//TODO
 	Graph graph = Graph::load("testing-Graph.txt");
 	int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
 	std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
 	Solution sol = Solution(vectorSolution,graph);
 	CuAssertTrue(tc, false);
+
 }
+}*/
+
+/* hop void TestSubGraph1(CuTest *tc){
+	std::vector<int> v = std::vector<int>(14, 0);
+	Graph g = Graph::load("scoreSimpleTest.txt");
+	std::vector<Graph*> sgs = g.subGraphs(v);
+	std::cout << "hit" << std::endl;
+	CuAssertTrue(tc ,true);
+}*/
+
+/* hop void Testscore1(CuTest *tc){
+	std::vector<int> v = std::vector<int>(14, 0);
+	Graph g = Graph::load("scoreSimpleTest.txt");
+	Solution s = Solution(v, g);
+	std::vector<int> v2 = std::vector<int>(14, 1);
+	Solution s2 = Solution(v2, g);
+	CuAssertTrue(tc, !( Score(s2)<Score(s)) );
+}*/

@@ -9,6 +9,8 @@
 #include "Graph.h"
 #include "Solution.h"
 
+Solution::Rand Solution::_rand;
+
 const std::vector<int> Solution::getDistances() const{
 	std::vector<int> tab = std::vector<int>(graph.teamsCount);
 	for(int i=0 ; i<vect.size() ; i++){
@@ -195,7 +197,7 @@ bool Solution::isAdmissible() const{
 	std::map<int, bool>::iterator it;
 	int firstNode,firstSuccIndex,workingNode;
 	int indexInSolution = 0;
-	for(int team = 1; team <= graph.teamsCount; team++){
+	for(int team = 0; team < graph.teamsCount; team++){
 		mark.clear();
 		firstNode = -1;
 		indexInSolution = 0;
@@ -211,48 +213,50 @@ bool Solution::isAdmissible() const{
 				indexInSolution++;
 			}
 		}
-		//Parcours en profondeur
-		lifo.push(firstNode);
-		int succ;
-		bool pushed;
-		while(!lifo.empty()){
-			workingNode = lifo.top();
-			int nbrOfSucc = graph.getCount(workingNode);
-			if(nbrOfSucc == 0)
-				lifo.pop();
-			else{
-				pushed = false;
-				firstSuccIndex = 0;
-				for(int i = 0;i<workingNode;i++){
-					firstSuccIndex += graph.getCount(i);
-				}
-				//On va push le premier successeur non-marqué(et se trouvant dans map) dans la pile
-				for(int i=firstSuccIndex;i< (firstSuccIndex + nbrOfSucc);i++){
-					it = mark.find(i);
-					if(it != mark.end()){
-						if(!(it->second)){
-							succ = successors.at(it->first);
-							it->second = true;
-							//On marque aussi l'arc dans l'autre sens pour ne pas faire demi-tour
-							int succIndex = 0;
-							for(int k = 0;k<succ;k++){
-								succIndex += graph.getCount(k);
-							}
-							for(int j=succIndex;j< (succIndex + graph.getCount(succ));j++){
-								if(successors.at(j) == workingNode){
-									it = mark.find(j);
-									it->second = true;
+		//Parcours en profondeur si un sous-graphe pour l'équipe existe
+		if(!mark.empty()){
+			lifo.push(firstNode);
+			int succ;
+			bool pushed;
+			while(!lifo.empty()){
+				workingNode = lifo.top();
+				int nbrOfSucc = graph.getCount(workingNode);
+				if(nbrOfSucc == 0)
+					lifo.pop();
+				else{
+					pushed = false;
+					firstSuccIndex = 0;
+					for(int i = 0;i<workingNode;i++){
+						firstSuccIndex += graph.getCount(i);
+					}
+					//On va push le premier successeur non-marqué(et se trouvant dans map) dans la pile
+					for(int i=firstSuccIndex;i< (firstSuccIndex + nbrOfSucc);i++){
+						it = mark.find(i);
+						if(it != mark.end()){
+							if(!(it->second)){
+								succ = successors.at(it->first);
+								it->second = true;
+								//On marque aussi l'arc dans l'autre sens pour ne pas faire demi-tour
+								int succIndex = 0;
+								for(int k = 0;k<succ;k++){
+									succIndex += graph.getCount(k);
 								}
+								for(int j=succIndex;j< (succIndex + graph.getCount(succ));j++){
+									if(successors.at(j) == workingNode){
+										it = mark.find(j);
+										it->second = true;
+									}
+								}
+								lifo.push(succ);
+								pushed = true;
+								break;
 							}
-							lifo.push(succ);
-							pushed = true;
-							break;
 						}
 					}
+					//Cas où tous les successeurs ont déjà été marqué 
+					if(!(pushed))
+						lifo.pop();
 				}
-				//Cas où tous les successeurs ont déjà été marqué 
-				if(!(pushed))
-					lifo.pop();
 			}
 		}
 		//Si un sommet n'a pas été marqué après le parcours
@@ -270,7 +274,7 @@ void Solution::initSolution(){
 	std::vector<bool> markEdges(graph.succ.size(),false);
 	std::vector<bool> markNodes(graph.head.size(),false);
 	int edgesPerTeam = graph.succ.size() / graph.head.size();
-	int workingNode,succ,nbrOfSucc,firstSuccIndex,succIndex,neighbourTeam,counter = 0,teamNumber = 1;
+	int workingNode,succ,nbrOfSucc,firstSuccIndex,succIndex,neighbourTeam,counter = 0,teamNumber = 0;
 	
 	//Parcours en profondeur
 	markNodes[0] = true;
@@ -300,7 +304,7 @@ void Solution::initSolution(){
 					}
 					if(!neighbourFound && counter != 0){
 						counter = 0;
-						if(teamNumber == graph.teamsCount)
+						if(teamNumber == graph.teamsCount - 1)
 							teamNumber = neighbourTeam;
 						else
 							teamNumber++;
@@ -323,7 +327,7 @@ void Solution::initSolution(){
 					}
 					//+2 car arc aller-retour marqué
 					counter+=2;
-					if(counter > edgesPerTeam && teamNumber < graph.teamsCount){
+					if(counter > edgesPerTeam && teamNumber < graph.teamsCount - 1){
 						counter = 0;
 						teamNumber++;
 					}
