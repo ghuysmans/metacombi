@@ -8,7 +8,7 @@
 #include "SDL/SDL_ttf.h"
 #include "SDL/SDL_gfxPrimitives.h"
 
-Uint32 getRGBA(SDL_Color& c);
+Uint32 getRGBA(const SDL_Color& c);
 
 class Debuggable {
 	public:
@@ -39,15 +39,15 @@ class Surface: public Debuggable {
 		Surface(std::string name);
 		void blit(SDL_Rect *from, Surface &dest, SDL_Rect *to) const;
 		void flip();
-		void thickLine(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Uint8 width, SDL_Color& c);
-		void line(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, SDL_Color& c);
-		void trigon(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 x3, Sint16 y3, SDL_Color& c);
-		void filledCircle(Sint16 x, Sint16 y, Sint16 r, SDL_Color& c);
-		void circle(Sint16 x, Sint16 y, Sint16 r, SDL_Color& c);
+		void thickLine(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Uint8 width, const SDL_Color& c);
+		void line(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, const SDL_Color& c);
+		void trigon(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 x3, Sint16 y3, const SDL_Color& c);
+		void filledCircle(Sint16 x, Sint16 y, Sint16 r, const SDL_Color& c);
+		void circle(Sint16 x, Sint16 y, Sint16 r, const SDL_Color& c);
 		/**
 		 * @param dest NULL indicates the whole surface
 		 */
-		void rect(SDL_Rect *dest, SDL_Color& c);
+		void rect(SDL_Rect *dest, const SDL_Color& c);
 		void rect(SDL_Rect *dest, Uint32 rgb);
 		int height() const;
 		int width() const;
@@ -77,9 +77,9 @@ class Font: public Debuggable {
 
 class Text: public Surface {
 	public:
-		Text(Font& font, std::string msg, SDL_Color color);
+		Text(Font& font, std::string msg, const SDL_Color color);
 	protected:
-		void render(Font& font, std::string& msg, SDL_Color& fg);
+		void render(Font& font, std::string& msg, const SDL_Color& fg);
 };
 
 /**
@@ -91,7 +91,7 @@ class Text: public Surface {
  */
 class TextInput: public Text {
 	public:
-		TextInput(Font& font, std::string& text, SDL_Color& fg);
+		TextInput(Font& font, std::string& text, const SDL_Color& fg);
 		void event(SDL_Event& event);
 		/**
 		 * @note use this when any of the attributes gets modified.

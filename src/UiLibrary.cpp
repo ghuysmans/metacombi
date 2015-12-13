@@ -8,7 +8,7 @@
 #include "SDL/SDL_ttf.h"
 #include "SDL/SDL_gfxPrimitives.h"
 
-Uint32 getRGBA(SDL_Color& c) {
+Uint32 getRGBA(const SDL_Color& c) {
 	return c.r<<24|c.g<<16|c.b<<8|0xFF;
 }
 
@@ -22,23 +22,23 @@ void Surface::blit(SDL_Rect *from, Surface &dest, SDL_Rect *to) const {
 void Surface::flip() {
 	SDL_Flip(surface);
 }
-void Surface::thickLine(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Uint8 width, SDL_Color& c) {
+void Surface::thickLine(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Uint8 width, const SDL_Color& c) {
 	thickLineColor(surface, x1, y1, x2, y2, width, getRGBA(c));
 }
-void Surface::line(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, SDL_Color& c) {
+void Surface::line(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, const SDL_Color& c) {
 	aalineColor(surface, x1, y1, x2, y2, getRGBA(c));
 }
-void Surface::trigon(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 x3, Sint16 y3, SDL_Color& c) {
+void Surface::trigon(Sint16 x1, Sint16 y1, Sint16 x2, Sint16 y2, Sint16 x3, Sint16 y3, const SDL_Color& c) {
 	aatrigonColor(surface, x1, y1, x2, y2, x3, y3, getRGBA(c));
 }
-void Surface::filledCircle(Sint16 x, Sint16 y, Sint16 r, SDL_Color& c) {
+void Surface::filledCircle(Sint16 x, Sint16 y, Sint16 r, const SDL_Color& c) {
 	filledCircleColor(surface, x, y, r, getRGBA(c));
 	aacircleColor(surface, x, y, r, getRGBA(c));
 }
-void Surface::circle(Sint16 x, Sint16 y, Sint16 r, SDL_Color& c) {
+void Surface::circle(Sint16 x, Sint16 y, Sint16 r, const SDL_Color& c) {
 	aacircleColor(surface, x, y, r, getRGBA(c));
 }
-void Surface::rect(SDL_Rect *dest, SDL_Color& c) {
+void Surface::rect(SDL_Rect *dest, const SDL_Color& c) {
 	SDL_FillRect(surface, dest, getRGBA(c));
 }
 void Surface::rect(SDL_Rect *dest, Uint32 rgb) {
@@ -80,16 +80,16 @@ TTF_Font* Font::pointer() {
 	return font;
 }
 
-Text::Text(Font& font, std::string msg, SDL_Color color): Surface("T"+msg) {
+Text::Text(Font& font, std::string msg, const SDL_Color color): Surface("T"+msg) {
 	render(font, msg, color);
 }
-void Text::render(Font& font, std::string& msg, SDL_Color& color) {
+void Text::render(Font& font, std::string& msg, const SDL_Color& color) {
 	surface = TTF_RenderText_Solid(font.pointer(), msg.c_str(), color);
 	if (!surface)
 		throw Exception("TTF_RenderText_Solid failed");
 }
 
-TextInput::TextInput(Font& font, std::string& text, SDL_Color& fg): Text(font, text, fg), text(text), font(font), fg(fg) {}
+TextInput::TextInput(Font& font, std::string& text, const SDL_Color& fg): Text(font, text, fg), text(text), font(font), fg(fg) {}
 void TextInput::render() {
 	SDL_FreeSurface(surface);
 	Text::render(font, text, fg);

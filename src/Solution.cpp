@@ -2,6 +2,8 @@
 #include <stack>
 #include <queue>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cstdlib>
 #include "Score.h"
 #include "Graph.h"
@@ -46,6 +48,60 @@ int Solution::getCompacity(Graph& subgraph) const{
 }
 
 Solution::Solution(std::vector<int>& vectorSolution, const Graph& problemGraph): vect(vectorSolution), graph(problemGraph) {
+}
+
+Solution Solution::load(const std::string& filename, const Graph& g) {
+	std::ifstream infile;
+	infile.open(filename.c_str());
+	if (!infile.is_open())
+		throw SolutionException("couldn't open the input solution");
+	std::string line;
+	std::vector<int> vect(g.succ.size());
+	bool valid = true;
+	if (getline(infile, line)) {
+		std::istringstream iss(line);
+		for (int edge=0; edge<g.succ.size(); edge++) {
+			int team;
+			iss >> team;
+			if (team<0 || team>g.teamsCount) {
+				valid = false;
+				break;
+			}
+			vect.at(edge) = team;
+		}
+		if (getline(infile, line) && line.size())
+			valid = false;
+	}
+	if (valid)
+		return Solution(vect, g);
+	else
+		throw SolutionException("invalid input solution");
+}
+
+Solution Solution::load(const Graph& graph, int pattern) {
+	std::vector<int> s(graph.succ.size());
+	int team = pattern<0 ? 0 : pattern;
+	int count = 0;
+	int change_every = graph.succ.size()/graph.teamsCount;
+	for (int edge=0; edge<s.size(); edge++) {
+		switch (pattern) {
+			case -1:
+				if (count != change_every) {
+					count++;
+					break; //don't change
+				}
+				else
+					count = 0;
+					//fallthrough
+			case -2:
+				team = (team+1) % graph.teamsCount;
+				break;
+			default:
+				;
+		}
+		s.at(edge) = team;
+	}
+	return Solution(s, graph);
 }
 
 Score Solution::getScore(ScoreCalculator& sc) const{
@@ -278,4 +334,4 @@ void Solution::initSolution(){
 	}
 }
 
-std::vector<int>& Solution::getVector() const{ return vect; }
+const std::vector<int>& Solution::getVector() const { return vect; }
