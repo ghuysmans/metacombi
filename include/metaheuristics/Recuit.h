@@ -3,6 +3,7 @@
 
 #include "Metaheuristic.h"
 #include "Graph.h"
+#include <vector>
 
 class RecuitException: public std::exception {
 	public:
@@ -17,12 +18,14 @@ class RecuitException: public std::exception {
 class Recuit: public Metaheuristic{
 	private:
 		Solution& sol;
-		Solution bestSol;
+		std::vector<int> bestSol;
 		int bestScore;
 		float a;
 		int p;
 		float t;
 		float e;
+		
+		bool accept(int sprime, int s);
 	public:
 		/**
 		 * @param initSolution the initial Solution to enhance
