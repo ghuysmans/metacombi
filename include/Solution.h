@@ -67,6 +67,10 @@ class Solution{
 		 */
 		std::vector<int> move();
 		/**
+		 * @param A vector that represents the move to undo
+		 */
+		void undo(std::vector<int> move);
+		/**
  		 * @return true if the solution is admissible
  		 */
 		bool isAdmissible() const;
