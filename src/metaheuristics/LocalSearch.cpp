@@ -1,6 +1,7 @@
 #include <vector>
 #include "Solution.h"
 #include "metaheuristics/LocalSearch.h"
+#include <iostream>
 
 LocalSearch::LocalSearch(const Graph& problemGraph):graph(problemGraph){}
 
@@ -10,7 +11,7 @@ Solution LocalSearch::getSolution(){
 	sol.initSolution();
 	Score scoreBefore = Score(sol);
 	std::vector<int> moveInfo;
-	int iterMax = 10000;
+	int iterMax = 10;
 	for(int i = 0;i<iterMax;i++){
 		moveInfo = sol.move();
 		if(sol.isAdmissible()){
@@ -20,8 +21,9 @@ Solution LocalSearch::getSolution(){
 			else
 				sol.undo(moveInfo);
 		}
-		else
+		else{
 			sol.undo(moveInfo);
+		}
 	}
 	return sol;
 }

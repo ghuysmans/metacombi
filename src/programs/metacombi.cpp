@@ -10,6 +10,7 @@
 #include <signal.h>
 #include "metaheuristics/Metaheuristic.h"
 #include "metaheuristics/RandomStrategy.h"
+#include "metaheuristics/LocalSearch.h"
 #include "Graph.h"
 #include "../config.h"
 #include "Ui.h"
@@ -43,6 +44,12 @@ void dummy_handler(int) {
 
 int main(int argc, char *argv[])
 {
+	Graph graph = Graph::load("testing-Graph.txt");
+	LocalSearch search = LocalSearch(graph);
+	Solution sol = search.getSolution();
+	if(sol.isAdmissible())
+		std::cout << "GOOD" << std::endl;
+	
 	//first argument, lowercase, if any
 	std::string fl = argc>1 ? lowercase(argv[1]) : "";
 	if (argc<=2) {
