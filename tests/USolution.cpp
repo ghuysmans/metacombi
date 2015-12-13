@@ -36,7 +36,7 @@ void TestMove(CuTest *tc) {
 
 void TestInitSolution(CuTest *tc) {
 	Graph graph = Graph::load("testing-Graph.txt");
-	std::vector<int> vectorSolution(48,0);
+	std::vector<int> vectorSolution(48,-1);
 	Solution sol = Solution(vectorSolution,graph);
 	sol.initSolution();
 	CuAssertTrue(tc, sol.isAdmissible());
