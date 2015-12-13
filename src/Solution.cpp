@@ -211,48 +211,50 @@ bool Solution::isAdmissible() const{
 				indexInSolution++;
 			}
 		}
-		//Parcours en profondeur
-		lifo.push(firstNode);
-		int succ;
-		bool pushed;
-		while(!lifo.empty()){
-			workingNode = lifo.top();
-			int nbrOfSucc = graph.getCount(workingNode);
-			if(nbrOfSucc == 0)
-				lifo.pop();
-			else{
-				pushed = false;
-				firstSuccIndex = 0;
-				for(int i = 0;i<workingNode;i++){
-					firstSuccIndex += graph.getCount(i);
-				}
-				//On va push le premier successeur non-marqué(et se trouvant dans map) dans la pile
-				for(int i=firstSuccIndex;i< (firstSuccIndex + nbrOfSucc);i++){
-					it = mark.find(i);
-					if(it != mark.end()){
-						if(!(it->second)){
-							succ = successors.at(it->first);
-							it->second = true;
-							//On marque aussi l'arc dans l'autre sens pour ne pas faire demi-tour
-							int succIndex = 0;
-							for(int k = 0;k<succ;k++){
-								succIndex += graph.getCount(k);
-							}
-							for(int j=succIndex;j< (succIndex + graph.getCount(succ));j++){
-								if(successors.at(j) == workingNode){
-									it = mark.find(j);
-									it->second = true;
+		//Parcours en profondeur si un sous-graphe pour l'équipe existe
+		if(!mark.empty()){
+			lifo.push(firstNode);
+			int succ;
+			bool pushed;
+			while(!lifo.empty()){
+				workingNode = lifo.top();
+				int nbrOfSucc = graph.getCount(workingNode);
+				if(nbrOfSucc == 0)
+					lifo.pop();
+				else{
+					pushed = false;
+					firstSuccIndex = 0;
+					for(int i = 0;i<workingNode;i++){
+						firstSuccIndex += graph.getCount(i);
+					}
+					//On va push le premier successeur non-marqué(et se trouvant dans map) dans la pile
+					for(int i=firstSuccIndex;i< (firstSuccIndex + nbrOfSucc);i++){
+						it = mark.find(i);
+						if(it != mark.end()){
+							if(!(it->second)){
+								succ = successors.at(it->first);
+								it->second = true;
+								//On marque aussi l'arc dans l'autre sens pour ne pas faire demi-tour
+								int succIndex = 0;
+								for(int k = 0;k<succ;k++){
+									succIndex += graph.getCount(k);
 								}
+								for(int j=succIndex;j< (succIndex + graph.getCount(succ));j++){
+									if(successors.at(j) == workingNode){
+										it = mark.find(j);
+										it->second = true;
+									}
+								}
+								lifo.push(succ);
+								pushed = true;
+								break;
 							}
-							lifo.push(succ);
-							pushed = true;
-							break;
 						}
 					}
+					//Cas où tous les successeurs ont déjà été marqué 
+					if(!(pushed))
+						lifo.pop();
 				}
-				//Cas où tous les successeurs ont déjà été marqué 
-				if(!(pushed))
-					lifo.pop();
 			}
 		}
 		//Si un sommet n'a pas été marqué après le parcours
