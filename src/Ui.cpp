@@ -95,7 +95,7 @@ void centerCamera(const Screen& screen, const Graph& graph, Camera& camera) {
 }
 
 void view(const Graph& graph, const Solution* const solution) {
-	Screen screen(1280, 960);
+	Screen screen(800, 600);
 	Camera camera(0, 0, 2, 200, 200, 1.2);
 	Font font("DejaVuSansMono.ttf", 16);
 	FpsLimiter limiter;
