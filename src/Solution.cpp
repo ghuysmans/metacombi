@@ -9,6 +9,8 @@
 #include "Graph.h"
 #include "Solution.h"
 
+Solution::Rand Solution::_rand;
+
 const std::vector<int> Solution::getDistances() const{
 	std::vector<int> tab = std::vector<int>(graph.teamsCount);
 	for(int i=0 ; i<vect.size() ; i++){

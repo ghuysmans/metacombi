@@ -1,6 +1,6 @@
 #include <vector>
 #include "Solution.h"
-#include "../../include/metaheuristics/LocalSearch.h"
+#include "metaheuristics/LocalSearch.h"
 
 LocalSearch::LocalSearch(const Graph& problemGraph):graph(problemGraph){}
 
