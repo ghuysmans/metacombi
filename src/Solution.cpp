@@ -39,7 +39,7 @@ int Solution::getCompacity(Graph& subgraph) const{
 	for(int j=0 ; j<subgraph.getSucc().size() ; j++){//for each edges of subgraph
 		for(int k=0 ; k<subgraph.getSucc().size() ; k++){//for each edges of subgraph
 			if(j!=k) minimum = subgraph.getDistanceEdges(j,k);//the distance between those edges
-			//std::cout << "arc " << j << " et " << k << " distance=" << minimum << std::endl;
+			//std::cerr << "arc " << j << " et " << k << " distance=" << minimum << std::endl;
 			if(minimum > maximum)
 				maximum = minimum;
 		}
@@ -55,6 +55,10 @@ Solution Solution::load(const std::string& filename, const Graph& g) {
 	infile.open(filename.c_str());
 	if (!infile.is_open())
 		throw SolutionException("couldn't open the input solution");
+	return Solution::load(infile, g);
+}
+
+Solution Solution::load(std::istream& infile, const Graph& g) {
 	std::string line;
 	std::vector<int> vect(g.succ.size());
 	bool valid = true;

@@ -16,7 +16,7 @@ Graph::Graph(const Graph& g):
 	averageDist(averageDist),
 	averageFlyers(averageFlyers)
 {
-	std::cout << "copying " << g.filename << std::endl;
+	std::cerr << "copying " << g.filename << std::endl;
 }
 
 Graph::Graph(
@@ -41,7 +41,7 @@ Graph::Graph(
 	averageDist(averageDist),
 	averageFlyers(averageFlyers)
 {
-	std::cout << "loaded " << filename << " with " << head.size() << " nodes and " << succ.size() << " edges" << std::endl;
+	std::cerr << "loaded " << filename << " with " << head.size() << " nodes and " << succ.size() << " edges" << std::endl;
 }
 
 void Graph::dump() const {
@@ -135,7 +135,7 @@ Graph Graph::load(const std::string& filename) {
 
 std::vector<int> Graph::edgeToNodes(int edge) const {
 	if(edge > succ.size()-1){
-		std::cout << "Graph: edge " << edge << " doesn't exist because succ.size()=" << succ.size() << std::endl;
+		std::cerr << "Graph: edge " << edge << " doesn't exist because succ.size()=" << succ.size() << std::endl;
 		throw GraphException("edge doesn't exist");
 	}
 	std::vector<int> result = std::vector<int>(2, -1);
@@ -166,7 +166,7 @@ int Graph::nodesToEdge(int node, int successor) const {
 			return indexEdge;
 		}
 	}
-	std::cout << "Graph: edge <" << node << " , " << successor << "> doesn't exist" << std::endl;
+	std::cerr << "Graph: edge <" << node << " , " << successor << "> doesn't exist" << std::endl;
 	throw GraphException("edge doesn't exist");
 }
 
@@ -211,11 +211,11 @@ int Graph::getDistanceEdges(int edge1, int edge2) const {
 	std::vector<int> e2 = edgeToNodes(edge2);
 	int dist = -1;
 	std::vector<int> dists = getDistanceNodes(e1[0], e2[0], e2[1]);
-	//std::cout<<"d("<<e1[0]<<","<<e2[0]<<")="<<dists[0]<<"et d("<<e1[0]<<","<<e2[1]<<")="<<dists[1]<<std::endl;
+	//std::cerr<<"d("<<e1[0]<<","<<e2[0]<<")="<<dists[0]<<"et d("<<e1[0]<<","<<e2[1]<<")="<<dists[1]<<std::endl;
 	int minimum = dists[0];
 	if( dists[1] < minimum ) minimum = dists[1];
 	dists = getDistanceNodes(e1[1], e2[0], e2[1]);
-	//std::cout<<"d("<<e1[1]<<","<<e2[0]<<")="<<dists[0]<<"et d("<<e1[1]<<","<<e2[1]<<")="<<dists[1]<<std::endl;
+	//std::cerr<<"d("<<e1[1]<<","<<e2[0]<<")="<<dists[0]<<"et d("<<e1[1]<<","<<e2[1]<<")="<<dists[1]<<std::endl;
 	if( dists[0] < minimum ) minimum = dists[0];
 	if( dists[1] < minimum ) minimum = dists[1];
 	return minimum;

@@ -6,6 +6,8 @@
 #include <string>
 #include <cstring>
 #include <algorithm>
+#include <unistd.h>
+#include <signal.h>
 #include "metaheuristics/Metaheuristic.h"
 #include "metaheuristics/RandomStrategy.h"
 #include "Graph.h"
@@ -35,6 +37,10 @@ int get_positive(const char *s) {
 	return *s ? -1 : acc;
 }
 
+void dummy_handler(int) {
+	//TODO set a flag
+}
+
 int main(int argc, char *argv[])
 {
 	//first argument, lowercase, if any
@@ -49,7 +55,15 @@ int main(int argc, char *argv[])
 		else {
 			try {
 				Graph g = Graph::load(argv[1]);
+				signal(SIGUSR1, dummy_handler);
 				//TODO solve
+				int c = 0;
+				while (pause()) {
+					for (int i=0; i<g.head.size(); i++)
+						std::cout << c << " ";
+					std::cout << std::endl;
+					c++;
+				}
 				return 0;
 			}
 			catch (GraphException& e) {
