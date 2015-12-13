@@ -73,6 +73,6 @@ Solution Recuit::getSolution(){
 		}
 		//update temperature
 		t = a*t;	
-	}while(t<e);
+	}while(t>e);
 	return Solution(bestSol, sol.graph);
 }

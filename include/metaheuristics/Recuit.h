@@ -17,8 +17,11 @@ class RecuitException: public std::exception {
  */
 class Recuit: public Metaheuristic{
 	private:
+		/** the current solution */
 		Solution& sol;
+		/** the vector of the best solution found*/
 		std::vector<int> bestSol;
+		/** the integer form of the best solution found*/
 		int bestScore;
 		float a;
 		int p;
