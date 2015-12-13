@@ -315,4 +315,4 @@ void Solution::initSolution(){
 	}
 }
 
-std::vector<int>& Solution::getVector() const{ return vect; }
+const std::vector<int>& Solution::getVector() const { return vect; }
