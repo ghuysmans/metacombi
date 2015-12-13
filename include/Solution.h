@@ -1,7 +1,6 @@
 #ifndef _SOLUTION_H
 #define _SOLUTION_H
 
-#include <memory>
 #include "Score.h"
 #include "Graph.h"
 
@@ -16,7 +15,7 @@ class SolutionException: public std::exception {
  * A solution
  */
 class Solution{
-	private:
+	public:
 		/** The vector of the solution. vect[i] is the number of the group on the edge i */
 		std::vector<int> vect;
 		/** The graph of all the problem */
@@ -29,7 +28,6 @@ class Solution{
 		 * @return The total number of flyers delivered for each team
 		 */
 		const std::vector<int> getDelivered() const;
-	public:
 		/**
 		 * @param vectorSolution the vector of the solution.
 		 * @param problemGraph The graph of the problem (its to compute the score)
@@ -56,7 +54,7 @@ class Solution{
 		 * @return The compacity of the path for each team
 		 * @note This function should be private but it need to be tested
 		 */
-		std::vector<int> getCompacities(std::vector<Graph>& paths) const;
+		std::vector<int> getCompacities(std::vector<Graph*> const& paths) const;
 		/**
 		 * @param the subgraph
 		 * @return The compacity of 'subgraph'
@@ -66,7 +64,7 @@ class Solution{
 		/**
 		 * @return The score of this solution
 		 */
-		Score getScore(ScoreCalculator& sc) const;
+		Score getScore() const;
 		/**
 		 * Move something in the vector
 		 */
@@ -88,7 +86,12 @@ class Solution{
 		 */
 		const std::vector<int>& getVector() const;
 		//TODO peut-être devra t on envisage une fonction qui retourne tous ou une partie des mouvement possible?
-		
+
+	private:
+		class Rand {
+			private:
+				Rand();
+		};
 };
 
 #endif //_SOLUTION_H
