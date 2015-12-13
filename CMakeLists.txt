@@ -40,4 +40,5 @@ include(tests/tests.cmake)
 
 file(GLOB Source src/*.cpp src/metaheuristics/*.cpp)
 add_executable(metacombi ${Source} src/programs/metacombi.cpp)
+add_executable(monitor ${Source} src/programs/monitor.cpp)
 set_target_properties(metacombi PROPERTIES LINKER_LANGUAGE CXX)
