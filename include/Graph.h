@@ -50,6 +50,7 @@ class Graph{
 				const int averageDist=0,
 				const int averageFlyers=0);
 		static Graph load(const std::string& filename);
+		void dump(bool showCoords) const;
 		void dump() const;
 
 		/**
@@ -108,6 +109,12 @@ class Graph{
 		inline int getWeight(int node, int successor) const {
 			return weights.at( nodesToEdge(node , successor));
 		}
+
+		/**
+		 * @return a subgraph for each team
+		 */
+		std::vector<Graph*> subGraphs(std::vector<int> assignments) const;
+
 		/**
 		 * @return the average distance to travel for each team
 		 */

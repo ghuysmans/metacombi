@@ -2,6 +2,8 @@
 #include <stack>
 #include <queue>
 #include <iostream>
+#include <fstream>
+#include <sstream>
 #include <cstdlib>
 #include "Score.h"
 #include "Graph.h"
@@ -48,11 +50,66 @@ int Solution::getCompacity(Graph& subgraph) const{
 Solution::Solution(std::vector<int>& vectorSolution, const Graph& problemGraph): vect(vectorSolution), graph(problemGraph) {
 }
 
+Solution Solution::load(const std::string& filename, const Graph& g) {
+	std::ifstream infile;
+	infile.open(filename.c_str());
+	if (!infile.is_open())
+		throw SolutionException("couldn't open the input solution");
+	std::string line;
+	std::vector<int> vect(g.succ.size());
+	bool valid = true;
+	if (getline(infile, line)) {
+		std::istringstream iss(line);
+		for (int edge=0; edge<g.succ.size(); edge++) {
+			int team;
+			iss >> team;
+			if (team<0 || team>g.teamsCount) {
+				valid = false;
+				break;
+			}
+			vect.at(edge) = team;
+		}
+		if (getline(infile, line) && line.size())
+			valid = false;
+	}
+	if (valid)
+		return Solution(vect, g);
+	else
+		throw SolutionException("invalid input solution");
+}
+
+Solution Solution::load(const Graph& graph, int pattern) {
+	std::vector<int> s(graph.succ.size());
+	int team = pattern<0 ? 0 : pattern;
+	int count = 0;
+	int change_every = graph.succ.size()/graph.teamsCount;
+	for (int edge=0; edge<s.size(); edge++) {
+		switch (pattern) {
+			case -1:
+				if (count != change_every) {
+					count++;
+					break; //don't change
+				}
+				else
+					count = 0;
+					//fallthrough
+			case -2:
+				team = (team+1) % graph.teamsCount;
+				break;
+			default:
+				;
+		}
+		s.at(edge) = team;
+	}
+	return Solution(s, graph);
+}
+
 Score Solution::getScore(ScoreCalculator& sc) const{
 	return sc(getDistances(), getDelivered(), graph);
 }
 
-std::vector<int> Solution::move(){
+std::vector<int> Solution::move()
+{
 	srand (time(NULL));
 	std::vector<int> res, possib;
 	res.reserve(2);
@@ -88,21 +145,44 @@ std::vector<int> Solution::move(){
 	}
 	
 	v3 = rand() % 2 + 1;  
-	
-	if(v3 == 1)//equipe 1 prend un arc en plus
+	int i;
+	if(v3 == 1)//equipe 1 prend deux arcs en plus
 	{
-		vect.at(graph.head.at(possib.at(value)) + v2) = e1;
+		vect.at(graph.head.at(possib.at(value)) + v2) = e1;//On modifie l'arc de a vers b
+		for(i = 0; i < graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)).size(); i++)
+		{
+			if(possib.at(value) == graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)).at(i))
+			{
+				vect.at(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)) + i) = e1;//On modifie l'arc de b vers a
+				break;	
+			}
+		}
 		res.push_back(e2);
 		res.push_back(graph.head.at(possib.at(value)) + v2);
+		res.push_back(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2) + i));
 	}
-	else//equipe 2 prend un arc en plus
+	else//equipe 2 prend deux arcs en plus
 	{
-		vect.at(graph.head.at(possib.at(value)) + v1) = e2;
+		vect.at(graph.head.at(possib.at(value)) + v1) = e2;//On modifie l'arc de a vers b
+		for(i = 0; i < graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)).size(); i++)
+		{
+			if(possib.at(value) == graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)).at(i))
+			{
+				vect.at(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)) + i) = e2;//On modifie l'arc de b vers a
+				break;	
+			}
+		}
 		res.push_back(e1);
 		res.push_back(graph.head.at(possib.at(value)) + v1);
+		res.push_back(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1) + i));
 	}
 
-	return res;//res.at(0) = equipe remplacé, res.at(1) = position remplacé
+	return res;//res.at(0) = equipe remplacé, res.at(1) = position remplacé, res.at(2) = position remplacé
+}
+
+void Solution::undo(std::vector<int> move){
+	vect.at(move.at(1)) = move.at(0);
+	vect.at(move.at(2)) = move.at(0);
 }
 
 bool Solution::isAdmissible() const{
@@ -259,4 +339,4 @@ void Solution::initSolution(){
 	}
 }
 
-std::vector<int>& Solution::getVector() const{ return vect; }
+const std::vector<int>& Solution::getVector() const { return vect; }

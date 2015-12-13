@@ -5,19 +5,18 @@
 #include<climits>
 
 Graph::Graph(const Graph& g):
-	teamsCount(1),
-	filename("xxx"),
-	head(std::vector<int>()),
-	succ(std::vector<int>()),
-	flyers(std::vector<int>()),
-	weights(std::vector<int>()),
-	x(std::vector<int>()),
-	y(std::vector<int>()),
-	averageDist(0),
-	averageFlyers(0)
+	teamsCount(teamsCount),
+	filename(filename),
+	head(head),
+	succ(succ),
+	flyers(flyers),
+	weights(weights),
+	x(x),
+	y(y),
+	averageDist(averageDist),
+	averageFlyers(averageFlyers)
 {
-	std::cout << "copying" << std::endl;
-	throw GraphException("Copying this object is REALLY bad. Stop it now.");
+	std::cout << "copying " << g.filename << std::endl;
 }
 
 Graph::Graph(
@@ -45,18 +44,24 @@ Graph::Graph(
 	std::cout << "loaded " << filename << " with " << head.size() << " nodes and " << succ.size() << " edges" << std::endl;
 }
 
-/**
- * Display the Graph as text
- * @todo ask for an output stream?
- */
 void Graph::dump() const {
+	dump(false);
+}
+
+void Graph::dump(bool showCoords) const {
 	for (int a=0; a<head.size(); a++) {
 		const int f = head.at(a);
 		const int ct = getCount(a);
-		std::cout << a << "(" << x.at(a) << "," << y.at(a) << ") -> ";
+		std::cout << a;
+		if (showCoords && x.size())
+			std::cout << "(" << x.at(a) << "," << y.at(a) << ")";
+		std::cout << " -> ";
 		for (int edge=f; edge<f+ct; edge++) {
 			const int b = succ.at(edge);
-			std::cout << b << "(" << x.at(b) << "," << y.at(b) << ") E" << edge << ", ";
+			std::cout << b;
+			if (showCoords && x.size())
+				std::cout << "(" << x.at(b) << "," << y.at(b) << ")";
+			std::cout << ", ";
 		}
 		std::cout << std::endl;
 	}
@@ -214,6 +219,91 @@ int Graph::getDistanceEdges(int edge1, int edge2) const {
 	if( dists[0] < minimum ) minimum = dists[0];
 	if( dists[1] < minimum ) minimum = dists[1];
 	return minimum;
+}
+
+/**
+ * Integer vector with reserved capacity.
+ * This avoids using loops to init the vectors created in #subGraphs.
+ */
+class IV: public std::vector<int> {
+	public:
+		IV(size_type capacity): std::vector<int>() {
+			reserve(capacity);
+		}
+};
+
+//TODO keepCoords
+std::vector<Graph*> Graph::subGraphs(std::vector<int> assignments) const {
+	//let's store each output Graph's members since they are const.
+	std::vector<IV> res_h = std::vector<IV>(teamsCount, IV(head.size()));
+	std::vector<IV> res_w = std::vector<IV>(teamsCount, IV(succ.size()));
+	std::vector<IV> res_f = std::vector<IV>(teamsCount, IV(succ.size()));
+	std::vector<IV> res_ni = std::vector<IV>(teamsCount, IV(succ.size()));
+	std::vector<IV> fakeSucc = std::vector<IV>(teamsCount, IV(succ.size()));
+	std::vector<int> sigma(teamsCount);
+	//init head vectors
+	for(int team=0; team<teamsCount; team++)
+		res_h.at(team).push_back(0);
+	for(int node=0; node<head.size(); node++) {
+		std::vector<int> tmp(teamsCount);
+		//store edges
+		for(int i=0; i<getCount(node); i++) {
+			int edge = head.at(node) + i;
+			int team = assignments.at(edge) - 1;
+			if (team < 0)
+				throw GraphException("incomplete assignment vector");
+			fakeSucc.at(team).push_back(succ.at(edge));
+			res_w.at(team).push_back(weights.at(edge));
+			res_f.at(team).push_back(flyers.at(edge));
+			res_ni.at(team).push_back(node);
+			tmp.at(team)++;
+		}
+		//store nodes
+		for(int team=0; team<teamsCount; team++) {
+			int edges = tmp.at(team);
+			if (edges) {
+				sigma.at(team) += edges;
+				res_h.at(team).push_back(sigma.at(team));
+			}
+		}
+	}
+	//we don't need the last head pointer
+	for(int team=0; team<teamsCount; team++)
+		res_h.at(team).pop_back();
+	//TODO comment
+	for(int team=0; team<teamsCount; team++) {
+		std::vector<int> v;
+		IV& ni = res_ni.at(team);
+		IV& fs = fakeSucc.at(team);
+		for(int i=0; i<ni.size(); i++)
+			if(i==0 || v.back()!=ni.at(i))
+				v.push_back(ni.at(i));
+		for(int i=0; i<v.size(); i++) {
+			for(int m = 0; m < fs.size(); m++)
+				if(fs.at(m) == v.at(i))
+					fs.at(m) = i;
+		}
+	}
+	//populate succ vectors
+	std::vector<IV> res_s = std::vector<IV>(teamsCount, IV(succ.size()));
+	for(int team=0; team<teamsCount; team++) {
+		for(int i=0; i<fakeSucc.at(team).size(); i++)
+			res_s.at(team).push_back(fakeSucc.at(team).at(i));
+	}
+	//populate the result
+	std::vector<Graph*> res = std::vector<Graph*>(teamsCount);
+	for(int team=0; team<teamsCount; team++) {
+		Graph* g = new Graph(Graph(
+						1, "subgraph",
+						res_h.at(team),
+						res_s.at(team),
+						res_f.at(team),
+						res_w.at(team),
+						std::vector<int>(),
+						std::vector<int>()));
+		res.at(team) = g;
+	}
+	return res;
 }
 
 int Graph::getAverageDistance(){ return averageDist; }
