@@ -3,6 +3,8 @@
 
 #include <vector>
 #include "Graph.h"
+class Score;
+class Solution;
 #include "Solution.h"
 
 /**
@@ -31,7 +33,7 @@ class Score{
 		bool operator <(const Score& right);
 
 	private:
-		std::vector<teamScore*>& tsList;
+		std::vector<teamScore> tsList;
 		int averageDistance;
 		int averageFlyers;
 		

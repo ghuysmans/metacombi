@@ -1,7 +1,6 @@
 #ifndef _SOLUTION_H
 #define _SOLUTION_H
 
-#include <memory>
 #include "Score.h"
 #include "Graph.h"
 
