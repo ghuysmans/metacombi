@@ -2,6 +2,8 @@
 #define _LOCALSEARCH_H
 
 #include "Metaheuristic.h"
+#include "Solution.h"
+#include "Graph.h"
 
 class LocalSearch: public Metaheuristic{
 	private:
