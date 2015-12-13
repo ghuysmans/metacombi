@@ -89,3 +89,57 @@ void TestaverageFlyers(CuTest *tc)
 	int result = g.getAverageFlyers();//2565
 	CuAssertIntEquals(tc, 2015, result );
 }
+
+void TestsubGraphs(CuTest *tc)
+{
+	//Les valeurs 'expected' venent du slide du prof avec les réponses pout testing-Graph.txt
+	Graph g = Graph::load("testing-Graph.txt");
+	int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
+	std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
+	std::vector<Graph*> res = g.subGraphs(vectorSolution);
+	CuAssertIntEquals(tc, 3, res.size() );
+	CuAssertIntEquals(tc, 14, res.at(0) -> succ.size() );
+	CuAssertIntEquals(tc, 18, res.at(1) -> succ.size() );
+	CuAssertIntEquals(tc, 16, res.at(2) -> succ.size() );
+	CuAssertIntEquals(tc, 8, res.at(0) -> head.size() );
+	CuAssertIntEquals(tc, 10, res.at(1) -> head.size() );
+	CuAssertIntEquals(tc, 8, res.at(2) -> head.size() );
+	int counter, sigma = 0;
+	
+	//Test des flyers
+	for(counter = 0; counter < res.at(0) -> flyers.size(); counter++)
+		sigma += res.at(0) -> flyers.at(counter);
+	sigma = sigma /2;//On divise par 2 car tous les arc non-orienté sont representé deux fois et donc les flyers aussi
+		CuAssertIntEquals(tc, 2015, sigma );
+		
+	sigma = 0;
+	for(counter = 0; counter < res.at(1) -> flyers.size(); counter++)
+		sigma += res.at(1) -> flyers.at(counter);
+	sigma = sigma /2;
+		CuAssertIntEquals(tc, 1725, sigma );
+	
+	sigma = 0;
+	for(counter = 0; counter < res.at(2) -> flyers.size(); counter++)
+		sigma += res.at(2) -> flyers.at(counter);
+	sigma = sigma /2;
+		CuAssertIntEquals(tc, 2692, sigma );
+	
+	//Test des distances	
+	sigma = 0;
+	for(counter = 0; counter < res.at(0) -> weights.size(); counter++)
+		sigma += res.at(0) -> weights.at(counter);
+	sigma = sigma /2;
+		CuAssertIntEquals(tc, 1710, sigma );
+	
+	sigma = 0;
+	for(counter = 0; counter < res.at(1) -> weights.size(); counter++)
+		sigma += res.at(1) -> weights.at(counter);
+	sigma = sigma /2;
+		CuAssertIntEquals(tc, 2110, sigma );
+	
+	sigma = 0;
+	for(counter = 0; counter < res.at(2) -> weights.size(); counter++)
+		sigma += res.at(2) -> weights.at(counter);
+	sigma = sigma /2;
+		CuAssertIntEquals(tc, 2220, sigma );
+}
