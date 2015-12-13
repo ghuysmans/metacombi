@@ -18,7 +18,7 @@ class SolutionException: public std::exception {
 class Solution{
 	private:
 		/** The vector of the solution. vect[i] is the number of the group on the edge i */
-		std::vector<int> vect;
+		std::vector<int>& vect;
 		/** The graph of all the problem */
 		const Graph& graph;
 		/**
