@@ -69,15 +69,16 @@ int main(int argc, char *argv[]) {
 			atexit(kill_sub);
 			signal(SIGINT, handler);
 			sleep(1);
+			bool quit = false;
 			do {
 				std::cout << "-";
 				int c = getchar();
 				if (c == '\n')
 					c = getchar();
 				if (feof(stdin) || c=='q')
-					break;
+					quit = true;
 				if (kill(pid, SIGUSR1) == -1)
-					exit(fail("kill(SIGUSR1)"));
+					fail("kill(SIGUSR1)");
 				if (!fgets(buffer, sizeof(buffer), f)) {
 					std::cerr << "fgets failed" << std::endl;
 					break;
@@ -90,7 +91,7 @@ int main(int argc, char *argv[]) {
 #else
 				std::cout << buffer << std::endl;
 #endif //USE_SDL
-			} while (1);
+			} while (!quit);
 			return 0;
 		}
 		catch (GraphException& e) {
