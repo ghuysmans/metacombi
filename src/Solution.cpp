@@ -114,6 +114,57 @@ Solution::Rand::Rand() {
 	srand(time(NULL));
 }
 
+std::vector<int> Solution::move2()
+{
+	std::vector<int> res;
+	res.reserve(2);
+	bool found = false;
+	int teamNumber;
+	int succIndex = 0,succIndex2 = 0,succIndex3 = 0,succ = 0,succ2 = 0,node;
+	while(!found){
+		std::cout << "BEF" << std::endl;
+		node = rand() % graph.head.size();
+		succIndex = 0;
+		for(int i = 0;i<node;i++){
+			succIndex += graph.getCount(i);
+		}
+		for(int i=succIndex;i< (succIndex + graph.getCount(node));i++){
+			succ = graph.succ.at(i);
+			teamNumber = vect.at(i);
+			succIndex2 = 0;
+			for(int k = 0;k<succ;k++){
+				succIndex2 += graph.getCount(k);
+			}
+			for(int j=succIndex2;j< (succIndex2 + graph.getCount(succ));j++){
+				if(vect.at(j) != teamNumber){
+					res.push_back(vect.at(j));
+					res.push_back(j);
+					vect.at(j) = teamNumber;
+					succ2 = graph.succ.at(j);
+					succIndex3 = 0;
+					for(int m = 0;m<succ2;m++){
+						succIndex3 += graph.getCount(m);
+					}
+					for(int n=succIndex3;n< (succIndex3 + graph.getCount(succ2));n++){
+						std::cout << "in" << std::endl;
+						if(graph.succ.at(n) == succ){
+							vect.at(n) = teamNumber;
+							res.push_back(n);
+							std::cout << "in2" << std::endl;
+						}
+					}
+					found = true;
+					break;
+				}
+			}
+		}
+	}
+	std::cout << res.at(0) << std::endl;
+	std::cout << res.at(1) << std::endl;
+	std::cout << res.at(2) << std::endl;
+	return res;//res.at(0) = equipe remplacé, res.at(1) = position remplacé, res.at(2) = position remplacé
+}
+
 std::vector<int> Solution::move()
 {
 	std::vector<int> res, possib;

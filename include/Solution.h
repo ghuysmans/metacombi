@@ -69,6 +69,7 @@ class Solution{
 		 * Move something in the vector
 		 */
 		std::vector<int> move();
+		std::vector<int> move2();
 		/**
 		 * @param A vector that represents the move to undo
 		 */
