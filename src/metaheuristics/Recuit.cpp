@@ -30,7 +30,7 @@ Recuit::Recuit(Solution& initSolution, float alpha, int niter, float temperature
 
 bool Recuit::accept(int sprime, int s){
 	//compute proba for sprime, s, t
-	double proba = pow(0.5*(1-exp(t/10)) , (sprime/s) );
+	double proba = pow(0.5* (1-(e/t)) , (sprime/s) );
 	//generate random number between 0 and 1
 	srand (time(NULL));
 	double r = ((double) rand() / (RAND_MAX));
