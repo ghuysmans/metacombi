@@ -52,7 +52,7 @@ Solution Recuit::getSolution(){
 				else sol.undo(tuple);
 			}
 			if(!ok){
-				std::cout << "Recuit.cpp: cannot find an admissible solution. Return the best found" << std::endl;
+				std::cerr << "Recuit.cpp: cannot find an admissible solution. Return the best found" << std::endl;
 				return Solution(bestSol, sol.graph);
 			}
 			//now sol is s' and sol is s. affect
