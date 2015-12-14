@@ -42,17 +42,26 @@ std::vector<int> Solution::getCompacities(std::vector<Graph*> const& paths) cons
 }
 
 int Solution::getCompacity(Graph& subgraph) const{
+	int start = subgraph.getSucc().size() * rand() / RAND_MAX;
+	int end = start;
 	int maximum = 0;//will be the maximum of distances between edges
-	int minimum = 0;
-	for(int j=0 ; j<subgraph.getSucc().size() ; j++){//for each edges of subgraph
-		for(int k=0 ; k<subgraph.getSucc().size() ; k++){//for each edges of subgraph
-			if(j!=k) minimum = subgraph.getDistanceEdges(j,k);//the distance between those edges
-			//std::cerr << "arc " << j << " et " << k << " distance=" << minimum << std::endl;
-			if(minimum > maximum)
-				maximum = minimum;
+	if (!subgraph.getSucc().size())
+		return 42;
+	for(int edge=0; edge<subgraph.getSucc().size(); edge++){//for each edges of subgraph
+		int dist = subgraph.getDistanceEdges(start,edge);//the distance between those edges
+		if (dist > maximum) {
+			end = edge;
+			maximum = dist;
 		}
 	}
-	return maximum;
+	for(int edge=0; edge<subgraph.getSucc().size(); edge++){//for each edges of subgraph
+		int dist = subgraph.getDistanceEdges(start,edge);//the distance between those edges
+		if (dist > maximum) {
+			start = edge;
+			maximum = dist;
+		}
+	}
+	return subgraph.getDistanceEdges(start,end);
 }
 
 Solution::Solution(std::vector<int>& vectorSolution, const Graph& problemGraph): vect(vectorSolution), graph(problemGraph) {
