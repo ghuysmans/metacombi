@@ -66,7 +66,7 @@ Solution Recuit::getSolution(){
 				}
 			}
 			else if( accept(scoreSprime, scoreS) ){
-				scoreS : scoreSprime;
+				scoreS = scoreSprime;
 			}
 		}
 		//update temperature
