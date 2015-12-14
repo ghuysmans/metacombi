@@ -3,6 +3,7 @@
 
 #include <vector>
 #include "Graph.h"
+#include <iostream>
 class Score;
 class Solution;
 #include "Solution.h"
@@ -46,6 +47,8 @@ class Score{
 		 * @return a comparable integer value of this score
 		 */
 		int toInt() const;
+		
+		void getTsList();
 	private:
 		std::vector<teamScore> tsList;
 		int averageDistance;

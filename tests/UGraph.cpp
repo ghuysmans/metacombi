@@ -143,11 +143,3 @@ void TestsubGraphs(CuTest *tc)
 	sigma = sigma /2;
 		CuAssertIntEquals(tc, 2220, sigma );
 }
-
-void TestSubGraph1(CuTest *tc){
-    std::vector<int> v = std::vector<int>(14, 0);
-    Graph g = Graph::load("scoreSimpleTest.txt");
-    std::vector<Graph*> sgs = g.subGraphs(v);
-    std::cout << "hit" << std::endl;
-    CuAssertTrue(tc ,true);
-}

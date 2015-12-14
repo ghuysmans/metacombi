@@ -2,6 +2,7 @@
 #include "Solution.h"
 #include "metaheuristics/LocalSearch.h"
 #include "metaheuristics/Metaheuristic.h"
+#include <iostream>
 
 LocalSearch::LocalSearch(const Graph& problemGraph):graph(problemGraph){}
 
@@ -9,18 +10,28 @@ Solution LocalSearch::getSolution(){
 	std::vector<int> vectorSolution(graph.succ.size(),0);
 	Solution sol = Solution( vectorSolution , graph);
 	sol.initSolution();
-	Score scoreBefore = Score(sol);
+	int scoreBefore = Score(sol).toInt();
 	std::vector<int> moveInfo;
-	int iterMax = 10000;
+	int iterMax = 100;
+	
 	for(int i = 0;i<iterMax;i++){
-		std::cout<<i<<std::endl;
-		moveInfo = sol.move();
+		moveInfo = sol.move2();
 		if(sol.isAdmissible()){
-			Score scoreAfter = Score(sol);
-			if(scoreBefore < scoreAfter)
+		std::cout<<"jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"<<std::endl;
+		Metaheuristic::do_dump(sol);
+			int scoreAfter = Score(sol).toInt();
+			if(Score::isBetterThan(scoreAfter , scoreBefore))
+			{
 				scoreBefore = scoreAfter;
+				std::cout<<"on est la111111111111111"<<std::endl;
+			}
 			else
+			{
+				std::cout<<"scoreBefore = "<<scoreBefore<<std::endl;
+				std::cout<<"scoreAfter = "<<scoreAfter<<std::endl;
 				sol.undo(moveInfo);
+				std::cout<<"on est la22222222222222"<<std::endl;
+			}
 		}
 		else{
 			if(!sol.isAdmissible())
@@ -31,10 +42,5 @@ Solution LocalSearch::getSolution(){
 		}
 		Metaheuristic::do_dump(sol);
 	}
-	for(int z = 0; z < sol.getVector().size(); z++)
-	{
-		std::cout<<sol.getVector().at(z)<<" ";
-	}
-	std::cout<<std::endl;
 	return sol;
 }

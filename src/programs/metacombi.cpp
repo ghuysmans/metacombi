@@ -65,9 +65,10 @@ int main(int argc, char *argv[])
 				float temperature = 1.0f;
 				float epsilon = 5.0f;
 				int niter = 3;
-				std::cerr << "HIT before create recuit" << std::endl;
-				Recuit meta(sol, alpha, niter, temperature, epsilon);
-				std::cerr << "HIT before starting recuit" << std::endl;
+				//std::cerr << "HIT before create recuit" << std::endl;
+				//Recuit meta(sol, alpha, niter, temperature, epsilon);
+				//std::cerr << "HIT before starting recuit" << std::endl;
+				LocalSearch meta(graph);
 				sol = meta.getSolution();
 				sol.dump();
 				if(sol.isAdmissible())

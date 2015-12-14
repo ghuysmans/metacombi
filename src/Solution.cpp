@@ -12,17 +12,24 @@
 Solution::Rand Solution::_rand;
 
 const std::vector<int> Solution::getDistances() const{
-	std::vector<int> tab = std::vector<int>(graph.teamsCount);
+	std::vector<int> tab = std::vector<int>(graph.teamsCount,0);
 	for(int i=0 ; i<vect.size() ; i++){
 		tab[vect[i]] += graph.weights.at(i);
+	}
+	for(int i=0 ; i<tab.size() ; i++){
+		tab[i] = tab[i]/2;
 	}
 	return tab;
 }
 
 const std::vector<int> Solution::getDelivered() const{
-	std::vector<int> tab = std::vector<int>(graph.teamsCount);
+	std::vector<int> tab = std::vector<int>(graph.teamsCount,0);
 	for(int i=0 ; i<vect.size() ; i++){
+		//std::cout << "tab[vect[i]]= "<<tab[vect[i]] << " graph.flyers.at(i)= " <<graph.flyers.at(i)<< std::endl;;
 		tab[vect[i]] += graph.flyers.at(i);
+	}
+	for(int i=0 ; i<tab.size() ; i++){
+		tab[i] = tab[i]/2;
 	}
 	return tab;
 }
@@ -213,7 +220,7 @@ std::vector<int> Solution::move()
 		//std::cout<<"1was1 = "<<vect.at(graph.head.at(possib.at(value)) + v2)<<std::endl;
 		vect.at(graph.head.at(possib.at(value)) + v2) = e1;//On modifie l'arc de a vers b
 		res.push_back(graph.head.at(possib.at(value)) + v2);
-		std::cout<<"now e1 = "<<e1<<std::endl;
+		//std::cout<<"now e1 = "<<e1<<std::endl;
 		for(i = 0; i < graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)).size(); i++)
 		{
 			if(possib.at(value) == graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)).at(i))
@@ -223,9 +230,9 @@ std::vector<int> Solution::move()
 			//	std::cout<<"1was2 = "<<vect.at(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)) + i)<<std::endl;
 				vect.at(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)) + i) = e1;//On modifie l'arc de b vers a
 				//res.push_back(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2) + i));
-				std::cout<<"adresse1 = "<<(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)) + i)<<std::endl;
+				//std::cout<<"adresse1 = "<<(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)) + i)<<std::endl;
 			//	std::cout<<"1i = "<<i<<std::endl;
-				std::cout<<"now e1 = "<<e1<<std::endl;
+				//std::cout<<"now e1 = "<<e1<<std::endl;
 				break;	
 			}
 		}
@@ -234,9 +241,9 @@ std::vector<int> Solution::move()
 		//std::cout<<"1i = "<<i<<std::endl;
 		//res.push_back(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2) + i));
 		//res.push_back(x);
-		std::cout<<"adress1 = "<<res.at(2)<<std::endl;
-		std::cout<<"1WTF = "<<vect.at(res.at(1))<<std::endl;
-		std::cout<<"1WTF = "<<vect.at(res.at(2))<<std::endl;
+		//std::cout<<"adress1 = "<<res.at(2)<<std::endl;
+		//std::cout<<"1WTF = "<<vect.at(res.at(1))<<std::endl;
+		//std::cout<<"1WTF = "<<vect.at(res.at(2))<<std::endl;
 		//std::cout<<"1become1 = "<<vect.at(graph.head.at(possib.at(value)) + v2)<<std::endl;
 		//std::cout<<"1become2 = "<<vect.at(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v2)) + i)<<std::endl;
 	}
@@ -246,7 +253,7 @@ std::vector<int> Solution::move()
 		//std::cout<<"2was1 = "<<vect.at(graph.head.at(possib.at(value)) + v1)<<std::endl;
 		vect.at(graph.head.at(possib.at(value)) + v1) = e2;//On modifie l'arc de a vers b
 		res.push_back(graph.head.at(possib.at(value)) + v1);
-		std::cout<<"now e2 = "<<e2<<std::endl;
+		//std::cout<<"now e2 = "<<e2<<std::endl;
 		for(i = 0; i < graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)).size(); i++)
 		{
 			if(possib.at(value) == graph.getSuccessors(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)).at(i))
@@ -257,8 +264,8 @@ std::vector<int> Solution::move()
 				vect.at(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)) + i) = e2;//On modifie l'arc de b vers a
 				//std::cout<<"2i = "<<i<<std::endl;
 				//res.push_back(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1) + i));
-				std::cout<<"adress2 = "<<(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)) + i)<<std::endl;
-				std::cout<<"after e2 = "<<e2<<std::endl;
+				//std::cout<<"adress2 = "<<(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)) + i)<<std::endl;
+				//std::cout<<"after e2 = "<<e2<<std::endl;
 				break;	
 			}
 		}
@@ -267,9 +274,9 @@ std::vector<int> Solution::move()
 		//std::cout<<"2i = "<<i<<std::endl;
 		//res.push_back(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1) + i));
 		//res.push_back(x);
-		std::cout<<"adress2 = "<<res.at(2)<<std::endl;
-		std::cout<<"2WTF = "<<vect.at(res.at(1))<<std::endl;
-		std::cout<<"2WTF = "<<vect.at(res.at(2))<<std::endl;
+		//std::cout<<"adress2 = "<<res.at(2)<<std::endl;
+		//std::cout<<"2WTF = "<<vect.at(res.at(1))<<std::endl;
+		//std::cout<<"2WTF = "<<vect.at(res.at(2))<<std::endl;
 		//std::cout<<"2become1 = "<<vect.at(graph.head.at(possib.at(value)) + v1)<<std::endl;
 		//std::cout<<"2become2 = "<<vect.at(graph.head.at(graph.getSucc().at(graph.head.at(possib.at(value)) + v1)) + i)<<std::endl;
 	}
@@ -454,6 +461,26 @@ void Solution::dump() const {
 	for (int edge=0; edge<vect.size(); edge++)
 		std::cout << vect.at(edge) << " ";
 	std::cout << std::endl;
+//	std::cout<<"hello"<<std::endl;
+	//Score(*this).getTsList();
+	std::vector<Graph*> v = graph.subGraphs(vect);
+	int somme;
+	for(int z = 0; z < v.size(); z++)
+	{
+		somme = 0;
+		for(int w = 0; w < v.at(z) -> weights.size(); w++)
+			somme += v.at(z) -> weights.at(w);
+		somme = somme / 2;
+		std::cout<<"z = "<<z<<" somme de distances = "<<somme<<std::endl;
+	}
+	for(int z = 0; z < v.size(); z++)
+	{
+		somme = 0;
+		for(int w = 0; w < v.at(z) -> flyers.size(); w++)
+			somme += v.at(z) -> flyers.at(w);
+		somme = somme / 2;
+		std::cout<<"z = "<<z<<" somme de flyers = "<<somme<<std::endl;
+	}
 }
 
 Solution& Solution::operator=(const Solution& other) {
