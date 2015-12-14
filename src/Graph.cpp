@@ -1,6 +1,7 @@
 #include<sstream>
 #include<fstream>
 #include "Graph.h"
+#include "tools.h"
 #include<iostream>
 #include<climits>
 
@@ -294,7 +295,7 @@ std::vector<Graph*> Graph::subGraphs(std::vector<int> assignments) const {
 	std::vector<Graph*> res = std::vector<Graph*>(teamsCount);
 	for(int team=0; team<teamsCount; team++) {
 		Graph* g = new Graph(Graph(
-						1, "subgraph",
+						1, ("subgraph "+itos(team)+" of "+filename).c_str(),
 						res_h.at(team),
 						res_s.at(team),
 						res_f.at(team),

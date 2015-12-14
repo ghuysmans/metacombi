@@ -17,7 +17,7 @@ if (UNIX)
 	execute_process(
 		COMMAND "tests/make-tests.sh" ${UnitTests}
 		OUTPUT_FILE "tests/UAll.cpp")
-	add_executable(UAll ${UnitTests} tests/CuTest.cpp src/Graph.cpp src/Solution.cpp src/Score.cpp)
+	add_executable(UAll ${UnitTests} tests/CuTest.cpp src/Graph.cpp src/Solution.cpp src/Score.cpp src/tools.cpp)
 	add_test(UAll UAll)
 	#TODO other tests?
 	#add_executable(buffer tests/buffer.c src/buffer.c src/socket.c)

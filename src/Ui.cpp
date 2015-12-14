@@ -1,17 +1,11 @@
 #include "../config.h"
 #ifdef USE_SDL
 
-#include <sstream>
 #include <vector>
 #include "Ui.h"
 #include "UiLibrary.h"
 #include "Solution.h"
-
-inline std::string itos(int i) {
-	std::stringstream ss;
-	ss << i;
-	return ss.str();
-}
+#include "tools.h"
 
 void draw(Screen& screen, Font& font, const Camera& camera, const Graph& graph, const Solution* const solution, const bool captions) {
 	static const SDL_Color palette[] = {
