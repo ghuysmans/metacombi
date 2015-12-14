@@ -22,15 +22,30 @@ void TestMove(CuTest *tc) {
 	Graph graph = Graph::load("testing-Graph.txt");
 	int arr[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
 	std::vector<int> vectorSolution(&arr[0], &arr[0]+48);
+	
+	for(int z = 0; z < vectorSolution.size(); z++)
+		std::cout<<vectorSolution.at(z)<<" ";
+	std::cout<<std::endl;
+	
 	int array[] = {1,2,1,1,2,1,1,2,1,1,2,2,2,2,2,2,2,2,2,2,2,1,2,1,2,3,3,2,3,1,3,2,1,1,3,1,1,3,3,3,3,3,3,3,3,3,3,3};
-	Solution sol = Solution(vectorSolution,graph); 
+	Solution sol = Solution(vectorSolution,graph);
 	int i, res = 0;
 	std::vector<int> v = sol.move();
+	
+	for(int z = 0; z < sol.getVector().size(); z++)
+		std::cout<<sol.getVector().at(z)<<" ";
+	std::cout<<std::endl;
+	std::cout<<v.at(1)<<" "<<v.at(2)<<std::endl;
+	
+	if(sol.getVector().at(v.at(1)) != sol.getVector().at(v.at(2)))
+		std::cout<<"bad "<<sol.getVector().at(v.at(1))<<" "<<sol.getVector().at(v.at(2))<<std::endl;
+		
 	for(i = 0; i < sol.getVector().size(); i++)
 	{
 		if(sol.getVector().at(i) != array[i])
 			res++;
 	}
+	
 	CuAssertIntEquals(tc, 2, res);
 }
 
