@@ -10,16 +10,15 @@ Solution LocalSearch::getSolution(){
 	std::vector<int> vectorSolution(graph.succ.size(),0);
 	Solution sol = Solution( vectorSolution , graph);
 	sol.initSolution();
-	int scoreBefore = Score(sol).toInt();
+	float scoreBefore = Score(sol).toFloat();
 	std::vector<int> moveInfo;
 	int iterMax = 100;
-	
 	for(int i = 0;i<iterMax;i++){
 		moveInfo = sol.move2();
 		if(sol.isAdmissible()){
 		std::cout<<"jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"<<std::endl;
 		Metaheuristic::do_dump(sol);
-			int scoreAfter = Score(sol).toInt();
+			float scoreAfter = Score(sol).toFloat();
 			if(Score::isBetterThan(scoreAfter , scoreBefore))
 			{
 				scoreBefore = scoreAfter;

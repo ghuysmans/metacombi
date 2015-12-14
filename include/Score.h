@@ -35,18 +35,18 @@ class Score{
 		/**
 		 * Compare two score by their integer form
 		 */
-		static bool isBetterThan(int score1, int score2);
+		static bool isBetterThan(float score1, float score2);
 		/**
 		 * @param distancePower the power of ErrLength
 		 * @param flyersPower the power of ErrFlyers
 		 * @param compacityPower the power of (1+Compacity)
 		 * @return a comparable integer value of this score
 		 */
-		int toInt(int distancePower, int flyersPower, int compacityPower) const;
+		float toFloat(int distancePower, int flyersPower, int compacityPower) const;
 		/**
 		 * @return a comparable integer value of this score
 		 */
-		int toInt() const;
+		float toFloat() const;
 		
 		void getTsList();
 	private:

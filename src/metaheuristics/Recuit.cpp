@@ -11,7 +11,7 @@
 Recuit::Recuit(Solution& initSolution, float alpha, int niter, float temperature, float epsilon):
 	sol(initSolution),
 	bestSol(std::vector<int>(initSolution.getVector())),
-	bestScore(Score(initSolution).toInt()),
+	bestScore(Score(initSolution).toFloat()),
 	a(alpha),
 	p(niter),
 	t(temperature),
@@ -28,7 +28,7 @@ Recuit::Recuit(Solution& initSolution, float alpha, int niter, float temperature
 	Recuit(iniSol, alpha, niter, temperature);
 }*/
 
-bool Recuit::accept(int sprime, int s){
+bool Recuit::accept(float sprime, float s){
 	//compute proba for sprime, s, t
 	double proba = pow(0.5* (1-(e/t)) , (sprime/s) );
 	//generate random number between 0 and 1
@@ -37,8 +37,8 @@ bool Recuit::accept(int sprime, int s){
 }
 	
 Solution Recuit::getSolution(){
-	int scoreS = bestScore;
-	int scoreSprime;
+	float scoreS = bestScore;
+	float scoreSprime;
 	do{
 		for(int i=0 ; i<p ; i++){
 			//more than one admissible solution before choosing ?
@@ -56,7 +56,7 @@ Solution Recuit::getSolution(){
 				return Solution(bestSol, sol.graph);
 			}
 			//now sol is s' and sol is s. affect
-			scoreSprime = Score(sol).toInt();
+			scoreSprime = Score(sol).toFloat();
 			if( Score::isBetterThan(scoreS , scoreSprime) ){
 				scoreS = scoreSprime;
 				//update best solution

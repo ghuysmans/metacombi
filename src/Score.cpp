@@ -28,7 +28,7 @@ void Score::getTsList()
 		std::cout<<z<<" distance = "<<tsList.at(z).dist<<" flyers = "<<tsList.at(z).Nflyers<<" comp = "<<tsList.at(z).comp<<std::endl;
 }
 
-int Score::toInt(int distancePower, int flyersPower, int compacityPower) const{
+float Score::toFloat(int distancePower, int flyersPower, int compacityPower) const{
 	// compute ErrLength
 	float ErrLength = 0;
 	for(int i=0 ; i<tsList.size() ; i++){
@@ -37,7 +37,6 @@ int Score::toInt(int distancePower, int flyersPower, int compacityPower) const{
 	//compute ErrFlyers
 	float ErrFlyers = 0;
 	for(int i=0 ; i<tsList.size() ; i++){
-	//	std::cout<<"tsList.at(i).Nflyers = "<<(tsList.at(i).Nflyers- averageDistance)<<std::endl;
 		ErrFlyers += pow(std::abs(tsList.at(i).Nflyers - averageFlyers), flyersPower);
 	}
 	//compute the maximum of compacities
@@ -45,21 +44,19 @@ int Score::toInt(int distancePower, int flyersPower, int compacityPower) const{
 	for(int i=0 ; i<tsList.size() ; i++){
 		if(maxCompacity < tsList.at(i).comp) maxCompacity = tsList.at(i).comp;
 	}
-	//std::cout<<"eL = "<<ErrLength<<" eF = "<<ErrFlyers<<" mC = "<<maxCompacity<<std::endl;
-	std::cout<<"toInt "<< (1+ErrLength)*(1+ErrFlyers)*pow( (1+maxCompacity), compacityPower) << std::endl;
 	return (1+ErrLength)*(1+ErrFlyers)*pow( (1+maxCompacity), compacityPower);
 }
 
-int Score::toInt() const{
-	return toInt(2, 2, 2);
+float Score::toFloat() const{
+	return toFloat(2, 2, 2);
 }
 
-bool Score::isBetterThan(int score1, int score2){
+bool Score::isBetterThan(float score1, float score2){
 	return (score1/score2 < 1);
 }
 
 bool Score::operator <(const Score& right){ //this compares "this" and "right"
-	int a = toInt();
-	int b = right.toInt();
+	float a = toFloat();
+	float b = right.toFloat();
 	return Score::isBetterThan(b,a) ;
 }

@@ -22,13 +22,18 @@ class Recuit: public Metaheuristic{
 		/** the vector of the best solution found*/
 		std::vector<int> bestSol;
 		/** the integer form of the best solution found*/
-		int bestScore;
+		float bestScore;
+
+		/** alpha */
 		float a;
+		/** iterations before updating t */
 		int p;
+		/** temperature */
 		float t;
+		/** epsilon */
 		float e;
 		
-		bool accept(int sprime, int s);
+		bool accept(float sprime, float s);
 	public:
 		/**
 		 * @param initSolution the initial Solution to enhance
