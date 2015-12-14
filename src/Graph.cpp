@@ -141,7 +141,7 @@ std::vector<int> Graph::edgeToNodes(int edge) const {
 	}
 	std::vector<int> result = std::vector<int>(2, -1);
 	//the successor
-	result[1] = succ[edge];
+	result[1] = succ.at(edge);
 	//the predecessor
 	result[0] = -1;
 	if(head.size() < 2){
