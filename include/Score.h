@@ -31,12 +31,10 @@ class Score{
 		 * @return true if left is < than right
 		 */
 		bool operator <(const Score& right);
-
-	private:
-		std::vector<teamScore> tsList;
-		int averageDistance;
-		int averageFlyers;
-		
+		/**
+		 * Compare two score by their integer form
+		 */
+		static bool isBetterThan(int score1, int score2);
 		/**
 		 * @param distancePower the power of ErrLength
 		 * @param flyersPower the power of ErrFlyers
@@ -48,6 +46,10 @@ class Score{
 		 * @return a comparable integer value of this score
 		 */
 		int toInt() const;
+	private:
+		std::vector<teamScore> tsList;
+		int averageDistance;
+		int averageFlyers;
 };
 
 /**

@@ -39,8 +39,12 @@ int Score::toInt() const{
 	return toInt(2, 2, 2);
 }
 
+bool Score::isBetterThan(int score1, int score2){
+	return (score1/score2 > 1);
+}
+
 bool Score::operator <(const Score& right){ //this compares "this" and "right"
 	int a = toInt();
 	int b = right.toInt();
-	return (b/a) < 1 ;
+	return Score::isBetterThan(b,a) ;
 }
