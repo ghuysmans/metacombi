@@ -82,6 +82,7 @@ class Solution{
 		 *Initialize an admissible solution
 		*/
 		void initSolution();
+		void initSolution2();
 		/**
 		 * @return The solution vector
 		 */
