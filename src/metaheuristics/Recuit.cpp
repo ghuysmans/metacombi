@@ -39,13 +39,12 @@ bool Recuit::accept(int sprime, int s){
 Solution Recuit::getSolution(){
 	int scoreS = bestScore;
 	int scoreSprime;
-	std::vector<int> tuple;
 	do{
 		for(int i=0 ; i<p ; i++){
 			//more than one admissible solution before choosing ?
 			bool ok = false;
 			for(int j=0 ; j< 1000 ; j++){
-				tuple = sol.move();
+				std::vector<int> tuple = sol.move();
 				if( sol.isAdmissible() ){
 					ok = true;
 					break;
