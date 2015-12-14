@@ -62,13 +62,13 @@ int main(int argc, char *argv[])
 				sol.initSolution();
 				//TODO adjust parameters here!
 				float alpha = 0.9f;
-				float temperature = 1.0f;
-				float epsilon = 5.0f;
-				int niter = 3;
+				float temperature = 10.0f;
+				float epsilon = 1.0f;
+				int niter = 10;
 				//std::cerr << "HIT before create recuit" << std::endl;
-				//Recuit meta(sol, alpha, niter, temperature, epsilon);
+				Recuit meta(sol, alpha, niter, temperature, epsilon);
 				//std::cerr << "HIT before starting recuit" << std::endl;
-				LocalSearch meta(graph);
+				//LocalSearch meta(graph);
 				sol = meta.getSolution();
 				sol.dump();
 				if(sol.isAdmissible())

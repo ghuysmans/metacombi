@@ -14,18 +14,15 @@ Score::Score(const Solution& sol) {
 		tsList[i].Nflyers = dels.at(i);
 		tsList[i].comp = comps.at(i);
 	}
-	//for(int i=0 ; i<tsList.size() ; i++)std::cout << "tsList.at("<<i<<").Nflyers = " << tsList.at(i).Nflyers<<std::endl;
 	averageDistance = sol.graph.getAverageDistance();
-	std::cout<<"averageDistance = "<<averageDistance<<std::endl;
 	averageFlyers = sol.graph.getAverageFlyers();
-	std::cout<<"averageFlyers = "<<averageFlyers<<std::endl;
 }
 
 void Score::getTsList()
 {
-	std::cout<<tsList.size()<<std::endl;
+	return;
 	for(int z = 0; z < tsList.size(); z++)
-		std::cout<<z<<" distance = "<<tsList.at(z).dist<<" flyers = "<<tsList.at(z).Nflyers<<" comp = "<<tsList.at(z).comp<<std::endl;
+		std::cerr<<z<<" distance = "<<tsList.at(z).dist<<" flyers = "<<tsList.at(z).Nflyers<<" comp = "<<tsList.at(z).comp<<std::endl;
 }
 
 float Score::toFloat(int distancePower, int flyersPower, int compacityPower) const{

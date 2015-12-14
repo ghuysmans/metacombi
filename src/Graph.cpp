@@ -1,6 +1,7 @@
 #include<sstream>
 #include<fstream>
 #include "Graph.h"
+#include "tools.h"
 #include<iostream>
 #include<climits>
 
@@ -140,7 +141,7 @@ std::vector<int> Graph::edgeToNodes(int edge) const {
 	}
 	std::vector<int> result = std::vector<int>(2, -1);
 	//the successor
-	result[1] = succ[edge];
+	result[1] = succ.at(edge);
 	//the predecessor
 	result[0] = -1;
 	if(head.size() < 2){
@@ -294,7 +295,7 @@ std::vector<Graph*> Graph::subGraphs(std::vector<int> assignments) const {
 	std::vector<Graph*> res = std::vector<Graph*>(teamsCount);
 	for(int team=0; team<teamsCount; team++) {
 		Graph* g = new Graph(Graph(
-						1, "subgraph",
+						1, ("subgraph "+itos(team)+" of "+filename).c_str(),
 						res_h.at(team),
 						res_s.at(team),
 						res_f.at(team),
