@@ -11,9 +11,9 @@ Solution LocalSearch::getSolution(){
 	sol.initSolution();
 	Score scoreBefore = Score(sol);
 	std::vector<int> moveInfo;
-	int iterMax = 10;
+	int iterMax = 100;
 	for(int i = 0;i<iterMax;i++){
-		moveInfo = sol.move();
+		moveInfo = sol.move2();
 		if(sol.isAdmissible()){
 			Score scoreAfter = Score(sol);
 			if(scoreBefore < scoreAfter)
@@ -22,7 +22,11 @@ Solution LocalSearch::getSolution(){
 				sol.undo(moveInfo);
 		}
 		else{
+			if(!sol.isAdmissible())
+				std::cout << "OK1" << std::endl;
 			sol.undo(moveInfo);
+			if(sol.isAdmissible())
+				std::cout << "OK2" << std::endl;
 		}
 	}
 	return sol;
