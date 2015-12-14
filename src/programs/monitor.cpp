@@ -83,13 +83,12 @@ int main(int argc, char *argv[]) {
 					std::cerr << "fgets failed" << std::endl;
 					break;
 				}
+				std::cout << buffer << std::endl;
 #ifdef USE_SDL
 				std::stringstream ss;
 				ss << buffer;
 				Solution sol = Solution::load(ss, g);
 				ui_main(g, &sol);
-#else
-				std::cout << buffer << std::endl;
 #endif //USE_SDL
 			} while (!quit);
 			return 0;
