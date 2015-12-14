@@ -449,3 +449,15 @@ void Solution::initSolution(){
 }
 
 const std::vector<int>& Solution::getVector() const { return vect; }
+
+void Solution::dump() const {
+	for (int edge=0; edge<vect.size(); edge++)
+		std::cout << vect.at(edge) << " ";
+	std::cout << std::endl;
+}
+
+Solution& Solution::operator=(const Solution& other) {
+	if (&graph != &other.graph)
+		throw new SolutionException(("incompatible solution assignment between "+graph.filename+" and "+other.graph.filename).c_str());
+	vect = other.vect;
+}

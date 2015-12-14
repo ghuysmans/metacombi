@@ -1,7 +1,7 @@
 #include <vector>
 #include "Solution.h"
 #include "metaheuristics/LocalSearch.h"
-#include <iostream>
+#include "metaheuristics/Metaheuristic.h"
 
 LocalSearch::LocalSearch(const Graph& problemGraph):graph(problemGraph){}
 
@@ -29,6 +29,7 @@ Solution LocalSearch::getSolution(){
 			if(sol.isAdmissible())
 				std::cout << "OK2" << std::endl;
 		}
+		Metaheuristic::do_dump(sol);
 	}
 	for(int z = 0; z < sol.getVector().size(); z++)
 	{

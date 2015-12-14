@@ -32,7 +32,6 @@ bool Recuit::accept(int sprime, int s){
 	//compute proba for sprime, s, t
 	double proba = pow(0.5* (1-(e/t)) , (sprime/s) );
 	//generate random number between 0 and 1
-	srand (time(NULL));
 	double r = ((double) rand() / (RAND_MAX));
 	return r<proba;
 }
@@ -40,13 +39,12 @@ bool Recuit::accept(int sprime, int s){
 Solution Recuit::getSolution(){
 	int scoreS = bestScore;
 	int scoreSprime;
-	std::vector<int> tuple;
 	do{
 		for(int i=0 ; i<p ; i++){
 			//more than one admissible solution before choosing ?
 			bool ok = false;
 			for(int j=0 ; j< 1000 ; j++){
-				tuple = sol.move();
+				std::vector<int> tuple = sol.move();
 				if( sol.isAdmissible() ){
 					ok = true;
 					break;
@@ -54,7 +52,7 @@ Solution Recuit::getSolution(){
 				else sol.undo(tuple);
 			}
 			if(!ok){
-				std::cout << "Recuit.cpp: cannot find an admissible solution. Return the best found" << std::endl;
+				std::cerr << "Recuit.cpp: cannot find an admissible solution. Return the best found" << std::endl;
 				return Solution(bestSol, sol.graph);
 			}
 			//now sol is s' and sol is s. affect
@@ -68,8 +66,9 @@ Solution Recuit::getSolution(){
 				}
 			}
 			else if( accept(scoreSprime, scoreS) ){
-				scoreS : scoreSprime;
+				scoreS = scoreSprime;
 			}
+			Metaheuristic::do_dump(sol);
 		}
 		//update temperature
 		t = a*t;	

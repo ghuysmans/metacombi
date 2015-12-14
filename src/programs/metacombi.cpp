@@ -17,6 +17,8 @@
 #include "metaheuristics/Recuit.h"
 #include <vector>
 
+bool do_dump = false;
+
 /**
  * Convert a string to lowercase
  * @bug UB with non-ASCII strings
@@ -40,34 +42,8 @@ int get_positive(const char *s) {
 	return *s ? -1 : acc;
 }
 
-void dummy_handler(int) {
-	//TODO set a flag
-}
-
 int main(int argc, char *argv[])
 {
-	/*
-	Graph graph = Graph::load("testing-Graph.txt");
-	LocalSearch search = LocalSearch(graph);
-	Solution sol = search.getSolution();
-	if(sol.isAdmissible())
-		std::cout << "GOOD" << std::endl;
-	*/
-	Graph graph = Graph::load("testing-Graph.txt");
-	std::vector<int> v(graph.succ.size() , 0);
-	Solution sol(v, graph);
-	sol.initSolution();
-	// HERE play with parameter for 'recuit'
-	float alpha = 0.9f;
-	float temperature = 1.0f;
-	float epsilon = 5.0f;
-	int niter = 3;
-	std::cout << "HIT before create recuit" << std::endl;
-	Recuit meta(sol, alpha, niter, temperature, epsilon);
-	std::cout << "HIT before starting recuit" << std::endl;
-	if(meta.getSolution().isAdmissible())
-		std::cout << "GOOD" << std::endl;
-	
 	//first argument, lowercase, if any
 	std::string fl = argc>1 ? lowercase(argv[1]) : "";
 	if (argc<=2) {
@@ -79,16 +55,23 @@ int main(int argc, char *argv[])
 		}
 		else {
 			try {
-				Graph g = Graph::load(argv[1]);
-				signal(SIGUSR1, dummy_handler);
-				//TODO solve
-				int c = 0;
-				while (pause()) {
-					for (int i=0; i<g.head.size(); i++)
-						std::cout << c << " ";
-					std::cout << std::endl;
-					c++;
-				}
+				Graph graph = Graph::load(argv[1]);
+				signal(SIGUSR1, Metaheuristic::dump_handler);
+				std::vector<int> v(graph.succ.size(), 0);
+				Solution sol(v, graph);
+				sol.initSolution();
+				//TODO adjust parameters here!
+				float alpha = 0.9f;
+				float temperature = 1.0f;
+				float epsilon = 5.0f;
+				int niter = 3;
+				std::cerr << "HIT before create recuit" << std::endl;
+				Recuit meta(sol, alpha, niter, temperature, epsilon);
+				std::cerr << "HIT before starting recuit" << std::endl;
+				sol = meta.getSolution();
+				sol.dump();
+				if(sol.isAdmissible())
+					std::cerr << "GOOD" << std::endl;
 				return 0;
 			}
 			catch (GraphException& e) {
