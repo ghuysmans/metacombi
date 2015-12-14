@@ -16,28 +16,20 @@ Solution LocalSearch::getSolution(){
 	for(int i = 0;i<iterMax;i++){
 		moveInfo = sol.move2();
 		if(sol.isAdmissible()){
-		std::cout<<"jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"<<std::endl;
+		std::cerr<<"jjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjjj"<<std::endl;
 		Metaheuristic::do_dump(sol);
 			float scoreAfter = Score(sol).toFloat();
 			if(Score::isBetterThan(scoreAfter , scoreBefore))
 			{
 				scoreBefore = scoreAfter;
-				std::cout<<"on est la111111111111111"<<std::endl;
 			}
 			else
 			{
-				std::cout<<"scoreBefore = "<<scoreBefore<<std::endl;
-				std::cout<<"scoreAfter = "<<scoreAfter<<std::endl;
 				sol.undo(moveInfo);
-				std::cout<<"on est la22222222222222"<<std::endl;
 			}
 		}
 		else{
-			if(!sol.isAdmissible())
-				std::cout << "OK1" << std::endl;
 			sol.undo(moveInfo);
-			if(sol.isAdmissible())
-				std::cout << "OK2" << std::endl;
 		}
 		Metaheuristic::do_dump(sol);
 	}
