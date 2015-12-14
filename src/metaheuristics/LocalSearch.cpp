@@ -1,7 +1,7 @@
 #include <vector>
 #include "Solution.h"
 #include "metaheuristics/LocalSearch.h"
-#include <iostream>
+#include "metaheuristics/Metaheuristic.h"
 
 LocalSearch::LocalSearch(const Graph& problemGraph):graph(problemGraph){}
 
@@ -24,6 +24,7 @@ Solution LocalSearch::getSolution(){
 		else{
 			sol.undo(moveInfo);
 		}
+		Metaheuristic::do_dump(sol);
 	}
 	return sol;
 }

@@ -68,6 +68,7 @@ Solution Recuit::getSolution(){
 			else if( accept(scoreSprime, scoreS) ){
 				scoreS = scoreSprime;
 			}
+			Metaheuristic::do_dump(sol);
 		}
 		//update temperature
 		t = a*t;	
