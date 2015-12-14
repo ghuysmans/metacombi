@@ -10,9 +10,14 @@
 #include <signal.h>
 #include "metaheuristics/Metaheuristic.h"
 #include "metaheuristics/RandomStrategy.h"
+#include "metaheuristics/LocalSearch.h"
 #include "Graph.h"
 #include "../config.h"
 #include "Ui.h"
+#include "metaheuristics/Recuit.h"
+#include <vector>
+
+bool do_dump = false;
 
 /**
  * Convert a string to lowercase
@@ -37,10 +42,6 @@ int get_positive(const char *s) {
 	return *s ? -1 : acc;
 }
 
-void dummy_handler(int) {
-	//TODO set a flag
-}
-
 int main(int argc, char *argv[])
 {
 	//first argument, lowercase, if any
@@ -54,16 +55,24 @@ int main(int argc, char *argv[])
 		}
 		else {
 			try {
-				Graph g = Graph::load(argv[1]);
-				signal(SIGUSR1, dummy_handler);
-				//TODO solve
-				int c = 0;
-				while (pause()) {
-					for (int i=0; i<g.head.size(); i++)
-						std::cout << c << " ";
-					std::cout << std::endl;
-					c++;
-				}
+				Graph graph = Graph::load(argv[1]);
+				signal(SIGUSR1, Metaheuristic::dump_handler);
+				std::vector<int> v(graph.succ.size(), 0);
+				Solution sol(v, graph);
+				sol.initSolution();
+				//TODO adjust parameters here!
+				float alpha = 0.9f;
+				float temperature = 1.0f;
+				float epsilon = 5.0f;
+				int niter = 3;
+				//std::cerr << "HIT before create recuit" << std::endl;
+				//Recuit meta(sol, alpha, niter, temperature, epsilon);
+				//std::cerr << "HIT before starting recuit" << std::endl;
+				LocalSearch meta(graph);
+				sol = meta.getSolution();
+				sol.dump();
+				if(sol.isAdmissible())
+					std::cerr << "GOOD" << std::endl;
 				return 0;
 			}
 			catch (GraphException& e) {

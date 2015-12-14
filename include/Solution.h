@@ -69,6 +69,7 @@ class Solution{
 		 * Move something in the vector
 		 */
 		std::vector<int> move();
+		std::vector<int> move2();
 		/**
 		 * @param A vector that represents the move to undo
 		 */
@@ -87,11 +88,14 @@ class Solution{
 		const std::vector<int>& getVector() const;
 		//TODO peut-être devra t on envisage une fonction qui retourne tous ou une partie des mouvement possible?
 
-	private:
-		class Rand {
-			private:
+		void dump() const;
+
+		Solution& operator=(const Solution& other);
+
+		static class Rand {
+			public:
 				Rand();
-		};
+		} _rand;
 };
 
 #endif //_SOLUTION_H
