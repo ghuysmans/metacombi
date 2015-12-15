@@ -132,7 +132,7 @@ Solution::Rand::Rand() {
 std::vector<int> Solution::move2()
 {
 	std::vector<int> res;
-	res.reserve(2);
+	res.reserve(3);
 	bool found = false;
 	int teamNumber;
 	int succIndex = 0,succIndex2 = 0,succIndex3 = 0,succ = 0,succ2 = 0,node;
@@ -412,6 +412,82 @@ void Solution::initSolution(){
 			//Cas où tous les successeurs ont déjà été marqué 
 			if(!(pushed))
 				lifo.pop();
+		}
+	}
+}
+
+void Solution::initSolution2(){
+	std::vector<std::queue<int> > lifos;
+	
+	//On marque chaque sommet et arcs(aller/retour) à false
+	std::vector<bool> markEdges(graph.succ.size(),false);
+	std::vector<bool> markNodes(graph.head.size(),false);
+	int a = graph.head.size()/(graph.teamsCount);
+	lifos.reserve(graph.teamsCount);
+	int workingNode,succ,nbrOfSucc,firstSuccIndex,succIndex,neighbourTeam,counter = 0,teamNumber = 0;
+	std::vector<int> nodesIndex;
+	bool pushed;
+	for(int i = 0;i<graph.head.size()-1;i=i+a){
+		std::queue<int> fifo;
+		lifos.push_back(fifo); 
+		nodesIndex.push_back(i);
+	}
+	for(int i = 0;i<lifos.size();i++){
+		markNodes[nodesIndex.at(i)] = true;
+		lifos.at(i).push(nodesIndex.at(i));
+	}
+	bool modified = true;
+	while(modified){
+		modified = false;
+		for(int a = 0;a<lifos.size();a++){
+			int workingNode,succ,nbrOfSucc,firstSuccIndex,succIndex,teamNumber = a;
+			//Parcours en largeur
+			if(!lifos.at(a).empty()){
+				workingNode = lifos.at(a).front();
+				nbrOfSucc = graph.getCount(workingNode);
+				std::cout<<"apres empty"<<std::endl;
+				pushed = false;
+				if(nbrOfSucc == 0)
+					lifos.at(a).pop();
+				else{
+					firstSuccIndex = 0;
+					for(int i = 0;i<workingNode;i++){
+						firstSuccIndex += graph.getCount(i);
+					}
+					//On va push le premier successeur non-marqué dans la pile et assigné un numéro de team aux arcs
+					for(int i=firstSuccIndex;i< (firstSuccIndex + nbrOfSucc);i++){
+						if(!markEdges.at(i)){
+
+							//on marque l'arc du noeud vers le successeur 
+							markEdges.at(i) = true;
+							vect.at(i) = teamNumber;
+							//On marque aussi l'arc dans l'autre sens pour ne pas faire demi-tour
+							succ = graph.succ.at(i);
+							succIndex= 0;
+							for(int k = 0;k<succ;k++){
+								succIndex += graph.getCount(k);
+							}
+							for(int j=succIndex;j< (succIndex + graph.getCount(succ));j++){
+								if(graph.succ.at(j) == workingNode){
+									markEdges.at(j) = true;
+									vect.at(j) = teamNumber;
+								}
+							}
+							if(!markNodes.at(graph.succ.at(i))){
+								markNodes.at(graph.succ.at(i)) = true;
+								lifos.at(a).push(graph.succ.at(i));
+								pushed = true;
+							}
+						}
+					}
+					if(!(pushed))
+						lifos.at(a).pop();
+				}
+			}
+		}
+		for(int a = 0;a<lifos.size();a++){
+			if(!lifos.at(a).empty())
+				modified = true;
 		}
 	}
 }
