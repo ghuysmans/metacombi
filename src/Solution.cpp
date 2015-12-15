@@ -46,7 +46,7 @@ int Solution::getCompacity(Graph& subgraph) const{
 	int end = start;
 	int maximum = 0;//will be the maximum of distances between edges
 	if (!subgraph.getSucc().size())
-		return 42;
+		return 0;
 	for(int edge=0; edge<subgraph.getSucc().size(); edge++){//for each edges of subgraph
 		int dist = subgraph.getDistanceEdges(start,edge);//the distance between those edges
 		if (dist > maximum) {
